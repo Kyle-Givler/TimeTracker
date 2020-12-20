@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -25,28 +25,46 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
+using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Models;
 
-namespace TimeTracker
+namespace TimeTrackerUI
 {
-    static class Program
+    public partial class frmEditCategory : Form
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
+        private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
+
+        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
+
+        public frmEditCategory()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            InitializeComponent();
+        }
 
-            GlobalConfig.Initialize(DatabaseType.MSSQL);
+        private async void frmEditCategory_Load(object sender, EventArgs e)
+        {
+            SetupData();
+        }
 
-            Application.Run(new frmMain());
+        public async void SetupData()
+        {
+            listBoxCategory.DataSource = categories;
+            listBoxCategory.DisplayMember = "Name";
+
+            await LoadCategories();
+        }
+
+        private async Task LoadCategories()
+        {
+            categories.Clear();
+
+            var cats = await categoryData.LoadAllCategories();
+            cats.ForEach(x => categories.Add(x));
         }
     }
 }

@@ -44,15 +44,18 @@ namespace TimeTracker
             this.lblProjectValue = new System.Windows.Forms.Label();
             this.btnAddEntry = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.lblEntries = new System.Windows.Forms.Label();
+            this.btnEditCat = new System.Windows.Forms.Button();
+            this.btnEditProjects = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 21;
-            this.listBox1.Location = new System.Drawing.Point(50, 12);
+            this.listBox1.Location = new System.Drawing.Point(50, 54);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(246, 424);
+            this.listBox1.Size = new System.Drawing.Size(246, 382);
             this.listBox1.TabIndex = 0;
             // 
             // lblProject
@@ -164,7 +167,7 @@ namespace TimeTracker
             // 
             // btnAddEntry
             // 
-            this.btnAddEntry.Location = new System.Drawing.Point(421, 450);
+            this.btnAddEntry.Location = new System.Drawing.Point(164, 450);
             this.btnAddEntry.Name = "btnAddEntry";
             this.btnAddEntry.Size = new System.Drawing.Size(146, 37);
             this.btnAddEntry.TabIndex = 8;
@@ -173,19 +176,49 @@ namespace TimeTracker
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(50, 450);
+            this.btnDelete.Location = new System.Drawing.Point(12, 450);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(146, 37);
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Delete Selected";
             this.btnDelete.UseVisualStyleBackColor = true;
             // 
+            // lblEntries
+            // 
+            this.lblEntries.AutoSize = true;
+            this.lblEntries.Location = new System.Drawing.Point(50, 30);
+            this.lblEntries.Name = "lblEntries";
+            this.lblEntries.Size = new System.Drawing.Size(63, 21);
+            this.lblEntries.TabIndex = 10;
+            this.lblEntries.Text = "Entries:";
+            // 
+            // btnEditCat
+            // 
+            this.btnEditCat.Location = new System.Drawing.Point(316, 450);
+            this.btnEditCat.Name = "btnEditCat";
+            this.btnEditCat.Size = new System.Drawing.Size(146, 37);
+            this.btnEditCat.TabIndex = 11;
+            this.btnEditCat.Text = "Edit Categories";
+            this.btnEditCat.UseVisualStyleBackColor = true;
+            // 
+            // btnEditProjects
+            // 
+            this.btnEditProjects.Location = new System.Drawing.Point(468, 450);
+            this.btnEditProjects.Name = "btnEditProjects";
+            this.btnEditProjects.Size = new System.Drawing.Size(146, 37);
+            this.btnEditProjects.TabIndex = 12;
+            this.btnEditProjects.Text = "Edit Projects";
+            this.btnEditProjects.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(616, 499);
+            this.ClientSize = new System.Drawing.Size(622, 499);
+            this.Controls.Add(this.btnEditProjects);
+            this.Controls.Add(this.btnEditCat);
+            this.Controls.Add(this.lblEntries);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnAddEntry);
             this.Controls.Add(this.lblTimeSpentValue);
@@ -205,6 +238,7 @@ namespace TimeTracker
             this.ForeColor = System.Drawing.Color.SteelBlue;
             this.Name = "frmMain";
             this.Text = "Time Tracker";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -227,5 +261,8 @@ namespace TimeTracker
         private System.Windows.Forms.Label lblProjectValue;
         private System.Windows.Forms.Button btnAddEntry;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Label lblEntries;
+        private System.Windows.Forms.Button btnEditCat;
+        private System.Windows.Forms.Button btnEditProjects;
     }
 }

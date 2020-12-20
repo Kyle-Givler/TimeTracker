@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -23,30 +23,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
+using TimeTrackerLibrary.DataAccess;
+using TimeTrackerLibrary.Models;
 
-namespace TimeTracker
+namespace TimeTrackerLibrary.Data
 {
-    static class Program
+    public class CategoryData : ICategoryData
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        public readonly IDataAccess dataAccess;
+
+        public CategoryData(IDataAccess dataAccess)
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            this.dataAccess = dataAccess;
+        }
 
-            GlobalConfig.Initialize(DatabaseType.MSSQL);
+        public async Task<int> AddCategory(CategoryModel category)
+        {
+            DynamicParameters p = new DynamicParameters();
 
-            Application.Run(new frmMain());
+            p.Add("Name", category.Name);
+            p.Add("Id", 0, DbType.Int32, direction: ParameterDirection.Output);
+
+            await dataAccess.SaveData("dbo.spCategory_Insert", p);
+
+            return p.Get<int>("Id");
+        }
+
+        public async Task<List<CategoryModel>> LoadAllCategories()
+        {
+            var categories = await dataAccess.LoadData<CategoryModel, dynamic>("dbo.spCategory_GetAll", new { });
+
+            return categories;
         }
     }
 }

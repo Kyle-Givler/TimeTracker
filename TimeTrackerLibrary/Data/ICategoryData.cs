@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -23,30 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
+using TimeTrackerLibrary.Models;
 
-namespace TimeTracker
+namespace TimeTrackerLibrary.Data
 {
-    static class Program
+    public interface ICategoryData
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            GlobalConfig.Initialize(DatabaseType.MSSQL);
-
-            Application.Run(new frmMain());
-        }
+        Task<int> AddCategory(CategoryModel category);
+        Task<List<CategoryModel>> LoadAllCategories();
     }
 }

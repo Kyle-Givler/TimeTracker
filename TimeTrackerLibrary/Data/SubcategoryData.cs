@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -25,28 +25,11 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
+using System.Text;
 
-namespace TimeTracker
+namespace TimeTrackerLibrary.Data
 {
-    static class Program
+    public class SubcategoryData
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            GlobalConfig.Initialize(DatabaseType.MSSQL);
-
-            Application.Run(new frmMain());
-        }
     }
 }
