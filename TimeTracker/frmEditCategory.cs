@@ -66,5 +66,16 @@ namespace TimeTrackerUI
             var cats = await categoryData.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
+
+        private void btnAddCat_Click(object sender, EventArgs e)
+        {
+            CategoryModel cat = new CategoryModel();
+            cat.Name = textBoxCategory.Text;
+
+            categoryData.AddCategory(cat);
+
+            textBoxCategory.Text = string.Empty;
+            LoadCategories();
+        }
     }
 }

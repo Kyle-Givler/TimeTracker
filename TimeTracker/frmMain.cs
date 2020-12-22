@@ -6,7 +6,7 @@ using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.Models;
 
-namespace TimeTracker
+namespace TimeTrackerUI
 {
     public partial class frmMain : Form
     {
@@ -30,6 +30,17 @@ namespace TimeTracker
             var allEntries = await entryData.LoadAllEntries();
 
             allEntries.ForEach(x => entries.Add(x));
+        }
+
+        private void btnAddEntry_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditCat_Click(object sender, EventArgs e)
+        {
+            frmEditCategory frm = new frmEditCategory();
+            frm.ShowDialog(this);
         }
     }
 }

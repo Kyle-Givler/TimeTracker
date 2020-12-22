@@ -39,6 +39,8 @@ namespace TimeTrackerUI
             this.lblAddSubcategory = new System.Windows.Forms.Label();
             this.btnAddCat = new System.Windows.Forms.Button();
             this.buttonAddSubCat = new System.Windows.Forms.Button();
+            this.btnDeleteCat = new System.Windows.Forms.Button();
+            this.btnDeleteSubCat = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxCategory
@@ -95,7 +97,7 @@ namespace TimeTrackerUI
             // 
             // textBoxSubcategory
             // 
-            this.textBoxSubcategory.Location = new System.Drawing.Point(427, 229);
+            this.textBoxSubcategory.Location = new System.Drawing.Point(427, 186);
             this.textBoxSubcategory.Name = "textBoxSubcategory";
             this.textBoxSubcategory.Size = new System.Drawing.Size(293, 29);
             this.textBoxSubcategory.TabIndex = 1;
@@ -103,11 +105,11 @@ namespace TimeTrackerUI
             // lblAddSubcategory
             // 
             this.lblAddSubcategory.AutoSize = true;
-            this.lblAddSubcategory.Location = new System.Drawing.Point(427, 205);
+            this.lblAddSubcategory.Location = new System.Drawing.Point(427, 162);
             this.lblAddSubcategory.Name = "lblAddSubcategory";
-            this.lblAddSubcategory.Size = new System.Drawing.Size(293, 21);
+            this.lblAddSubcategory.Size = new System.Drawing.Size(301, 21);
             this.lblAddSubcategory.TabIndex = 6;
-            this.lblAddSubcategory.Text = "Add Subategory to selected Category:";
+            this.lblAddSubcategory.Text = "Add Subcategory to selected Category:";
             // 
             // btnAddCat
             // 
@@ -117,15 +119,36 @@ namespace TimeTrackerUI
             this.btnAddCat.TabIndex = 10;
             this.btnAddCat.Text = "Add Category";
             this.btnAddCat.UseVisualStyleBackColor = true;
+            this.btnAddCat.Click += new System.EventHandler(this.btnAddCat_Click);
             // 
             // buttonAddSubCat
             // 
-            this.buttonAddSubCat.Location = new System.Drawing.Point(427, 264);
+            this.buttonAddSubCat.Location = new System.Drawing.Point(427, 221);
             this.buttonAddSubCat.Name = "buttonAddSubCat";
             this.buttonAddSubCat.Size = new System.Drawing.Size(164, 37);
             this.buttonAddSubCat.TabIndex = 11;
             this.buttonAddSubCat.Text = "Add Subcategory";
             this.buttonAddSubCat.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteCat
+            // 
+            this.btnDeleteCat.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnDeleteCat.Location = new System.Drawing.Point(386, 287);
+            this.btnDeleteCat.Name = "btnDeleteCat";
+            this.btnDeleteCat.Size = new System.Drawing.Size(164, 44);
+            this.btnDeleteCat.TabIndex = 12;
+            this.btnDeleteCat.Text = "Delete Selected Category";
+            this.btnDeleteCat.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteSubCat
+            // 
+            this.btnDeleteSubCat.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnDeleteSubCat.Location = new System.Drawing.Point(564, 287);
+            this.btnDeleteSubCat.Name = "btnDeleteSubCat";
+            this.btnDeleteSubCat.Size = new System.Drawing.Size(164, 44);
+            this.btnDeleteSubCat.TabIndex = 13;
+            this.btnDeleteSubCat.Text = "Delete Selected Subcategory";
+            this.btnDeleteSubCat.UseVisualStyleBackColor = true;
             // 
             // frmEditCategory
             // 
@@ -133,6 +156,8 @@ namespace TimeTrackerUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(756, 350);
+            this.Controls.Add(this.btnDeleteSubCat);
+            this.Controls.Add(this.btnDeleteCat);
             this.Controls.Add(this.buttonAddSubCat);
             this.Controls.Add(this.btnAddCat);
             this.Controls.Add(this.textBoxSubcategory);
@@ -165,5 +190,7 @@ namespace TimeTrackerUI
         private System.Windows.Forms.Label lblAddSubcategory;
         private System.Windows.Forms.Button btnAddCat;
         private System.Windows.Forms.Button buttonAddSubCat;
+        private System.Windows.Forms.Button btnDeleteCat;
+        private System.Windows.Forms.Button btnDeleteSubCat;
     }
 }

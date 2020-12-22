@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 
-namespace TimeTracker
+namespace TimeTrackerUI
 {
     static class Program
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace TimeTracker
+namespace TimeTrackerUI
 {
     partial class frmMain
     {
@@ -173,6 +173,7 @@ namespace TimeTracker
             this.btnAddEntry.TabIndex = 8;
             this.btnAddEntry.Text = "New Entry";
             this.btnAddEntry.UseVisualStyleBackColor = true;
+            this.btnAddEntry.Click += new System.EventHandler(this.btnAddEntry_Click);
             // 
             // btnDelete
             // 
@@ -200,6 +201,7 @@ namespace TimeTracker
             this.btnEditCat.TabIndex = 11;
             this.btnEditCat.Text = "Edit Categories";
             this.btnEditCat.UseVisualStyleBackColor = true;
+            this.btnEditCat.Click += new System.EventHandler(this.btnEditCat_Click);
             // 
             // btnEditProjects
             // 
