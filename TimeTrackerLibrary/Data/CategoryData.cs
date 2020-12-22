@@ -55,11 +55,14 @@ namespace TimeTrackerLibrary.Data
             return p.Get<int>("Id");
         }
 
-        public async Task<List<CategoryModel>> LoadAllCategories()
+        public Task<List<CategoryModel>> LoadAllCategories()
         {
-            var categories = await dataAccess.LoadData<CategoryModel, dynamic>("dbo.spCategory_GetAll", new { });
+            return dataAccess.LoadData<CategoryModel, dynamic>("dbo.spCategory_GetAll", new { });
+        }
 
-            return categories;
+        public Task RemoveCategory(CategoryModel category)
+        {
+            return dataAccess.SaveData("dbo.spCategory_Delete", new { Id = category.Id });
         }
     }
 }

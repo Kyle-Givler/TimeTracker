@@ -129,6 +129,7 @@ namespace TimeTrackerUI
             this.buttonAddSubCat.TabIndex = 11;
             this.buttonAddSubCat.Text = "Add Subcategory";
             this.buttonAddSubCat.UseVisualStyleBackColor = true;
+            this.buttonAddSubCat.Click += new System.EventHandler(this.buttonAddSubCat_Click);
             // 
             // btnDeleteCat
             // 
@@ -139,6 +140,7 @@ namespace TimeTrackerUI
             this.btnDeleteCat.TabIndex = 12;
             this.btnDeleteCat.Text = "Delete Selected Category";
             this.btnDeleteCat.UseVisualStyleBackColor = true;
+            this.btnDeleteCat.Click += new System.EventHandler(this.btnDeleteCat_Click);
             // 
             // btnDeleteSubCat
             // 

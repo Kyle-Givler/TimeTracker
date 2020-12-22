@@ -77,5 +77,24 @@ namespace TimeTrackerUI
             textBoxCategory.Text = string.Empty;
             LoadCategories();
         }
+
+        private void buttonAddSubCat_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void btnDeleteCat_Click(object sender, EventArgs e)
+        {
+            CategoryModel selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
+
+            if(selectedCat == null)
+            {
+                return;
+            }
+
+            await categoryData.RemoveCategory(selectedCat);
+
+            LoadCategories();
+        }
     }
 }

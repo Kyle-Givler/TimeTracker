@@ -33,5 +33,6 @@ namespace TimeTrackerLibrary.Data
     {
         Task<int> AddCategory(CategoryModel category);
         Task<List<CategoryModel>> LoadAllCategories();
+        Task RemoveCategory(CategoryModel category);
     }
 }
