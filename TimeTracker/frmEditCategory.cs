@@ -53,7 +53,7 @@ namespace TimeTrackerUI
             SetupData();
         }
 
-        public async void SetupData()
+        private async Task SetupData()
         {
             listBoxCategory.DataSource = categories;
             listBoxCategory.DisplayMember = nameof(CategoryModel.Name);
