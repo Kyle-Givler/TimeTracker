@@ -43,6 +43,11 @@ namespace TimeTrackerLibrary.Data
             this.dataAccess = dataAccess;
         }
 
+        /// <summary>
+        /// Add a category
+        /// </summary>
+        /// <param name="category">The CategoryModel to add to the database</param>
+        /// <returns>Number of rows affected</returns>
         public async Task<int> AddCategory(CategoryModel category)
         {
             DynamicParameters p = new DynamicParameters();
@@ -55,11 +60,19 @@ namespace TimeTrackerLibrary.Data
             return p.Get<int>("Id");
         }
 
+        /// <summary>
+        /// Load all Categories from the database
+        /// </summary>
+        /// <returns>A list of all CategoryModels in the database</returns>
         public Task<List<CategoryModel>> LoadAllCategories()
         {
             return dataAccess.LoadData<CategoryModel, dynamic>("dbo.spCategory_GetAll", new { });
         }
 
+        /// <summary>
+        /// Remove category from the database
+        /// </summary>
+        /// <param name="category">The Category to remove</param>
         public Task RemoveCategory(CategoryModel category)
         {
             return dataAccess.SaveData("dbo.spCategory_Delete", new { Id = category.Id });

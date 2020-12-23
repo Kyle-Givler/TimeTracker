@@ -42,6 +42,11 @@ namespace TimeTrackerLibrary.Data
             this.dataAccess = dataAccess;
         }
 
+        /// <summary>
+        /// Add a subcategory to the database
+        /// </summary>
+        /// <param name="subcategory">The subcategory to add</param>
+        /// <returns>The number of rows affected</returns>
         public async Task<int> AddSubcategory(SubcategoryModel subcategory)
         {
             DynamicParameters p = new DynamicParameters();
@@ -55,11 +60,20 @@ namespace TimeTrackerLibrary.Data
             return p.Get<int>("Id");
         }
 
+        /// <summary>
+        /// Load subcategories associated with a category
+        /// </summary>
+        /// <param name="category">The category for which to load subcategories</param>
+        /// <returns>A list of SubcategoryModels associates with a category</returns>
         public Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category)
         {
             return dataAccess.LoadData<SubcategoryModel, dynamic>("dbo.spSubcategory_GetByCategoryId", new { CategoryId = category.Id });
         }
 
+        /// <summary>
+        /// Remove a subcategory
+        /// </summary>
+        /// <param name="subcategory">The subcategory to remove</param>
         public Task RemoveSubcategory(SubcategoryModel subcategory)
         {
             return dataAccess.SaveData("dbo.spSubcategory_Delete", new { Id = subcategory.Id });

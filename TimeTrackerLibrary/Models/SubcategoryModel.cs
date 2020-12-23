@@ -34,8 +34,20 @@ namespace TimeTrackerLibrary.Models
     public class SubcategoryModel
     {
         public int Id { get; set; }
+
+        /// <summary>
+        /// Subcategory Name
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Parent
+        /// </summary>
         public CategoryModel Category { get; set; }
+
+        /// <summary>
+        /// Parent Id
+        /// </summary>
         public int CategoryId { get; set; }
     }
 }

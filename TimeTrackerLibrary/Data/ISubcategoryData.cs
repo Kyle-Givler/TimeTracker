@@ -31,8 +31,24 @@ namespace TimeTrackerLibrary.Data
 {
     public interface ISubcategoryData
     {
+        /// <summary>
+        /// Add a subcategory to the database
+        /// </summary>
+        /// <param name="subcategory">The subcategory to add</param>
+        /// <returns>The number of rows affected</returns>
         Task<int> AddSubcategory(SubcategoryModel subcategory);
+
+        /// <summary>
+        /// Load subcategories associated with a category
+        /// </summary>
+        /// <param name="category">The category for which to load subcategories</param>
+        /// <returns>A list of SubcategoryModels associates with a category</returns>
         Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category);
+
+        /// <summary>
+        /// Remove a subcategory
+        /// </summary>
+        /// <param name="subcategory">The subcategory to remove</param>
         Task RemoveSubcategory(SubcategoryModel subcategory);
     }
 }

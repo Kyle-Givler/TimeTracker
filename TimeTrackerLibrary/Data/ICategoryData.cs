@@ -31,8 +31,23 @@ namespace TimeTrackerLibrary.Data
 {
     public interface ICategoryData
     {
+        /// <summary>
+        /// Add a category
+        /// </summary>
+        /// <param name="category">The CategoryModel to add to the database</param>
+        /// <returns>Number of rows affected</returns>
         Task<int> AddCategory(CategoryModel category);
+
+        /// <summary>
+        /// Load all Categories from the database
+        /// </summary>
+        /// <returns>A list of all CategoryModels in the database</returns>
         Task<List<CategoryModel>> LoadAllCategories();
+
+        /// <summary>
+        /// Remove category from the database
+        /// </summary>
+        /// <param name="category">The Category to remove</param>
         Task RemoveCategory(CategoryModel category);
     }
 }

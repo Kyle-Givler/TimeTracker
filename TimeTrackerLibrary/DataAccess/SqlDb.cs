@@ -34,6 +34,13 @@ namespace TimeTrackerLibrary.DataAccess
 {
     public class SqlDb : IDataAccess
     {
+        /// <summary>
+        /// Load data from the database
+        /// </summary>
+        /// <typeparam name="T">Type of the data to retreive</typeparam>
+        /// <param name="storedProcedure">The store procedure to execute</param>
+        /// <param name="parameters">Paramaters for the stored procedure</param>
+        /// <returns>A list of type T</returns>
         public async Task<List<T>> LoadData<T, U>(string storedProcedure, U parameters)
         {
             using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))
@@ -44,6 +51,12 @@ namespace TimeTrackerLibrary.DataAccess
             }
         }
 
+        /// <summary>
+        /// Save data to the database
+        /// </summary>
+        /// <param name="storedProcedure">The stored procedure to execute</param>
+        /// <param name="parameters">The paremeters for the store procedure</param>
+        /// <returns>The number of rows affected</returns>
         public async Task<int> SaveData<T>(string storedProcedure, T parameters)
         {
             using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))

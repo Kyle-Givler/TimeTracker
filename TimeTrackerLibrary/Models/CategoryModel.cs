@@ -32,6 +32,10 @@ namespace TimeTrackerLibrary.Models
     public class CategoryModel
     {
         public int Id { get; set; }
+
+        /// <summary>
+        /// Category Name
+        /// </summary>
         public string Name { get; set; }
     }
 }
