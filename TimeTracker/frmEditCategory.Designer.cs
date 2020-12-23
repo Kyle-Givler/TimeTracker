@@ -86,7 +86,7 @@ namespace TimeTrackerUI
             // lblNewCategory
             // 
             this.lblNewCategory.AutoSize = true;
-            this.lblNewCategory.Location = new System.Drawing.Point(507, 65);
+            this.lblNewCategory.Location = new System.Drawing.Point(506, 41);
             this.lblNewCategory.Name = "lblNewCategory";
             this.lblNewCategory.Size = new System.Drawing.Size(117, 21);
             this.lblNewCategory.TabIndex = 4;
@@ -94,14 +94,14 @@ namespace TimeTrackerUI
             // 
             // textBoxCategory
             // 
-            this.textBoxCategory.Location = new System.Drawing.Point(507, 89);
+            this.textBoxCategory.Location = new System.Drawing.Point(506, 65);
             this.textBoxCategory.Name = "textBoxCategory";
             this.textBoxCategory.Size = new System.Drawing.Size(293, 29);
             this.textBoxCategory.TabIndex = 0;
             // 
             // textBoxSubcategory
             // 
-            this.textBoxSubcategory.Location = new System.Drawing.Point(507, 197);
+            this.textBoxSubcategory.Location = new System.Drawing.Point(506, 173);
             this.textBoxSubcategory.Name = "textBoxSubcategory";
             this.textBoxSubcategory.Size = new System.Drawing.Size(293, 29);
             this.textBoxSubcategory.TabIndex = 1;
@@ -109,7 +109,7 @@ namespace TimeTrackerUI
             // lblAddSubcategory
             // 
             this.lblAddSubcategory.AutoSize = true;
-            this.lblAddSubcategory.Location = new System.Drawing.Point(507, 173);
+            this.lblAddSubcategory.Location = new System.Drawing.Point(506, 149);
             this.lblAddSubcategory.Name = "lblAddSubcategory";
             this.lblAddSubcategory.Size = new System.Drawing.Size(301, 21);
             this.lblAddSubcategory.TabIndex = 6;
@@ -117,7 +117,7 @@ namespace TimeTrackerUI
             // 
             // btnAddCat
             // 
-            this.btnAddCat.Location = new System.Drawing.Point(507, 124);
+            this.btnAddCat.Location = new System.Drawing.Point(506, 100);
             this.btnAddCat.Name = "btnAddCat";
             this.btnAddCat.Size = new System.Drawing.Size(164, 37);
             this.btnAddCat.TabIndex = 10;
@@ -127,7 +127,7 @@ namespace TimeTrackerUI
             // 
             // buttonAddSubCat
             // 
-            this.buttonAddSubCat.Location = new System.Drawing.Point(507, 232);
+            this.buttonAddSubCat.Location = new System.Drawing.Point(506, 208);
             this.buttonAddSubCat.Name = "buttonAddSubCat";
             this.buttonAddSubCat.Size = new System.Drawing.Size(164, 37);
             this.buttonAddSubCat.TabIndex = 11;
