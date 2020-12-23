@@ -94,7 +94,15 @@ namespace TimeTrackerUI
         {
             CategoryModel cat = new CategoryModel();
 
-            cat.Name = textBoxCategory.Text;
+            if (textBoxCategory.Text != string.Empty)
+            {
+                cat.Name = textBoxCategory.Text;
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid category.");
+                return;
+            }
 
             await categoryData.AddCategory(cat);
 
@@ -108,6 +116,13 @@ namespace TimeTrackerUI
 
             if (selectedCat == null)
             {
+                MessageBox.Show("No category is selected!");
+                return;
+            }
+
+            if (textBoxSubcategory.Text == string.Empty)
+            { 
+                MessageBox.Show("Please enter a valid subcategory.");
                 return;
             }
 
@@ -125,10 +140,14 @@ namespace TimeTrackerUI
 
         private async void btnDeleteCat_Click(object sender, EventArgs e)
         {
+            // TODO - Don't allow a category to be deleted if it has subcategories
+            // Currently throws an exception if you try to
+
             CategoryModel selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
 
             if(selectedCat == null)
             {
+                MessageBox.Show("No category is selected!");
                 return;
             }
 
@@ -142,9 +161,19 @@ namespace TimeTrackerUI
             LoadSubcategories();
         }
 
-        private void btnDeleteSubCat_Click(object sender, EventArgs e)
+        private async void btnDeleteSubCat_Click(object sender, EventArgs e)
         {
+            var selectedSubCat = (SubcategoryModel) listBoxSubcategory.SelectedItem;
 
+            if(selectedSubCat == null)
+            {
+                MessageBox.Show("No subcategory is selected!");
+                return;
+            }
+
+            await subcategoryData.RemoveSubcategory(selectedSubCat);
+
+            LoadSubcategories();
         }
     }
 }
