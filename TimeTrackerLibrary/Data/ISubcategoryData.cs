@@ -23,19 +23,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using TimeTrackerLibrary.Models;
 
-namespace TimeTrackerLibrary.Models
+namespace TimeTrackerLibrary.Data
 {
-    public class SubcategoryModel
+    public interface ISubcategoryData
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public CategoryModel Category { get; set; }
-        public int CategoryId { get; set; }
+        Task<int> AddSubcategory(SubcategoryModel subcategory);
+        Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category);
+        Task RemoveSubcategory(SubcategoryModel subcategory);
     }
 }

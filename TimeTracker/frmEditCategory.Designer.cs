@@ -51,6 +51,7 @@ namespace TimeTrackerUI
             this.listBoxCategory.Name = "listBoxCategory";
             this.listBoxCategory.Size = new System.Drawing.Size(181, 277);
             this.listBoxCategory.TabIndex = 0;
+            this.listBoxCategory.SelectedIndexChanged += new System.EventHandler(this.listBoxCategory_SelectedIndexChanged);
             // 
             // listBoxSubcategory
             // 
@@ -151,6 +152,7 @@ namespace TimeTrackerUI
             this.btnDeleteSubCat.TabIndex = 13;
             this.btnDeleteSubCat.Text = "Delete Selected Subcategory";
             this.btnDeleteSubCat.UseVisualStyleBackColor = true;
+            this.btnDeleteSubCat.Click += new System.EventHandler(this.btnDeleteSubCat_Click);
             // 
             // frmEditCategory
             // 

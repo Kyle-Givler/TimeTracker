@@ -33,7 +33,7 @@ using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Data
 {
-    public class SubcategoryData
+    public class SubcategoryData : ISubcategoryData
     {
         private readonly IDataAccess dataAccess;
 
@@ -53,6 +53,11 @@ namespace TimeTrackerLibrary.Data
             await dataAccess.SaveData("dbo.spSubcategory_Insert", p);
 
             return p.Get<int>("Id");
+        }
+
+        public Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category)
+        {
+            return dataAccess.LoadData<SubcategoryModel, dynamic>("dbo.spSubcategory_GetByCategoryId", new { CategoryId = category.Id });
         }
 
         public Task RemoveSubcategory(SubcategoryModel subcategory)

@@ -26,6 +26,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
@@ -40,6 +41,7 @@ namespace TimeTrackerUI
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
         private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
+        private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
 
         public frmEditCategory()
         {
@@ -54,9 +56,13 @@ namespace TimeTrackerUI
         public async void SetupData()
         {
             listBoxCategory.DataSource = categories;
-            listBoxCategory.DisplayMember = "Name";
+            listBoxCategory.DisplayMember = nameof(CategoryModel.Name);
+
+            listBoxSubcategory.DataSource = subcategories;
+            listBoxSubcategory.DisplayMember = nameof(SubcategoryModel.Name);
 
             await LoadCategories();
+            await LoadSubcategories();
         }
 
         private async Task LoadCategories()
@@ -64,23 +70,57 @@ namespace TimeTrackerUI
             categories.Clear();
 
             var cats = await categoryData.LoadAllCategories();
+            cats = cats.OrderBy(x => x.Name).ToList();
             cats.ForEach(x => categories.Add(x));
         }
 
-        private void btnAddCat_Click(object sender, EventArgs e)
+        private async Task LoadSubcategories()
+        {
+            if(listBoxCategory.SelectedItem == null)
+            {
+                return;
+            }
+
+            CategoryModel selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
+
+            subcategories.Clear();
+
+            var subCats = await subcategoryData.LoadSubcategories(selectedCat);
+            subCats.OrderBy(x => x.Name);
+            subCats.ForEach(x => subcategories.Add(x));
+        }
+
+        private async void btnAddCat_Click(object sender, EventArgs e)
         {
             CategoryModel cat = new CategoryModel();
+
             cat.Name = textBoxCategory.Text;
 
-            categoryData.AddCategory(cat);
+            await categoryData.AddCategory(cat);
 
             textBoxCategory.Text = string.Empty;
             LoadCategories();
         }
 
-        private void buttonAddSubCat_Click(object sender, EventArgs e)
+        private async void buttonAddSubCat_Click(object sender, EventArgs e)
         {
+            var selectedCat = (CategoryModel)listBoxCategory.SelectedItem; 
 
+            if (selectedCat == null)
+            {
+                return;
+            }
+
+            SubcategoryModel subCat = new SubcategoryModel();
+
+            subCat.Name = textBoxSubcategory.Text;
+            subCat.Category = selectedCat;
+            subCat.CategoryId = selectedCat.Id;
+
+            await subcategoryData.AddSubcategory(subCat);
+
+            textBoxSubcategory.Text = string.Empty;
+            LoadSubcategories();
         }
 
         private async void btnDeleteCat_Click(object sender, EventArgs e)
@@ -95,6 +135,16 @@ namespace TimeTrackerUI
             await categoryData.RemoveCategory(selectedCat);
 
             LoadCategories();
+        }
+
+        private void listBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSubcategories();
+        }
+
+        private void btnDeleteSubCat_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
