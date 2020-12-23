@@ -211,6 +211,7 @@ namespace TimeTrackerUI
             this.btnEditProjects.TabIndex = 12;
             this.btnEditProjects.Text = "Edit Projects";
             this.btnEditProjects.UseVisualStyleBackColor = true;
+            this.btnEditProjects.Click += new System.EventHandler(this.btnEditProjects_Click);
             // 
             // frmMain
             // 

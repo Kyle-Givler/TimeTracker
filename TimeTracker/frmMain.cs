@@ -42,5 +42,11 @@ namespace TimeTrackerUI
             frmEditCategory frm = new frmEditCategory();
             frm.ShowDialog(this);
         }
+
+        private void btnEditProjects_Click(object sender, EventArgs e)
+        {
+            frmEditProject frm = new frmEditProject();
+            frm.ShowDialog(this);
+        }
     }
 }
