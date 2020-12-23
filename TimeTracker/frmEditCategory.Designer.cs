@@ -41,31 +41,34 @@ namespace TimeTrackerUI
             this.buttonAddSubCat = new System.Windows.Forms.Button();
             this.btnDeleteCat = new System.Windows.Forms.Button();
             this.btnDeleteSubCat = new System.Windows.Forms.Button();
+            this.lblCatManagement = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listBoxCategory
             // 
+            this.listBoxCategory.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.listBoxCategory.FormattingEnabled = true;
-            this.listBoxCategory.ItemHeight = 21;
-            this.listBoxCategory.Location = new System.Drawing.Point(12, 54);
+            this.listBoxCategory.ItemHeight = 17;
+            this.listBoxCategory.Location = new System.Drawing.Point(12, 65);
             this.listBoxCategory.Name = "listBoxCategory";
-            this.listBoxCategory.Size = new System.Drawing.Size(181, 277);
+            this.listBoxCategory.Size = new System.Drawing.Size(217, 276);
             this.listBoxCategory.TabIndex = 0;
             this.listBoxCategory.SelectedIndexChanged += new System.EventHandler(this.listBoxCategory_SelectedIndexChanged);
             // 
             // listBoxSubcategory
             // 
+            this.listBoxSubcategory.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.listBoxSubcategory.FormattingEnabled = true;
-            this.listBoxSubcategory.ItemHeight = 21;
-            this.listBoxSubcategory.Location = new System.Drawing.Point(199, 54);
+            this.listBoxSubcategory.ItemHeight = 17;
+            this.listBoxSubcategory.Location = new System.Drawing.Point(237, 65);
             this.listBoxSubcategory.Name = "listBoxSubcategory";
-            this.listBoxSubcategory.Size = new System.Drawing.Size(181, 277);
+            this.listBoxSubcategory.Size = new System.Drawing.Size(251, 276);
             this.listBoxSubcategory.TabIndex = 1;
             // 
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
-            this.lblCategory.Location = new System.Drawing.Point(12, 30);
+            this.lblCategory.Location = new System.Drawing.Point(12, 41);
             this.lblCategory.Name = "lblCategory";
             this.lblCategory.Size = new System.Drawing.Size(82, 21);
             this.lblCategory.TabIndex = 2;
@@ -74,7 +77,7 @@ namespace TimeTrackerUI
             // lblSubCategory
             // 
             this.lblSubCategory.AutoSize = true;
-            this.lblSubCategory.Location = new System.Drawing.Point(199, 30);
+            this.lblSubCategory.Location = new System.Drawing.Point(237, 41);
             this.lblSubCategory.Name = "lblSubCategory";
             this.lblSubCategory.Size = new System.Drawing.Size(108, 21);
             this.lblSubCategory.TabIndex = 3;
@@ -83,7 +86,7 @@ namespace TimeTrackerUI
             // lblNewCategory
             // 
             this.lblNewCategory.AutoSize = true;
-            this.lblNewCategory.Location = new System.Drawing.Point(427, 54);
+            this.lblNewCategory.Location = new System.Drawing.Point(507, 65);
             this.lblNewCategory.Name = "lblNewCategory";
             this.lblNewCategory.Size = new System.Drawing.Size(117, 21);
             this.lblNewCategory.TabIndex = 4;
@@ -91,14 +94,14 @@ namespace TimeTrackerUI
             // 
             // textBoxCategory
             // 
-            this.textBoxCategory.Location = new System.Drawing.Point(427, 78);
+            this.textBoxCategory.Location = new System.Drawing.Point(507, 89);
             this.textBoxCategory.Name = "textBoxCategory";
             this.textBoxCategory.Size = new System.Drawing.Size(293, 29);
             this.textBoxCategory.TabIndex = 0;
             // 
             // textBoxSubcategory
             // 
-            this.textBoxSubcategory.Location = new System.Drawing.Point(427, 186);
+            this.textBoxSubcategory.Location = new System.Drawing.Point(507, 197);
             this.textBoxSubcategory.Name = "textBoxSubcategory";
             this.textBoxSubcategory.Size = new System.Drawing.Size(293, 29);
             this.textBoxSubcategory.TabIndex = 1;
@@ -106,7 +109,7 @@ namespace TimeTrackerUI
             // lblAddSubcategory
             // 
             this.lblAddSubcategory.AutoSize = true;
-            this.lblAddSubcategory.Location = new System.Drawing.Point(427, 162);
+            this.lblAddSubcategory.Location = new System.Drawing.Point(507, 173);
             this.lblAddSubcategory.Name = "lblAddSubcategory";
             this.lblAddSubcategory.Size = new System.Drawing.Size(301, 21);
             this.lblAddSubcategory.TabIndex = 6;
@@ -114,7 +117,7 @@ namespace TimeTrackerUI
             // 
             // btnAddCat
             // 
-            this.btnAddCat.Location = new System.Drawing.Point(427, 113);
+            this.btnAddCat.Location = new System.Drawing.Point(507, 124);
             this.btnAddCat.Name = "btnAddCat";
             this.btnAddCat.Size = new System.Drawing.Size(164, 37);
             this.btnAddCat.TabIndex = 10;
@@ -124,7 +127,7 @@ namespace TimeTrackerUI
             // 
             // buttonAddSubCat
             // 
-            this.buttonAddSubCat.Location = new System.Drawing.Point(427, 221);
+            this.buttonAddSubCat.Location = new System.Drawing.Point(507, 232);
             this.buttonAddSubCat.Name = "buttonAddSubCat";
             this.buttonAddSubCat.Size = new System.Drawing.Size(164, 37);
             this.buttonAddSubCat.TabIndex = 11;
@@ -135,9 +138,9 @@ namespace TimeTrackerUI
             // btnDeleteCat
             // 
             this.btnDeleteCat.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnDeleteCat.Location = new System.Drawing.Point(386, 287);
+            this.btnDeleteCat.Location = new System.Drawing.Point(30, 348);
             this.btnDeleteCat.Name = "btnDeleteCat";
-            this.btnDeleteCat.Size = new System.Drawing.Size(164, 44);
+            this.btnDeleteCat.Size = new System.Drawing.Size(181, 44);
             this.btnDeleteCat.TabIndex = 12;
             this.btnDeleteCat.Text = "Delete Selected Category";
             this.btnDeleteCat.UseVisualStyleBackColor = true;
@@ -146,20 +149,31 @@ namespace TimeTrackerUI
             // btnDeleteSubCat
             // 
             this.btnDeleteSubCat.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnDeleteSubCat.Location = new System.Drawing.Point(564, 287);
+            this.btnDeleteSubCat.Location = new System.Drawing.Point(272, 347);
             this.btnDeleteSubCat.Name = "btnDeleteSubCat";
-            this.btnDeleteSubCat.Size = new System.Drawing.Size(164, 44);
+            this.btnDeleteSubCat.Size = new System.Drawing.Size(181, 44);
             this.btnDeleteSubCat.TabIndex = 13;
             this.btnDeleteSubCat.Text = "Delete Selected Subcategory";
             this.btnDeleteSubCat.UseVisualStyleBackColor = true;
             this.btnDeleteSubCat.Click += new System.EventHandler(this.btnDeleteSubCat_Click);
+            // 
+            // lblCatManagement
+            // 
+            this.lblCatManagement.AutoSize = true;
+            this.lblCatManagement.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblCatManagement.Location = new System.Drawing.Point(12, 9);
+            this.lblCatManagement.Name = "lblCatManagement";
+            this.lblCatManagement.Size = new System.Drawing.Size(217, 25);
+            this.lblCatManagement.TabIndex = 14;
+            this.lblCatManagement.Text = "Category Management";
             // 
             // frmEditCategory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(756, 350);
+            this.ClientSize = new System.Drawing.Size(828, 405);
+            this.Controls.Add(this.lblCatManagement);
             this.Controls.Add(this.btnDeleteSubCat);
             this.Controls.Add(this.btnDeleteCat);
             this.Controls.Add(this.buttonAddSubCat);
@@ -196,5 +210,6 @@ namespace TimeTrackerUI
         private System.Windows.Forms.Button buttonAddSubCat;
         private System.Windows.Forms.Button btnDeleteCat;
         private System.Windows.Forms.Button btnDeleteSubCat;
+        private System.Windows.Forms.Label lblCatManagement;
     }
 }

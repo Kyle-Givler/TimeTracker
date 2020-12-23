@@ -86,7 +86,7 @@ namespace TimeTrackerUI
             subcategories.Clear();
 
             var subCats = await subcategoryData.LoadSubcategories(selectedCat);
-            subCats.OrderBy(x => x.Name);
+            subCats = subCats.OrderBy(x => x.Name).ToList();
             subCats.ForEach(x => subcategories.Add(x));
         }
 
