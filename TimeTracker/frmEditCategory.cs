@@ -24,7 +24,6 @@ SOFTWARE.
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -140,14 +139,18 @@ namespace TimeTrackerUI
 
         private async void btnDeleteCat_Click(object sender, EventArgs e)
         {
-            // TODO - Don't allow a category to be deleted if it has subcategories
-            // Currently throws an exception if you try to
-
             CategoryModel selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
 
             if(selectedCat == null)
             {
                 MessageBox.Show("No category is selected!");
+                return;
+            }
+
+            int rows = GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};").Result.First();
+            if(rows != 0)
+            {
+                MessageBox.Show($"{selectedCat.Name} cannot be deleted until all of the subcategories have been deleted.");
                 return;
             }
 
