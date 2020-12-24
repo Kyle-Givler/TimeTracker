@@ -47,7 +47,7 @@ namespace TimeTrackerLibrary.Data
         /// Add a category
         /// </summary>
         /// <param name="category">The CategoryModel to add to the database</param>
-        /// <returns>Number of rows affected</returns>
+        /// <returns>The Id of the CategoryModel</returns>
         public async Task<int> AddCategory(CategoryModel category)
         {
             DynamicParameters p = new DynamicParameters();

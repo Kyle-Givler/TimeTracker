@@ -35,7 +35,7 @@ namespace TimeTrackerLibrary.Data
         /// Add a subcategory to the database
         /// </summary>
         /// <param name="subcategory">The subcategory to add</param>
-        /// <returns>The number of rows affected</returns>
+        /// <returns>The id of the subcategory</returns>
         Task<int> AddSubcategory(SubcategoryModel subcategory);
 
         /// <summary>

@@ -31,7 +31,17 @@ namespace TimeTrackerLibrary.Data
 {
     public interface IProjectData
     {
+        /// <summary>
+        /// Save a project to the database
+        /// </summary>
+        /// <param name="project">The project to save</param>
+        /// <returns>The id of the project</returns>
         Task<int> AddProject(ProjectModel project);
+
+        /// <summary>
+        /// Load all projects from the database
+        /// </summary>
+        /// <returns>A list of all the ProjectModels saved to the database</returns>
         Task<List<ProjectModel>> LoadAllProjects();
     }
 }
