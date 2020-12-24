@@ -89,6 +89,7 @@ namespace TimeTrackerUI
             this.btnAddProj.TabIndex = 21;
             this.btnAddProj.Text = "Add Project";
             this.btnAddProj.UseVisualStyleBackColor = true;
+            this.btnAddProj.Click += new System.EventHandler(this.btnAddProj_Click);
             // 
             // textBoxProject
             // 
@@ -114,6 +115,7 @@ namespace TimeTrackerUI
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(293, 25);
             this.comboBoxCategory.TabIndex = 22;
+            this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxCategory_SelectedIndexChanged);
             // 
             // lblCategory
             // 

@@ -23,14 +23,59 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Data;
+using System.Threading.Tasks;
+using TimeTrackerLibrary.DataAccess;
+using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Data
 {
-    public class ProjectData
+    public class ProjectData : IProjectData
     {
+        private readonly IDataAccess dataAccess;
 
+        public ProjectData(IDataAccess dataAccess)
+        {
+            this.dataAccess = dataAccess;
+        }
+
+        public async Task<int> AddProject(ProjectModel project)
+        {
+            DynamicParameters p = new DynamicParameters();
+
+            p.Add("Name", project.Name);
+            p.Add("CategoryId", project.CategoryId);
+            p.Add("SubcategoryId", project.SubcategoryId);
+            p.Add("Id", 0, DbType.Int32, direction: ParameterDirection.Output);
+
+            await dataAccess.SaveData("dbo.spProject_Insert", p);
+
+            return p.Get<int>("Id");
+        }
+
+        public async Task<List<ProjectModel>> LoadAllProjects()
+        {
+            var projects = await dataAccess.LoadData<ProjectModel, dynamic>("dbo.spProject_GetAll", new { });
+
+            await RehydrateObjects(projects);
+
+            return projects;
+        }
+
+        private async Task RehydrateObjects(List<ProjectModel> projects)
+        {
+            foreach (var project in projects)
+            {
+                var category = await dataAccess.LoadData<CategoryModel, dynamic>("spCategory_GetById", new { Id = project.CategoryId });
+                var subcategory = await dataAccess.LoadData<SubcategoryModel, dynamic>("spSubcategory_GetById", new { Id = project.SubcategoryId });
+
+                project.Category = category.First();
+                project.Subcategory = subcategory.First();
+            }
+        }
     }
 }

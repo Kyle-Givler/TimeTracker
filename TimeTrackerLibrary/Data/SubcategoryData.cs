@@ -24,7 +24,7 @@ SOFTWARE.
 */
 
 using Dapper;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -65,9 +65,16 @@ namespace TimeTrackerLibrary.Data
         /// </summary>
         /// <param name="category">The category for which to load subcategories</param>
         /// <returns>A list of SubcategoryModels associates with a category</returns>
-        public Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category)
+        public async Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category)
         {
-            return dataAccess.LoadData<SubcategoryModel, dynamic>("dbo.spSubcategory_GetByCategoryId", new { CategoryId = category.Id });
+            var subcats = await dataAccess.LoadData<SubcategoryModel, dynamic>("dbo.spSubcategory_GetByCategoryId", new { CategoryId = category.Id });
+
+            foreach (var s in subcats)
+            {
+                s.Category = category;
+            }
+
+            return subcats;
         }
 
         /// <summary>
