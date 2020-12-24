@@ -60,6 +60,16 @@ namespace TimeTrackerLibrary.Data
             return p.Get<int>("Id");
         }
 
+        public Task UpdateSubcategory(SubcategoryModel subcategory)
+        {
+            DynamicParameters p = new DynamicParameters();
+
+            p.Add("Name", subcategory.Name);
+            p.Add("Id", subcategory.Id);
+
+            return dataAccess.SaveData("dbo.spSubcategory_Update", p);
+        }
+
         /// <summary>
         /// Load subcategories associated with a category
         /// </summary>

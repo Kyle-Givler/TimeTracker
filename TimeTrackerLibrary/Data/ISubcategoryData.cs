@@ -38,6 +38,8 @@ namespace TimeTrackerLibrary.Data
         /// <returns>The id of the subcategory</returns>
         Task<int> AddSubcategory(SubcategoryModel subcategory);
 
+        Task UpdateSubcategory(SubcategoryModel subcategory);
+
         /// <summary>
         /// Load subcategories associated with a category
         /// </summary>

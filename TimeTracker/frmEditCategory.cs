@@ -42,7 +42,8 @@ namespace TimeTrackerUI
         private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
         private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
 
-        private bool editMode = false;
+        private bool editingCategory = false;
+        private bool editingSubcategory = false;
 
         public frmEditCategory()
         {
@@ -93,7 +94,7 @@ namespace TimeTrackerUI
 
         private async void btnAddCat_Click(object sender, EventArgs e)
         {
-            if (editMode)
+            if (editingCategory)
             {
                 CategoryModel cat = (CategoryModel)listBoxCategory.SelectedItem;
 
@@ -112,7 +113,10 @@ namespace TimeTrackerUI
 
                 await categoryData.UpdateCategory(cat);
 
-                editMode = false;
+                editingCategory = false;
+
+                listBoxCategory.Enabled = true;
+
                 btnAddCat.Text = "Add Category";
                 textBoxCategory.Text = string.Empty;
             }
@@ -140,29 +144,59 @@ namespace TimeTrackerUI
 
         private async void buttonAddSubCat_Click(object sender, EventArgs e)
         {
-            var selectedCat = (CategoryModel)listBoxCategory.SelectedItem; 
-
-            if (selectedCat == null)
+            if (editingSubcategory)
             {
-                MessageBox.Show("No category is selected!");
-                return;
+                SubcategoryModel subcat = (SubcategoryModel)listBoxSubcategory.SelectedItem;
+
+                if (subcat == null)
+                {
+                    return;
+                }
+
+                if (textBoxSubcategory.Text == string.Empty)
+                {
+                    MessageBox.Show("Please enter a valid subcategory name");
+                    return;
+                }
+
+                subcat.Name = textBoxSubcategory.Text;
+
+                await subcategoryData.UpdateSubcategory(subcat);
+
+                editingSubcategory = false;
+
+                listBoxSubcategory.Enabled = true;
+
+                btnAddSubCat.Text = "Add Category";
+                textBoxSubcategory.Text = string.Empty;
+            }
+            else
+            {
+                var selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
+
+                if (selectedCat == null)
+                {
+                    MessageBox.Show("No category is selected!");
+                    return;
+                }
+
+                if (textBoxSubcategory.Text == string.Empty)
+                {
+                    MessageBox.Show("Please enter a valid subcategory.");
+                    return;
+                }
+
+                SubcategoryModel subCat = new SubcategoryModel();
+
+                subCat.Name = textBoxSubcategory.Text;
+                subCat.Category = selectedCat;
+                subCat.CategoryId = selectedCat.Id;
+
+                await subcategoryData.AddSubcategory(subCat);
+
+                textBoxSubcategory.Text = string.Empty;
             }
 
-            if (textBoxSubcategory.Text == string.Empty)
-            { 
-                MessageBox.Show("Please enter a valid subcategory.");
-                return;
-            }
-
-            SubcategoryModel subCat = new SubcategoryModel();
-
-            subCat.Name = textBoxSubcategory.Text;
-            subCat.Category = selectedCat;
-            subCat.CategoryId = selectedCat.Id;
-
-            await subcategoryData.AddSubcategory(subCat);
-
-            textBoxSubcategory.Text = string.Empty;
             LoadSubcategories();
         }
 
@@ -217,10 +251,27 @@ namespace TimeTrackerUI
                 return;
             }
 
-            editMode = true;
+            editingCategory = true;
+            listBoxCategory.Enabled = false;
 
             btnAddCat.Text = "Update Category";
             textBoxCategory.Text = selectedCat.Name;
+        }
+
+        private void listBoxSubcategory_DoubleClick(object sender, EventArgs e)
+        {
+            SubcategoryModel selectedSubcat = (SubcategoryModel)listBoxSubcategory.SelectedItem;
+
+            if (selectedSubcat == null)
+            {
+                return;
+            }
+
+            editingSubcategory = true;
+            listBoxSubcategory.Enabled = false;
+
+            btnAddSubCat.Text = "Update Subcategory";
+            textBoxSubcategory.Text = selectedSubcat.Name;
         }
     }
 }
