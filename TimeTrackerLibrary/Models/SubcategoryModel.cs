@@ -33,6 +33,9 @@ namespace TimeTrackerLibrary.Models
 {
     public class SubcategoryModel
     {
+        /// <summary>
+        /// Id of datebase row
+        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace TimeTrackerLibrary.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Parent
+        /// Parent Category Model
         /// </summary>
         public CategoryModel Category { get; set; }
 

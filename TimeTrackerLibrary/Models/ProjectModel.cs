@@ -32,11 +32,34 @@ namespace TimeTrackerLibrary.Models
 {
     public class ProjectModel
     {
+        /// <summary>
+        /// Id of datebase row
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Name of the Project
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Category associated with the project
+        /// </summary>
         public CategoryModel Category { get; set; }
+
+        /// <summary>
+        /// Id of the Category Associated with the project
+        /// </summary>
         public int CategoryId { get; set; }
+
+        /// <summary>
+        /// Subcategory Associated with the project
+        /// </summary>
         public SubcategoryModel Subcategory { get; set; }
+
+        /// <summary>
+        /// Id of the Subcategory Associated with the project
+        /// </summary>
         public int SubcategoryId { get; set; }
     }
 }
