@@ -64,5 +64,13 @@ namespace TimeTrackerLibrary.DataAccess
                 return await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
+        public async Task<List<T>> QueryRawSQL<T>(string sql)
+        {
+            using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))
+            {
+                return connection.QueryAsync<T>(sql).Result.ToList();
+            }
+        }
     }
 }
