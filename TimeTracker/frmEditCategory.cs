@@ -42,6 +42,8 @@ namespace TimeTrackerUI
         private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
         private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
 
+        private bool editMode = false;
+
         public frmEditCategory()
         {
             InitializeComponent();
@@ -91,21 +93,48 @@ namespace TimeTrackerUI
 
         private async void btnAddCat_Click(object sender, EventArgs e)
         {
-            CategoryModel cat = new CategoryModel();
-
-            if (textBoxCategory.Text != string.Empty)
+            if (editMode)
             {
+                CategoryModel cat = (CategoryModel)listBoxCategory.SelectedItem;
+
+                if(cat == null)
+                {
+                    return;
+                }
+
+                if(textBoxCategory.Text == string.Empty)
+                {
+                    MessageBox.Show("Please enter a valid category name");
+                    return;
+                }
+
                 cat.Name = textBoxCategory.Text;
+
+                await categoryData.UpdateCategory(cat);
+
+                editMode = false;
+                btnAddCat.Text = "Add Category";
+                textBoxCategory.Text = string.Empty;
             }
             else
             {
-                MessageBox.Show("Please enter a valid category.");
-                return;
+                CategoryModel cat = new CategoryModel();
+
+                if (textBoxCategory.Text != string.Empty)
+                {
+                    cat.Name = textBoxCategory.Text;
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid category.");
+                    return;
+                }
+
+                await categoryData.AddCategory(cat);
+
+                textBoxCategory.Text = string.Empty;
             }
 
-            await categoryData.AddCategory(cat);
-
-            textBoxCategory.Text = string.Empty;
             LoadCategories();
         }
 
@@ -177,6 +206,21 @@ namespace TimeTrackerUI
             await subcategoryData.RemoveSubcategory(selectedSubCat);
 
             LoadSubcategories();
+        }
+
+        private void listBoxCategory_DoubleClick(object sender, EventArgs e)
+        {
+            CategoryModel selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
+
+            if (selectedCat == null)
+            {
+                return;
+            }
+
+            editMode = true;
+
+            btnAddCat.Text = "Update Category";
+            textBoxCategory.Text = selectedCat.Name;
         }
     }
 }

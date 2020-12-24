@@ -38,6 +38,8 @@ namespace TimeTrackerLibrary.Data
         /// <returns>The Id of the CategoryModel</returns>
         Task<int> AddCategory(CategoryModel category);
 
+        Task UpdateCategory(CategoryModel category);
+
         /// <summary>
         /// Load all Categories from the database
         /// </summary>

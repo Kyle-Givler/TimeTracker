@@ -76,5 +76,6 @@
     <Build Include="dbo\Stored Procedures\spCategory_GetById.sql" />
     <Build Include="dbo\Stored Procedures\spSubcategory_GetById.sql" />
     <Build Include="dbo\Stored Procedures\spProject_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\spCategory_Update.sql" />
   </ItemGroup>
 </Project>

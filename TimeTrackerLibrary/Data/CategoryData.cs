@@ -60,6 +60,17 @@ namespace TimeTrackerLibrary.Data
             return p.Get<int>("Id");
         }
 
+        public Task UpdateCategory(CategoryModel category)
+        {
+
+            DynamicParameters p = new DynamicParameters();
+
+            p.Add("Name", category.Name);
+            p.Add("Id", category.Id);
+
+            return dataAccess.SaveData("dbo.spCategory_Update", p);
+        }
+
         /// <summary>
         /// Load all Categories from the database
         /// </summary>

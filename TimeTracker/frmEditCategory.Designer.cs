@@ -54,6 +54,7 @@ namespace TimeTrackerUI
             this.listBoxCategory.Size = new System.Drawing.Size(217, 276);
             this.listBoxCategory.TabIndex = 0;
             this.listBoxCategory.SelectedIndexChanged += new System.EventHandler(this.listBoxCategory_SelectedIndexChanged);
+            this.listBoxCategory.DoubleClick += new System.EventHandler(this.listBoxCategory_DoubleClick);
             // 
             // listBoxSubcategory
             // 
