@@ -38,6 +38,8 @@ namespace TimeTrackerLibrary.Data
         /// <returns>The id of the project</returns>
         Task<int> AddProject(ProjectModel project);
 
+        Task RemoveProject(ProjectModel project);
+
         /// <summary>
         /// Load all projects from the database
         /// </summary>

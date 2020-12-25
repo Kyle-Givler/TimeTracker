@@ -117,5 +117,27 @@ namespace TimeTrackerUI
             textBoxProject.Text = string.Empty;
             LoadProjects();
         }
+
+        private async void btnDeleteProj_Click(object sender, EventArgs e)
+        {
+            ProjectModel selectedProj = (ProjectModel)listBoxProject.SelectedItem;
+
+            if (selectedProj == null)
+            {
+                MessageBox.Show("No Project is selected!");
+                return;
+            }
+
+            var res = MessageBox.Show($"Delete project {selectedProj.Name}?", "Delete Project", MessageBoxButtons.YesNo);
+
+            if(res == DialogResult.No)
+            {
+                return;
+            }
+
+            await projectData.RemoveProject(selectedProj);
+
+            LoadProjects();
+        }
     }
 }

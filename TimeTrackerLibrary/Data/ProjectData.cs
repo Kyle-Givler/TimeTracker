@@ -57,6 +57,11 @@ namespace TimeTrackerLibrary.Data
             return p.Get<int>("Id");
         }
 
+        public Task RemoveProject(ProjectModel project)
+        {
+            return dataAccess.SaveData("dbo.spProject_Delete", new { Id = project.Id });
+        }
+
         public async Task<List<ProjectModel>> LoadAllProjects()
         {
             var projects = await dataAccess.LoadData<ProjectModel, dynamic>("dbo.spProject_GetAll", new { });

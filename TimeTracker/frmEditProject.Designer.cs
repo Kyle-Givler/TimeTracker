@@ -61,6 +61,7 @@ namespace TimeTrackerUI
             this.btnDeleteProj.TabIndex = 18;
             this.btnDeleteProj.Text = "Delete Selected Project";
             this.btnDeleteProj.UseVisualStyleBackColor = true;
+            this.btnDeleteProj.Click += new System.EventHandler(this.btnDeleteProj_Click);
             // 
             // lblProject
             // 
