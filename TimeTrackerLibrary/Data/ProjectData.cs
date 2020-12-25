@@ -57,6 +57,18 @@ namespace TimeTrackerLibrary.Data
             return p.Get<int>("Id");
         }
 
+        public Task UpdateProject(ProjectModel project)
+        {
+            DynamicParameters p = new DynamicParameters();
+
+            p.Add("Name", project.Name);
+            p.Add("CategoryId", project.CategoryId);
+            p.Add("SubcategoryId", project.SubcategoryId);
+            p.Add("Id", project.Id);
+
+            return dataAccess.SaveData("dbo.spProject_Update", p);
+        }
+
         public Task RemoveProject(ProjectModel project)
         {
             return dataAccess.SaveData("dbo.spProject_Delete", new { Id = project.Id });

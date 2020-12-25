@@ -62,7 +62,6 @@ namespace TimeTrackerLibrary.Data
 
         public Task UpdateCategory(CategoryModel category)
         {
-
             DynamicParameters p = new DynamicParameters();
 
             p.Add("Name", category.Name);

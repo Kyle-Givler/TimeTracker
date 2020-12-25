@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.Models;
+using System.Linq;
 
 namespace TimeTrackerUI
 {
@@ -22,6 +20,9 @@ namespace TimeTrackerUI
         private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
         private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
         private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
+
+        private bool editingProject = false;
+
         public frmEditProject()
         {
             InitializeComponent();
@@ -44,7 +45,7 @@ namespace TimeTrackerUI
             listBoxProject.DisplayMember = nameof(ProjectModel.Name);
 
             await LoadCategories();
-            await LoadSubcategories();
+            await LoadSubcategories((CategoryModel)comboBoxCategory.SelectedItem);
             await LoadProjects();
         }
 
@@ -66,53 +67,96 @@ namespace TimeTrackerUI
             cats.ForEach(x => categories.Add(x));
         }
 
-        private async Task LoadSubcategories()
+        private async Task LoadSubcategories(CategoryModel category)
         {
-            if (comboBoxCategory.SelectedItem == null)
+            if (category == null)
             {
                 return;
             }
 
-            CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
-
             subcategories.Clear();
 
-            var subCats = await subcategoryData.LoadSubcategories(selectedCat);
+            var subCats = await subcategoryData.LoadSubcategories(category);
             subCats = subCats.OrderBy(x => x.Name).ToList();
             subCats.ForEach(x => subcategories.Add(x));
         }
 
         private void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadSubcategories();
+            //if (!editingProject)
+            //{
+                // Without the if then this will run when we change the selected item
+                // and this results in duplicates in the list
+
+                LoadSubcategories((CategoryModel)comboBoxCategory.SelectedItem);
+            //}
         }
 
-        private void btnAddProj_Click(object sender, EventArgs e)
+        private async void btnAddProj_Click(object sender, EventArgs e)
         {
             var cat = (CategoryModel)comboBoxCategory.SelectedItem;
-            var subcat = (SubcategoryModel) comboBoxSubcategory.SelectedItem;
+            var subcat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
-            if(cat == null || subcat == null)
+            if (editingProject)
             {
-                MessageBox.Show("Please select a valid category and subcategory");
-                return;
-            }
+                ProjectModel proj = (ProjectModel)listBoxProject.SelectedItem;
 
-            if(textBoxProject.Text == string.Empty)
+                if(proj == null)
+                {
+                    return;
+                }    
+
+                if(textBoxProject.Text == string.Empty)
+                {
+                    MessageBox.Show("Please enter a valid project name");
+                    return;
+                }
+
+                if (cat == null || subcat == null)
+                {
+                    MessageBox.Show("Please select a valid category and subcategory");
+                    return;
+                }
+
+                proj.Name = textBoxProject.Text;
+                proj.Category = cat;
+                proj.CategoryId = cat.Id;
+                proj.Subcategory = subcat;
+                proj.SubcategoryId = subcat.Id;
+
+                await projectData.UpdateProject(proj);
+
+                editingProject = false;
+
+                listBoxProject.Enabled = true;
+
+                btnAddProj.Text = "Add Project";
+                textBoxProject.Text = string.Empty;
+            }
+            else
             {
-                MessageBox.Show("Please enter a valid project name");
-                return;
+                if (cat == null || subcat == null)
+                {
+                    MessageBox.Show("Please select a valid category and subcategory");
+                    return;
+                }
+
+                if (textBoxProject.Text == string.Empty)
+                {
+                    MessageBox.Show("Please enter a valid project name");
+                    return;
+                }
+
+                ProjectModel project = new ProjectModel();
+
+                project.Name = textBoxProject.Text;
+                project.Category = cat;
+                project.CategoryId = cat.Id;
+                project.Subcategory = subcat;
+                project.SubcategoryId = subcat.Id;
+
+                projectData.AddProject(project);
             }
-
-            ProjectModel project = new ProjectModel();
-
-            project.Name = textBoxProject.Text;
-            project.Category = cat;
-            project.CategoryId = cat.Id;
-            project.Subcategory = subcat;
-            project.SubcategoryId = subcat.Id;
-
-            projectData.AddProject(project);
 
             textBoxProject.Text = string.Empty;
             LoadProjects();
@@ -138,6 +182,31 @@ namespace TimeTrackerUI
             await projectData.RemoveProject(selectedProj);
 
             LoadProjects();
+        }
+
+        private async void listBoxProject_DoubleClick(object sender, EventArgs e)
+        {
+            ProjectModel selectedProj = (ProjectModel)listBoxProject.SelectedItem;
+
+            if (selectedProj == null)
+            {
+                return;
+            }
+
+            editingProject = true;
+            listBoxProject.Enabled = false;
+
+            btnAddProj.Text = "Update Project";
+
+            textBoxProject.Text = selectedProj.Name;
+
+            var cat = categories.Where(x => x.Id == selectedProj.Category.Id).First();
+            comboBoxCategory.SelectedItem = cat;
+
+            await LoadSubcategories(selectedProj.Category);
+
+            var subCat = subcategories.Where(x => x.Id == selectedProj.Subcategory.Id).First();
+            comboBoxSubcategory.SelectedItem = subCat;
         }
     }
 }

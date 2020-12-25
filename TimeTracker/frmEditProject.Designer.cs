@@ -81,6 +81,7 @@ namespace TimeTrackerUI
             this.listBoxProject.Name = "listBoxProject";
             this.listBoxProject.Size = new System.Drawing.Size(217, 276);
             this.listBoxProject.TabIndex = 16;
+            this.listBoxProject.DoubleClick += new System.EventHandler(this.listBoxProject_DoubleClick);
             // 
             // btnAddProj
             // 

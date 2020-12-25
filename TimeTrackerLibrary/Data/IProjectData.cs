@@ -40,6 +40,8 @@ namespace TimeTrackerLibrary.Data
 
         Task RemoveProject(ProjectModel project);
 
+        Task UpdateProject(ProjectModel project);
+
         /// <summary>
         /// Load all projects from the database
         /// </summary>
