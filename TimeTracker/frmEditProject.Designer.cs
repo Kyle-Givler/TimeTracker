@@ -40,6 +40,16 @@ namespace TimeTrackerUI
             this.lblCategory = new System.Windows.Forms.Label();
             this.lblSubcategory = new System.Windows.Forms.Label();
             this.comboBoxSubcategory = new System.Windows.Forms.ComboBox();
+            this.groupBoxAddProject = new System.Windows.Forms.GroupBox();
+            this.groupBoxSelectedProject = new System.Windows.Forms.GroupBox();
+            this.lblProjectName = new System.Windows.Forms.Label();
+            this.lblProjectSubCategory = new System.Windows.Forms.Label();
+            this.lblProjectCategory = new System.Windows.Forms.Label();
+            this.lblProjectNameValue = new System.Windows.Forms.Label();
+            this.lblSubcategoryValue = new System.Windows.Forms.Label();
+            this.lblCategoryValue = new System.Windows.Forms.Label();
+            this.groupBoxAddProject.SuspendLayout();
+            this.groupBoxSelectedProject.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblProjManagement
@@ -81,11 +91,12 @@ namespace TimeTrackerUI
             this.listBoxProject.Name = "listBoxProject";
             this.listBoxProject.Size = new System.Drawing.Size(217, 276);
             this.listBoxProject.TabIndex = 16;
+            this.listBoxProject.SelectedIndexChanged += new System.EventHandler(this.listBoxProject_SelectedIndexChanged);
             this.listBoxProject.DoubleClick += new System.EventHandler(this.listBoxProject_DoubleClick);
             // 
             // btnAddProj
             // 
-            this.btnAddProj.Location = new System.Drawing.Point(319, 241);
+            this.btnAddProj.Location = new System.Drawing.Point(80, 209);
             this.btnAddProj.Name = "btnAddProj";
             this.btnAddProj.Size = new System.Drawing.Size(164, 37);
             this.btnAddProj.TabIndex = 21;
@@ -95,7 +106,7 @@ namespace TimeTrackerUI
             // 
             // textBoxProject
             // 
-            this.textBoxProject.Location = new System.Drawing.Point(260, 90);
+            this.textBoxProject.Location = new System.Drawing.Point(21, 58);
             this.textBoxProject.Name = "textBoxProject";
             this.textBoxProject.Size = new System.Drawing.Size(293, 29);
             this.textBoxProject.TabIndex = 19;
@@ -103,7 +114,7 @@ namespace TimeTrackerUI
             // lblNewProject
             // 
             this.lblNewProject.AutoSize = true;
-            this.lblNewProject.Location = new System.Drawing.Point(260, 63);
+            this.lblNewProject.Location = new System.Drawing.Point(21, 31);
             this.lblNewProject.Name = "lblNewProject";
             this.lblNewProject.Size = new System.Drawing.Size(101, 21);
             this.lblNewProject.TabIndex = 20;
@@ -113,7 +124,7 @@ namespace TimeTrackerUI
             // 
             this.comboBoxCategory.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxCategory.FormattingEnabled = true;
-            this.comboBoxCategory.Location = new System.Drawing.Point(260, 152);
+            this.comboBoxCategory.Location = new System.Drawing.Point(21, 120);
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(293, 25);
             this.comboBoxCategory.TabIndex = 22;
@@ -122,7 +133,7 @@ namespace TimeTrackerUI
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
-            this.lblCategory.Location = new System.Drawing.Point(260, 125);
+            this.lblCategory.Location = new System.Drawing.Point(21, 93);
             this.lblCategory.Name = "lblCategory";
             this.lblCategory.Size = new System.Drawing.Size(82, 21);
             this.lblCategory.TabIndex = 24;
@@ -131,7 +142,7 @@ namespace TimeTrackerUI
             // lblSubcategory
             // 
             this.lblSubcategory.AutoSize = true;
-            this.lblSubcategory.Location = new System.Drawing.Point(260, 183);
+            this.lblSubcategory.Location = new System.Drawing.Point(21, 151);
             this.lblSubcategory.Name = "lblSubcategory";
             this.lblSubcategory.Size = new System.Drawing.Size(108, 21);
             this.lblSubcategory.TabIndex = 26;
@@ -141,24 +152,104 @@ namespace TimeTrackerUI
             // 
             this.comboBoxSubcategory.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxSubcategory.FormattingEnabled = true;
-            this.comboBoxSubcategory.Location = new System.Drawing.Point(260, 210);
+            this.comboBoxSubcategory.Location = new System.Drawing.Point(21, 178);
             this.comboBoxSubcategory.Name = "comboBoxSubcategory";
             this.comboBoxSubcategory.Size = new System.Drawing.Size(293, 25);
             this.comboBoxSubcategory.TabIndex = 25;
+            // 
+            // groupBoxAddProject
+            // 
+            this.groupBoxAddProject.Controls.Add(this.lblNewProject);
+            this.groupBoxAddProject.Controls.Add(this.lblSubcategory);
+            this.groupBoxAddProject.Controls.Add(this.textBoxProject);
+            this.groupBoxAddProject.Controls.Add(this.comboBoxSubcategory);
+            this.groupBoxAddProject.Controls.Add(this.btnAddProj);
+            this.groupBoxAddProject.Controls.Add(this.lblCategory);
+            this.groupBoxAddProject.Controls.Add(this.comboBoxCategory);
+            this.groupBoxAddProject.Location = new System.Drawing.Point(257, 63);
+            this.groupBoxAddProject.Name = "groupBoxAddProject";
+            this.groupBoxAddProject.Size = new System.Drawing.Size(334, 276);
+            this.groupBoxAddProject.TabIndex = 27;
+            this.groupBoxAddProject.TabStop = false;
+            this.groupBoxAddProject.Text = "New Project";
+            // 
+            // groupBoxSelectedProject
+            // 
+            this.groupBoxSelectedProject.Controls.Add(this.lblProjectNameValue);
+            this.groupBoxSelectedProject.Controls.Add(this.lblSubcategoryValue);
+            this.groupBoxSelectedProject.Controls.Add(this.lblCategoryValue);
+            this.groupBoxSelectedProject.Controls.Add(this.lblProjectName);
+            this.groupBoxSelectedProject.Controls.Add(this.lblProjectSubCategory);
+            this.groupBoxSelectedProject.Controls.Add(this.lblProjectCategory);
+            this.groupBoxSelectedProject.Location = new System.Drawing.Point(612, 63);
+            this.groupBoxSelectedProject.Name = "groupBoxSelectedProject";
+            this.groupBoxSelectedProject.Size = new System.Drawing.Size(339, 276);
+            this.groupBoxSelectedProject.TabIndex = 28;
+            this.groupBoxSelectedProject.TabStop = false;
+            this.groupBoxSelectedProject.Text = "Selected Project";
+            // 
+            // lblProjectName
+            // 
+            this.lblProjectName.AutoSize = true;
+            this.lblProjectName.Location = new System.Drawing.Point(6, 31);
+            this.lblProjectName.Name = "lblProjectName";
+            this.lblProjectName.Size = new System.Drawing.Size(66, 21);
+            this.lblProjectName.TabIndex = 27;
+            this.lblProjectName.Text = "Project:";
+            // 
+            // lblProjectSubCategory
+            // 
+            this.lblProjectSubCategory.AutoSize = true;
+            this.lblProjectSubCategory.Location = new System.Drawing.Point(6, 93);
+            this.lblProjectSubCategory.Name = "lblProjectSubCategory";
+            this.lblProjectSubCategory.Size = new System.Drawing.Size(108, 21);
+            this.lblProjectSubCategory.TabIndex = 29;
+            this.lblProjectSubCategory.Text = "Subcategory:";
+            // 
+            // lblProjectCategory
+            // 
+            this.lblProjectCategory.AutoSize = true;
+            this.lblProjectCategory.Location = new System.Drawing.Point(6, 61);
+            this.lblProjectCategory.Name = "lblProjectCategory";
+            this.lblProjectCategory.Size = new System.Drawing.Size(82, 21);
+            this.lblProjectCategory.TabIndex = 28;
+            this.lblProjectCategory.Text = "Category:";
+            // 
+            // lblProjectNameValue
+            // 
+            this.lblProjectNameValue.AutoSize = true;
+            this.lblProjectNameValue.Location = new System.Drawing.Point(123, 31);
+            this.lblProjectNameValue.Name = "lblProjectNameValue";
+            this.lblProjectNameValue.Size = new System.Drawing.Size(60, 21);
+            this.lblProjectNameValue.TabIndex = 30;
+            this.lblProjectNameValue.Text = "{name}";
+            // 
+            // lblSubcategoryValue
+            // 
+            this.lblSubcategoryValue.AutoSize = true;
+            this.lblSubcategoryValue.Location = new System.Drawing.Point(123, 93);
+            this.lblSubcategoryValue.Name = "lblSubcategoryValue";
+            this.lblSubcategoryValue.Size = new System.Drawing.Size(112, 21);
+            this.lblSubcategoryValue.TabIndex = 32;
+            this.lblSubcategoryValue.Text = "{subcategory}";
+            // 
+            // lblCategoryValue
+            // 
+            this.lblCategoryValue.AutoSize = true;
+            this.lblCategoryValue.Location = new System.Drawing.Point(123, 61);
+            this.lblCategoryValue.Name = "lblCategoryValue";
+            this.lblCategoryValue.Size = new System.Drawing.Size(86, 21);
+            this.lblCategoryValue.TabIndex = 31;
+            this.lblCategoryValue.Text = "{category}";
             // 
             // frmEditProject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(619, 401);
-            this.Controls.Add(this.lblSubcategory);
-            this.Controls.Add(this.comboBoxSubcategory);
-            this.Controls.Add(this.lblCategory);
-            this.Controls.Add(this.comboBoxCategory);
-            this.Controls.Add(this.btnAddProj);
-            this.Controls.Add(this.textBoxProject);
-            this.Controls.Add(this.lblNewProject);
+            this.ClientSize = new System.Drawing.Size(966, 414);
+            this.Controls.Add(this.groupBoxSelectedProject);
+            this.Controls.Add(this.groupBoxAddProject);
             this.Controls.Add(this.btnDeleteProj);
             this.Controls.Add(this.lblProject);
             this.Controls.Add(this.listBoxProject);
@@ -168,6 +259,10 @@ namespace TimeTrackerUI
             this.Name = "frmEditProject";
             this.Text = "Edit Projects";
             this.Load += new System.EventHandler(this.frmEditProject_Load);
+            this.groupBoxAddProject.ResumeLayout(false);
+            this.groupBoxAddProject.PerformLayout();
+            this.groupBoxSelectedProject.ResumeLayout(false);
+            this.groupBoxSelectedProject.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,5 +281,13 @@ namespace TimeTrackerUI
         private System.Windows.Forms.Label lblCategory;
         private System.Windows.Forms.Label lblSubcategory;
         private System.Windows.Forms.ComboBox comboBoxSubcategory;
+        private System.Windows.Forms.GroupBox groupBoxAddProject;
+        private System.Windows.Forms.GroupBox groupBoxSelectedProject;
+        private System.Windows.Forms.Label lblProjectNameValue;
+        private System.Windows.Forms.Label lblSubcategoryValue;
+        private System.Windows.Forms.Label lblCategoryValue;
+        private System.Windows.Forms.Label lblProjectName;
+        private System.Windows.Forms.Label lblProjectSubCategory;
+        private System.Windows.Forms.Label lblProjectCategory;
     }
 }

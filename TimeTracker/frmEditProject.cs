@@ -71,6 +71,7 @@ namespace TimeTrackerUI
             await LoadCategories();
             await LoadSubcategories((CategoryModel)comboBoxCategory.SelectedItem);
             await LoadProjects();
+            UpdateSelectedProjectLabels();
         }
 
         private async Task LoadProjects()
@@ -222,6 +223,25 @@ namespace TimeTrackerUI
                 var subCat = subcategories.Where(x => x.Id == selectedProj.Subcategory.Id).First();
                 comboBoxSubcategory.SelectedItem = subCat;
             }
+        }
+
+        private void listBoxProject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateSelectedProjectLabels();
+        }
+
+        private void UpdateSelectedProjectLabels()
+        {
+            ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
+
+            if (selectedProject == null)
+            {
+                return;
+            }
+
+            lblProjectNameValue.Text = selectedProject.Name;
+            lblCategoryValue.Text = selectedProject.Category.Name;
+            lblSubcategoryValue.Text = selectedProject.Subcategory == null ? "(none)" : selectedProject.Subcategory.Name;
         }
     }
 }
