@@ -34,11 +34,8 @@ namespace TimeTrackerLibrary.Models
         public int Id { get; set; }
         public ProjectModel Project { get; set; }
         public int ProjectId { get; set; }
-        public CategoryModel Category { get; set; }
-        public int CategoryId { get; set; }
-        public SubcategoryModel Subcategory { get; set; }
-        public int SubcategoryId { get; set; }
         public DateTimeOffset Date { get; set; }
         public double HoursSpent { get; set; }
+        public string Notes { get; set; }
     }
 }
