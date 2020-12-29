@@ -34,7 +34,8 @@ namespace TimeTrackerUI
 
         private void btnAddEntry_Click(object sender, EventArgs e)
         {
-
+            frmAddEntry frm = new frmAddEntry();
+            frm.ShowDialog(this);
         }
 
         private void btnEditCat_Click(object sender, EventArgs e)
