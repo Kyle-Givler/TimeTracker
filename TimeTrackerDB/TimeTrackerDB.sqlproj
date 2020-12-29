@@ -78,5 +78,7 @@
     <Build Include="dbo\Stored Procedures\spProject_Insert.sql" />
     <Build Include="dbo\Stored Procedures\spCategory_Update.sql" />
     <Build Include="dbo\Stored Procedures\spProject_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\spProject_Update.sql" />
+    <Build Include="dbo\Stored Procedures\spSubcategory_Update.sql" />
   </ItemGroup>
 </Project>

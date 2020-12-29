@@ -60,6 +60,6 @@ namespace TimeTrackerLibrary.Models
         /// <summary>
         /// Id of the Subcategory Associated with the project
         /// </summary>
-        public int SubcategoryId { get; set; }
+        public int? SubcategoryId { get; set; }
     }
 }

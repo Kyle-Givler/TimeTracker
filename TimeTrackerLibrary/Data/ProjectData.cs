@@ -24,7 +24,7 @@ SOFTWARE.
 */
 
 using Dapper;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
@@ -49,7 +49,7 @@ namespace TimeTrackerLibrary.Data
 
             p.Add("Name", project.Name);
             p.Add("CategoryId", project.CategoryId);
-            p.Add("SubcategoryId", project.SubcategoryId);
+            p.Add("SubcategoryId", project?.SubcategoryId);
             p.Add("Id", 0, DbType.Int32, direction: ParameterDirection.Output);
 
             await dataAccess.SaveData("dbo.spProject_Insert", p);
@@ -91,7 +91,7 @@ namespace TimeTrackerLibrary.Data
                 var subcategory = await dataAccess.LoadData<SubcategoryModel, dynamic>("spSubcategory_GetById", new { Id = project.SubcategoryId });
 
                 project.Category = category.First();
-                project.Subcategory = subcategory.First();
+                project.Subcategory = subcategory.FirstOrDefault();
             }
         }
     }

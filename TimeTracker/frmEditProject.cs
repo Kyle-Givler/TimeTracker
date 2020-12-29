@@ -130,17 +130,11 @@ namespace TimeTrackerUI
                     return;
                 }
 
-                if (cat == null || subcat == null)
-                {
-                    MessageBox.Show("Please select a valid category and subcategory");
-                    return;
-                }
-
                 proj.Name = textBoxProject.Text;
                 proj.Category = cat;
                 proj.CategoryId = cat.Id;
                 proj.Subcategory = subcat;
-                proj.SubcategoryId = subcat.Id;
+                proj.SubcategoryId = subcat?.Id;
 
                 await projectData.UpdateProject(proj);
 
@@ -153,9 +147,9 @@ namespace TimeTrackerUI
             }
             else
             {
-                if (cat == null || subcat == null)
+                if (cat == null)
                 {
-                    MessageBox.Show("Please select a valid category and subcategory");
+                    MessageBox.Show("Please select a valid category");
                     return;
                 }
 
@@ -171,7 +165,7 @@ namespace TimeTrackerUI
                 project.Category = cat;
                 project.CategoryId = cat.Id;
                 project.Subcategory = subcat;
-                project.SubcategoryId = subcat.Id;
+                project.SubcategoryId = subcat?.Id;
 
                 projectData.AddProject(project);
             }
@@ -223,8 +217,11 @@ namespace TimeTrackerUI
 
             await LoadSubcategories(selectedProj.Category);
 
-            var subCat = subcategories.Where(x => x.Id == selectedProj.Subcategory.Id).First();
-            comboBoxSubcategory.SelectedItem = subCat;
+            if (selectedProj.Subcategory != null)
+            {
+                var subCat = subcategories.Where(x => x.Id == selectedProj.Subcategory.Id).First();
+                comboBoxSubcategory.SelectedItem = subCat;
+            }
         }
     }
 }
