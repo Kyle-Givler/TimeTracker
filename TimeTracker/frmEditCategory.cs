@@ -139,7 +139,8 @@ namespace TimeTrackerUI
                 textBoxCategory.Text = string.Empty;
             }
 
-            LoadCategories();
+            await LoadCategories();
+            LoadSubcategories();
         }
 
         private async void buttonAddSubCat_Click(object sender, EventArgs e)
@@ -210,10 +211,17 @@ namespace TimeTrackerUI
                 return;
             }
 
-            int rows = GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};").Result.First();
-            if(rows != 0)
+            var rows = await GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};");
+            
+            if(rows.First() != 0)
             {
                 MessageBox.Show($"{selectedCat.Name} cannot be deleted until all of the subcategories have been deleted.");
+                return;
+            }
+
+            var confrim = MessageBox.Show($"Confirm Deletion of: {selectedCat.Name}?", "Delete Category", MessageBoxButtons.YesNo);
+            if(confrim == DialogResult.No)
+            {
                 return;
             }
 
@@ -234,6 +242,12 @@ namespace TimeTrackerUI
             if(selectedSubCat == null)
             {
                 MessageBox.Show("No subcategory is selected!");
+                return;
+            }
+
+            var confrim = MessageBox.Show($"Confirm Deletion of: {selectedSubCat.Name}?", "Delete Category", MessageBoxButtons.YesNo);
+            if (confrim == DialogResult.No)
+            {
                 return;
             }
 
