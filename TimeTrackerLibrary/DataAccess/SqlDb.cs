@@ -69,7 +69,8 @@ namespace TimeTrackerLibrary.DataAccess
         {
             using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))
             {
-                return connection.QueryAsync<T>(sql).Result.ToList();
+                var res = await connection.QueryAsync<T>(sql);
+                return res.ToList();
             }
         }
     }
