@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Helpers;
 using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerUI
@@ -39,8 +40,8 @@ namespace TimeTrackerUI
         private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
-        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
         private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
+        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
 
         private bool editingCategory = false;
         private bool editingSubcategory = false;
@@ -52,7 +53,7 @@ namespace TimeTrackerUI
 
         private async void frmEditCategory_Load(object sender, EventArgs e)
         {
-            SetupData();
+            await SetupData();
         }
 
         private async Task SetupData()
@@ -71,8 +72,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await categoryData.LoadAllCategories();
-            cats = cats.OrderBy(x => x.Name).ToList();
+            var cats = await CategoryHelper.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -87,8 +87,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await subcategoryData.LoadSubcategories(selectedCat);
-            subCats = subCats.OrderBy(x => x.Name).ToList();
+            var subCats = await SubcategoryHelper.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
         }
 

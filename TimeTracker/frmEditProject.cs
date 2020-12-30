@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Helpers;
 using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerUI
@@ -78,8 +79,7 @@ namespace TimeTrackerUI
         {
             projects.Clear();
 
-            var proj = await projectData.LoadAllProjects();
-            proj.OrderBy(x => x.Name);
+            var proj = await ProjectHelper.LoadAllProjects();
             proj.ForEach(x => projects.Add(x));
         }
 
@@ -87,8 +87,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await categoryData.LoadAllCategories();
-            cats = cats.OrderBy(x => x.Name).ToList();
+            var cats = await CategoryHelper.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -101,8 +100,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await subcategoryData.LoadSubcategories(category);
-            subCats = subCats.OrderBy(x => x.Name).ToList();
+            var subCats = await SubcategoryHelper.LoadSubcategories(category);
             subCats.ForEach(x => subcategories.Add(x));
         }
 
