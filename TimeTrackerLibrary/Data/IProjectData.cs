@@ -47,5 +47,9 @@ namespace TimeTrackerLibrary.Data
         /// </summary>
         /// <returns>A list of all the ProjectModels saved to the database</returns>
         Task<List<ProjectModel>> LoadAllProjects();
+
+        Task<List<ProjectModel>> LoadProjectsByCategory(CategoryModel category);
+
+        Task<List<ProjectModel>> LoadProjectsBySubCategory(SubcategoryModel subcategory);
     }
 }

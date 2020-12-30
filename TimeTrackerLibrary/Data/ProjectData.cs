@@ -83,8 +83,27 @@ namespace TimeTrackerLibrary.Data
             return projects;
         }
 
+        public async Task<List<ProjectModel>> LoadProjectsByCategory(CategoryModel category)
+        {
+            var projects = await dataAccess.LoadData<ProjectModel, dynamic>("dbo.spProject_GetByCatId", new { CategoryId = category.Id});
+
+            await RehydrateObjects(projects);
+
+            return projects;
+        }
+
+        public async Task<List<ProjectModel>> LoadProjectsBySubCategory(SubcategoryModel subcategory)
+        {
+            var projects = await dataAccess.LoadData<ProjectModel, dynamic>("dbo.spProject_GetBySubCatId", new { SubcategoryId = subcategory.Id });
+
+            await RehydrateObjects(projects);
+
+            return projects;
+        }
+
         private async Task RehydrateObjects(List<ProjectModel> projects)
         {
+            //TODO use a join and get rid of this method
             foreach (var project in projects)
             {
                 var category = await dataAccess.LoadData<CategoryModel, dynamic>("spCategory_GetById", new { Id = project.CategoryId });
