@@ -4,7 +4,7 @@ begin
 
 	set nocount on;
 
-	select [Id], [ProjectId], [HoursSpent]
+	select [Id], [ProjectId], [HoursSpent], [Date], [Notes]
 	from dbo.Entry;
 
 end

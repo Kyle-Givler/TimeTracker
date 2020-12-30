@@ -6,6 +6,8 @@ namespace TimeTrackerLibrary.Data
 {
     public interface IEntryData
     {
+        Task CreateEntry(EntryModel entry);
+
         Task<List<EntryModel>> LoadAllEntries();
     }
 }

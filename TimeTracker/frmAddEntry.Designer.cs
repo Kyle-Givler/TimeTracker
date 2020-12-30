@@ -170,6 +170,7 @@ namespace TimeTrackerUI
             this.btnAddEntry.TabIndex = 37;
             this.btnAddEntry.Text = "Add Entry";
             this.btnAddEntry.UseVisualStyleBackColor = true;
+            this.btnAddEntry.Click += new System.EventHandler(this.btnAddEntry_Click);
             // 
             // textBoxHoursSpent
             // 

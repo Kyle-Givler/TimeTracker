@@ -43,6 +43,7 @@ namespace TimeTrackerUI
         private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
         private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
         private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
+        private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
 
         public frmAddEntry()
         {
@@ -148,6 +149,37 @@ namespace TimeTrackerUI
             }
 
             LoadProjects();
+        }
+
+        private void btnAddEntry_Click(object sender, System.EventArgs e)
+        {
+            if(!int.TryParse(textBoxHoursSpent.Text, out int hours))
+            {
+                MessageBox.Show("Please enter a valid number of hours");
+                return;
+            }
+
+            CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
+            SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
+            ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
+
+            if(selectedProject == null)
+            {
+                return;
+            }
+
+            EntryModel entry = new EntryModel();
+
+            entry.Project = selectedProject;
+            entry.ProjectId = selectedProject.Id;
+            entry.Date = dateTimePickerDate.Value;
+            entry.Notes = textBoxNotes.Text;
+            entry.HoursSpent = hours;
+
+            entryData.CreateEntry(entry);
+
+            textBoxHoursSpent.Text = string.Empty;
+            textBoxNotes.Text = string.Empty;
         }
     }
 }
