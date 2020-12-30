@@ -96,6 +96,7 @@ namespace TimeTrackerUI
             this.comboBoxSubcategory.Name = "comboBoxSubcategory";
             this.comboBoxSubcategory.Size = new System.Drawing.Size(293, 25);
             this.comboBoxSubcategory.TabIndex = 29;
+            this.comboBoxSubcategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxSubcategory_SelectedIndexChanged);
             // 
             // lblCategory
             // 

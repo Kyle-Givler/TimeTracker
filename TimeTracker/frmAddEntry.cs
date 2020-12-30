@@ -50,7 +50,7 @@ namespace TimeTrackerUI
             InitializeComponent();
         }
 
-        private async void frmAddEntry_Load(object sender, System.EventArgs e)
+        private void frmAddEntry_Load(object sender, System.EventArgs e)
         {
             SetupData();
         }
@@ -180,6 +180,11 @@ namespace TimeTrackerUI
 
             textBoxHoursSpent.Text = string.Empty;
             textBoxNotes.Text = string.Empty;
+        }
+
+        private void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            LoadProjects();
         }
     }
 }
