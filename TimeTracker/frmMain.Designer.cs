@@ -47,13 +47,23 @@ namespace TimeTrackerUI
             this.lblEntries = new System.Windows.Forms.Label();
             this.btnEditCat = new System.Windows.Forms.Button();
             this.btnEditProjects = new System.Windows.Forms.Button();
+            this.groupBoxSelectProj = new System.Windows.Forms.GroupBox();
+            this.lblCat = new System.Windows.Forms.Label();
+            this.checkBoxAllProjects = new System.Windows.Forms.CheckBox();
+            this.listBoxProject = new System.Windows.Forms.ListBox();
+            this.lblSubCat = new System.Windows.Forms.Label();
+            this.lblProj = new System.Windows.Forms.Label();
+            this.comboBoxSubcategory = new System.Windows.Forms.ComboBox();
+            this.comboBoxCategory = new System.Windows.Forms.ComboBox();
+            this.lblTimeTracker = new System.Windows.Forms.Label();
+            this.groupBoxSelectProj.SuspendLayout();
             this.SuspendLayout();
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 21;
-            this.listBox1.Location = new System.Drawing.Point(50, 54);
+            this.listBox1.Location = new System.Drawing.Point(400, 127);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(246, 382);
             this.listBox1.TabIndex = 0;
@@ -61,7 +71,7 @@ namespace TimeTrackerUI
             // lblProject
             // 
             this.lblProject.AutoSize = true;
-            this.lblProject.Location = new System.Drawing.Point(322, 12);
+            this.lblProject.Location = new System.Drawing.Point(672, 85);
             this.lblProject.Name = "lblProject";
             this.lblProject.Size = new System.Drawing.Size(66, 21);
             this.lblProject.TabIndex = 1;
@@ -70,7 +80,7 @@ namespace TimeTrackerUI
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
-            this.lblCategory.Location = new System.Drawing.Point(322, 43);
+            this.lblCategory.Location = new System.Drawing.Point(672, 116);
             this.lblCategory.Name = "lblCategory";
             this.lblCategory.Size = new System.Drawing.Size(82, 21);
             this.lblCategory.TabIndex = 1;
@@ -79,7 +89,7 @@ namespace TimeTrackerUI
             // lblSubCategory
             // 
             this.lblSubCategory.AutoSize = true;
-            this.lblSubCategory.Location = new System.Drawing.Point(322, 74);
+            this.lblSubCategory.Location = new System.Drawing.Point(672, 147);
             this.lblSubCategory.Name = "lblSubCategory";
             this.lblSubCategory.Size = new System.Drawing.Size(108, 21);
             this.lblSubCategory.TabIndex = 1;
@@ -88,7 +98,7 @@ namespace TimeTrackerUI
             // lblDate
             // 
             this.lblDate.AutoSize = true;
-            this.lblDate.Location = new System.Drawing.Point(322, 106);
+            this.lblDate.Location = new System.Drawing.Point(672, 179);
             this.lblDate.Name = "lblDate";
             this.lblDate.Size = new System.Drawing.Size(90, 21);
             this.lblDate.TabIndex = 1;
@@ -97,7 +107,7 @@ namespace TimeTrackerUI
             // lblTimeSpent
             // 
             this.lblTimeSpent.AutoSize = true;
-            this.lblTimeSpent.Location = new System.Drawing.Point(322, 142);
+            this.lblTimeSpent.Location = new System.Drawing.Point(672, 215);
             this.lblTimeSpent.Name = "lblTimeSpent";
             this.lblTimeSpent.Size = new System.Drawing.Size(97, 21);
             this.lblTimeSpent.TabIndex = 1;
@@ -105,7 +115,7 @@ namespace TimeTrackerUI
             // 
             // textBoxNotes
             // 
-            this.textBoxNotes.Location = new System.Drawing.Point(322, 230);
+            this.textBoxNotes.Location = new System.Drawing.Point(672, 303);
             this.textBoxNotes.Multiline = true;
             this.textBoxNotes.Name = "textBoxNotes";
             this.textBoxNotes.Size = new System.Drawing.Size(245, 206);
@@ -114,7 +124,7 @@ namespace TimeTrackerUI
             // lblNotes
             // 
             this.lblNotes.AutoSize = true;
-            this.lblNotes.Location = new System.Drawing.Point(322, 206);
+            this.lblNotes.Location = new System.Drawing.Point(672, 279);
             this.lblNotes.Name = "lblNotes";
             this.lblNotes.Size = new System.Drawing.Size(58, 21);
             this.lblNotes.TabIndex = 1;
@@ -123,51 +133,56 @@ namespace TimeTrackerUI
             // lblTimeSpentValue
             // 
             this.lblTimeSpentValue.AutoSize = true;
-            this.lblTimeSpentValue.Location = new System.Drawing.Point(432, 142);
+            this.lblTimeSpentValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblTimeSpentValue.Location = new System.Drawing.Point(786, 216);
             this.lblTimeSpentValue.Name = "lblTimeSpentValue";
-            this.lblTimeSpentValue.Size = new System.Drawing.Size(98, 21);
+            this.lblTimeSpentValue.Size = new System.Drawing.Size(89, 20);
             this.lblTimeSpentValue.TabIndex = 3;
             this.lblTimeSpentValue.Text = "{time spent}";
             // 
             // lblEntryDateValue
             // 
             this.lblEntryDateValue.AutoSize = true;
-            this.lblEntryDateValue.Location = new System.Drawing.Point(432, 106);
+            this.lblEntryDateValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblEntryDateValue.Location = new System.Drawing.Point(786, 180);
             this.lblEntryDateValue.Name = "lblEntryDateValue";
-            this.lblEntryDateValue.Size = new System.Drawing.Size(96, 21);
+            this.lblEntryDateValue.Size = new System.Drawing.Size(86, 20);
             this.lblEntryDateValue.TabIndex = 4;
             this.lblEntryDateValue.Text = "{entry date}";
             // 
             // lblsubcategoryValue
             // 
             this.lblsubcategoryValue.AutoSize = true;
-            this.lblsubcategoryValue.Location = new System.Drawing.Point(432, 74);
+            this.lblsubcategoryValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblsubcategoryValue.Location = new System.Drawing.Point(786, 148);
             this.lblsubcategoryValue.Name = "lblsubcategoryValue";
-            this.lblsubcategoryValue.Size = new System.Drawing.Size(112, 21);
+            this.lblsubcategoryValue.Size = new System.Drawing.Size(100, 20);
             this.lblsubcategoryValue.TabIndex = 5;
             this.lblsubcategoryValue.Text = "{subcategory}";
             // 
             // lblCategoryValue
             // 
             this.lblCategoryValue.AutoSize = true;
-            this.lblCategoryValue.Location = new System.Drawing.Point(432, 43);
+            this.lblCategoryValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblCategoryValue.Location = new System.Drawing.Point(786, 117);
             this.lblCategoryValue.Name = "lblCategoryValue";
-            this.lblCategoryValue.Size = new System.Drawing.Size(86, 21);
+            this.lblCategoryValue.Size = new System.Drawing.Size(77, 20);
             this.lblCategoryValue.TabIndex = 6;
             this.lblCategoryValue.Text = "{category}";
             // 
             // lblProjectValue
             // 
             this.lblProjectValue.AutoSize = true;
-            this.lblProjectValue.Location = new System.Drawing.Point(432, 12);
+            this.lblProjectValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblProjectValue.Location = new System.Drawing.Point(786, 86);
             this.lblProjectValue.Name = "lblProjectValue";
-            this.lblProjectValue.Size = new System.Drawing.Size(73, 21);
+            this.lblProjectValue.Size = new System.Drawing.Size(66, 20);
             this.lblProjectValue.TabIndex = 7;
             this.lblProjectValue.Text = "{project}";
             // 
             // btnAddEntry
             // 
-            this.btnAddEntry.Location = new System.Drawing.Point(164, 450);
+            this.btnAddEntry.Location = new System.Drawing.Point(12, 525);
             this.btnAddEntry.Name = "btnAddEntry";
             this.btnAddEntry.Size = new System.Drawing.Size(146, 37);
             this.btnAddEntry.TabIndex = 8;
@@ -177,7 +192,7 @@ namespace TimeTrackerUI
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(12, 450);
+            this.btnDelete.Location = new System.Drawing.Point(468, 525);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(146, 37);
             this.btnDelete.TabIndex = 9;
@@ -187,7 +202,7 @@ namespace TimeTrackerUI
             // lblEntries
             // 
             this.lblEntries.AutoSize = true;
-            this.lblEntries.Location = new System.Drawing.Point(50, 30);
+            this.lblEntries.Location = new System.Drawing.Point(400, 103);
             this.lblEntries.Name = "lblEntries";
             this.lblEntries.Size = new System.Drawing.Size(63, 21);
             this.lblEntries.TabIndex = 10;
@@ -195,7 +210,7 @@ namespace TimeTrackerUI
             // 
             // btnEditCat
             // 
-            this.btnEditCat.Location = new System.Drawing.Point(316, 450);
+            this.btnEditCat.Location = new System.Drawing.Point(164, 525);
             this.btnEditCat.Name = "btnEditCat";
             this.btnEditCat.Size = new System.Drawing.Size(146, 37);
             this.btnEditCat.TabIndex = 11;
@@ -205,7 +220,7 @@ namespace TimeTrackerUI
             // 
             // btnEditProjects
             // 
-            this.btnEditProjects.Location = new System.Drawing.Point(468, 450);
+            this.btnEditProjects.Location = new System.Drawing.Point(316, 525);
             this.btnEditProjects.Name = "btnEditProjects";
             this.btnEditProjects.Size = new System.Drawing.Size(146, 37);
             this.btnEditProjects.TabIndex = 12;
@@ -213,12 +228,106 @@ namespace TimeTrackerUI
             this.btnEditProjects.UseVisualStyleBackColor = true;
             this.btnEditProjects.Click += new System.EventHandler(this.btnEditProjects_Click);
             // 
+            // groupBoxSelectProj
+            // 
+            this.groupBoxSelectProj.Controls.Add(this.lblCat);
+            this.groupBoxSelectProj.Controls.Add(this.checkBoxAllProjects);
+            this.groupBoxSelectProj.Controls.Add(this.listBoxProject);
+            this.groupBoxSelectProj.Controls.Add(this.lblSubCat);
+            this.groupBoxSelectProj.Controls.Add(this.lblProj);
+            this.groupBoxSelectProj.Controls.Add(this.comboBoxSubcategory);
+            this.groupBoxSelectProj.Controls.Add(this.comboBoxCategory);
+            this.groupBoxSelectProj.Location = new System.Drawing.Point(12, 37);
+            this.groupBoxSelectProj.Name = "groupBoxSelectProj";
+            this.groupBoxSelectProj.Size = new System.Drawing.Size(365, 482);
+            this.groupBoxSelectProj.TabIndex = 33;
+            this.groupBoxSelectProj.TabStop = false;
+            this.groupBoxSelectProj.Text = "Select Project";
+            // 
+            // lblCat
+            // 
+            this.lblCat.AutoSize = true;
+            this.lblCat.Location = new System.Drawing.Point(23, 25);
+            this.lblCat.Name = "lblCat";
+            this.lblCat.Size = new System.Drawing.Size(82, 21);
+            this.lblCat.TabIndex = 28;
+            this.lblCat.Text = "Category:";
+            // 
+            // checkBoxAllProjects
+            // 
+            this.checkBoxAllProjects.AutoSize = true;
+            this.checkBoxAllProjects.Location = new System.Drawing.Point(23, 141);
+            this.checkBoxAllProjects.Name = "checkBoxAllProjects";
+            this.checkBoxAllProjects.Size = new System.Drawing.Size(155, 25);
+            this.checkBoxAllProjects.TabIndex = 31;
+            this.checkBoxAllProjects.Text = "Show All Projects";
+            this.checkBoxAllProjects.UseVisualStyleBackColor = true;
+            // 
+            // listBoxProject
+            // 
+            this.listBoxProject.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.listBoxProject.FormattingEnabled = true;
+            this.listBoxProject.ItemHeight = 17;
+            this.listBoxProject.Location = new System.Drawing.Point(23, 196);
+            this.listBoxProject.Name = "listBoxProject";
+            this.listBoxProject.Size = new System.Drawing.Size(293, 276);
+            this.listBoxProject.TabIndex = 18;
+            // 
+            // lblSubCat
+            // 
+            this.lblSubCat.AutoSize = true;
+            this.lblSubCat.Location = new System.Drawing.Point(23, 83);
+            this.lblSubCat.Name = "lblSubCat";
+            this.lblSubCat.Size = new System.Drawing.Size(108, 21);
+            this.lblSubCat.TabIndex = 30;
+            this.lblSubCat.Text = "Subcategory:";
+            // 
+            // lblProj
+            // 
+            this.lblProj.AutoSize = true;
+            this.lblProj.Location = new System.Drawing.Point(23, 172);
+            this.lblProj.Name = "lblProj";
+            this.lblProj.Size = new System.Drawing.Size(66, 21);
+            this.lblProj.TabIndex = 19;
+            this.lblProj.Text = "Project:";
+            // 
+            // comboBoxSubcategory
+            // 
+            this.comboBoxSubcategory.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.comboBoxSubcategory.FormattingEnabled = true;
+            this.comboBoxSubcategory.Location = new System.Drawing.Point(23, 110);
+            this.comboBoxSubcategory.Name = "comboBoxSubcategory";
+            this.comboBoxSubcategory.Size = new System.Drawing.Size(293, 25);
+            this.comboBoxSubcategory.TabIndex = 29;
+            // 
+            // comboBoxCategory
+            // 
+            this.comboBoxCategory.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.comboBoxCategory.FormattingEnabled = true;
+            this.comboBoxCategory.Location = new System.Drawing.Point(23, 52);
+            this.comboBoxCategory.Name = "comboBoxCategory";
+            this.comboBoxCategory.Size = new System.Drawing.Size(293, 25);
+            this.comboBoxCategory.TabIndex = 27;
+            this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxCategory_SelectedIndexChanged);
+            // 
+            // lblTimeTracker
+            // 
+            this.lblTimeTracker.AutoSize = true;
+            this.lblTimeTracker.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblTimeTracker.Location = new System.Drawing.Point(12, 9);
+            this.lblTimeTracker.Name = "lblTimeTracker";
+            this.lblTimeTracker.Size = new System.Drawing.Size(126, 25);
+            this.lblTimeTracker.TabIndex = 34;
+            this.lblTimeTracker.Text = "Time Tracker";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(622, 499);
+            this.ClientSize = new System.Drawing.Size(992, 574);
+            this.Controls.Add(this.lblTimeTracker);
+            this.Controls.Add(this.groupBoxSelectProj);
             this.Controls.Add(this.btnEditProjects);
             this.Controls.Add(this.btnEditCat);
             this.Controls.Add(this.lblEntries);
@@ -242,6 +351,8 @@ namespace TimeTrackerUI
             this.Name = "frmMain";
             this.Text = "Time Tracker";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.groupBoxSelectProj.ResumeLayout(false);
+            this.groupBoxSelectProj.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,5 +378,14 @@ namespace TimeTrackerUI
         private System.Windows.Forms.Label lblEntries;
         private System.Windows.Forms.Button btnEditCat;
         private System.Windows.Forms.Button btnEditProjects;
+        private System.Windows.Forms.GroupBox groupBoxSelectProj;
+        private System.Windows.Forms.Label lblCat;
+        private System.Windows.Forms.CheckBox checkBoxAllProjects;
+        private System.Windows.Forms.ListBox listBoxProject;
+        private System.Windows.Forms.Label lblSubCat;
+        private System.Windows.Forms.Label lblProj;
+        private System.Windows.Forms.ComboBox comboBoxSubcategory;
+        private System.Windows.Forms.ComboBox comboBoxCategory;
+        private System.Windows.Forms.Label lblTimeTracker;
     }
 }
