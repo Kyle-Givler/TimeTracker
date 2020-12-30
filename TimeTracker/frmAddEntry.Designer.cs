@@ -114,6 +114,7 @@ namespace TimeTrackerUI
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(293, 25);
             this.comboBoxCategory.TabIndex = 27;
+            this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxCategory_SelectedIndexChanged);
             // 
             // checkBoxAllProjects
             // 
@@ -124,6 +125,7 @@ namespace TimeTrackerUI
             this.checkBoxAllProjects.TabIndex = 31;
             this.checkBoxAllProjects.Text = "Show All Projects";
             this.checkBoxAllProjects.UseVisualStyleBackColor = true;
+            this.checkBoxAllProjects.CheckedChanged += new System.EventHandler(this.checkBoxAllProjects_CheckedChanged);
             // 
             // groupBoxSelectProj
             // 
@@ -231,6 +233,7 @@ namespace TimeTrackerUI
             this.ForeColor = System.Drawing.Color.SteelBlue;
             this.Name = "frmAddEntry";
             this.Text = "Add Entry";
+            this.Load += new System.EventHandler(this.frmAddEntry_Load);
             this.groupBoxSelectProj.ResumeLayout(false);
             this.groupBoxSelectProj.PerformLayout();
             this.groupBoxEntry.ResumeLayout(false);
