@@ -172,7 +172,8 @@ namespace TimeTrackerUI
             }
 
             textBoxProject.Text = string.Empty;
-            LoadProjects();
+            await LoadProjects();
+            UpdateSelectedProjectLabels();
         }
 
         private async void btnDeleteProj_Click(object sender, EventArgs e)
