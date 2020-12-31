@@ -18,9 +18,6 @@ namespace TimeTrackerUI
         private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
-        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
-        private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
-        private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
         private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
 
         public frmMain()
@@ -44,9 +41,12 @@ namespace TimeTrackerUI
             comboBoxSubcategory.DataSource = subcategories;
             comboBoxSubcategory.DisplayMember = nameof(SubcategoryModel.Name);
 
+            listBoxEntries.DataSource = entries;
+            listBoxEntries.DisplayMember = nameof(EntryModel.Date);
+
             await LoadCategories();
             await LoadSubcategories();
-            await LoadProjects();
+            LoadEntries();
         }
 
         private async Task LoadCategories()
@@ -77,6 +77,8 @@ namespace TimeTrackerUI
 
         private async Task LoadProjects()
         {
+            projects.Clear();
+
             CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
             SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
@@ -114,6 +116,44 @@ namespace TimeTrackerUI
         private async void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             await LoadSubcategories();
+        }
+
+        private void checkBoxAllProjects_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxAllProjects.Checked)
+            {
+                comboBoxCategory.Enabled = false;
+                comboBoxSubcategory.Enabled = false;
+            }
+            else
+            {
+                comboBoxCategory.Enabled = true;
+                comboBoxSubcategory.Enabled = true;
+            }
+
+            LoadProjects();
+        }
+
+        private void comboBoxSubcategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadProjects();
+        }
+
+        private void listBoxEntries_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PopulateEntryLabels();
+        }
+
+        private void PopulateEntryLabels()
+        {
+            var selectedEntry = (EntryModel)listBoxEntries.SelectedItem;
+
+            lblProjectValue.Text = selectedEntry.Project.Name;
+            lblCategoryValue.Text = selectedEntry.Project.Category.Name;
+            lblsubcategoryValue.Text = selectedEntry.Project.Subcategory == null ? "(none)" : selectedEntry.Project.Subcategory.Name;
+            lblEntryDateValue.Text = selectedEntry.Date.ToString();
+            lblTimeSpentValue.Text = selectedEntry.HoursSpent.ToString();
+            textBoxNotes.Text = selectedEntry.Notes;
         }
     }
 }

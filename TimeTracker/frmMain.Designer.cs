@@ -29,7 +29,7 @@ namespace TimeTrackerUI
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listBoxEntries = new System.Windows.Forms.ListBox();
             this.lblProject = new System.Windows.Forms.Label();
             this.lblCategory = new System.Windows.Forms.Label();
             this.lblSubCategory = new System.Windows.Forms.Label();
@@ -59,14 +59,15 @@ namespace TimeTrackerUI
             this.groupBoxSelectProj.SuspendLayout();
             this.SuspendLayout();
             // 
-            // listBox1
+            // listBoxEntries
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 21;
-            this.listBox1.Location = new System.Drawing.Point(400, 127);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(246, 382);
-            this.listBox1.TabIndex = 0;
+            this.listBoxEntries.FormattingEnabled = true;
+            this.listBoxEntries.ItemHeight = 21;
+            this.listBoxEntries.Location = new System.Drawing.Point(400, 127);
+            this.listBoxEntries.Name = "listBoxEntries";
+            this.listBoxEntries.Size = new System.Drawing.Size(246, 382);
+            this.listBoxEntries.TabIndex = 0;
+            this.listBoxEntries.SelectedIndexChanged += new System.EventHandler(this.listBoxEntries_SelectedIndexChanged);
             // 
             // lblProject
             // 
@@ -210,7 +211,7 @@ namespace TimeTrackerUI
             // 
             // btnEditCat
             // 
-            this.btnEditCat.Location = new System.Drawing.Point(164, 525);
+            this.btnEditCat.Location = new System.Drawing.Point(316, 525);
             this.btnEditCat.Name = "btnEditCat";
             this.btnEditCat.Size = new System.Drawing.Size(146, 37);
             this.btnEditCat.TabIndex = 11;
@@ -220,7 +221,7 @@ namespace TimeTrackerUI
             // 
             // btnEditProjects
             // 
-            this.btnEditProjects.Location = new System.Drawing.Point(316, 525);
+            this.btnEditProjects.Location = new System.Drawing.Point(164, 525);
             this.btnEditProjects.Name = "btnEditProjects";
             this.btnEditProjects.Size = new System.Drawing.Size(146, 37);
             this.btnEditProjects.TabIndex = 12;
@@ -262,6 +263,7 @@ namespace TimeTrackerUI
             this.checkBoxAllProjects.TabIndex = 31;
             this.checkBoxAllProjects.Text = "Show All Projects";
             this.checkBoxAllProjects.UseVisualStyleBackColor = true;
+            this.checkBoxAllProjects.CheckedChanged += new System.EventHandler(this.checkBoxAllProjects_CheckedChanged);
             // 
             // listBoxProject
             // 
@@ -299,6 +301,7 @@ namespace TimeTrackerUI
             this.comboBoxSubcategory.Name = "comboBoxSubcategory";
             this.comboBoxSubcategory.Size = new System.Drawing.Size(293, 25);
             this.comboBoxSubcategory.TabIndex = 29;
+            this.comboBoxSubcategory.SelectedIndexChanged += new System.EventHandler(this.comboBoxSubcategory_SelectedIndexChanged);
             // 
             // comboBoxCategory
             // 
@@ -325,7 +328,7 @@ namespace TimeTrackerUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(992, 574);
+            this.ClientSize = new System.Drawing.Size(1046, 574);
             this.Controls.Add(this.lblTimeTracker);
             this.Controls.Add(this.groupBoxSelectProj);
             this.Controls.Add(this.btnEditProjects);
@@ -345,7 +348,7 @@ namespace TimeTrackerUI
             this.Controls.Add(this.lblSubCategory);
             this.Controls.Add(this.lblCategory);
             this.Controls.Add(this.lblProject);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.listBoxEntries);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.SteelBlue;
             this.Name = "frmMain";
@@ -360,7 +363,7 @@ namespace TimeTrackerUI
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listBoxEntries;
         private System.Windows.Forms.Label lblProject;
         private System.Windows.Forms.Label lblCategory;
         private System.Windows.Forms.Label lblSubCategory;
