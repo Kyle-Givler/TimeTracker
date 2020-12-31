@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spProject_Insert]
 	@Name nvarchar(50),
 	@CategoryId int,
-	@SubCategoryId int,
+	@SubcategoryId int,
 	@Id int = 0 output
 AS
 begin

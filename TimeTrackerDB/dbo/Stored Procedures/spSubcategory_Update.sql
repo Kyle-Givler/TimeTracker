@@ -8,6 +8,6 @@ begin
 
 	update Subcategory
 	set Name = @Name
-	where Id = @id;
+	where Id = @Id;
 
 end

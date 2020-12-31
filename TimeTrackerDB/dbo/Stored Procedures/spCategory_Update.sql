@@ -8,6 +8,6 @@ begin
 
 	update Category
 	set Name = @Name
-	where Id = @id;
+	where Id = @Id;
 
 end

@@ -7,6 +7,6 @@ begin
 
 	delete
 	from Project
-	where id = @Id;
+	where Id = @Id;
 
 end
