@@ -29,8 +29,7 @@ using TimeTrackerLibrary.Models;
 using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
+using TimeTrackerLibrary.Services;
 
 namespace TimeTrackerUI
 {
@@ -40,9 +39,6 @@ namespace TimeTrackerUI
         private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
-        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
-        private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
-        private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
         private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
 
         public frmAddEntry()
@@ -73,32 +69,12 @@ namespace TimeTrackerUI
 
         private async Task LoadProjects()
         {
+            projects.Clear();
+
             CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
             SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
-            List<ProjectModel> projs;
-
-            if (selectedCat == null)
-            {
-                return;
-            }
-
-            projects.Clear();
-
-            if(checkBoxAllProjects.Checked)
-            {
-                projs = await projectData.LoadAllProjects();
-            }
-            else if (selectedSubCat == null)
-            {
-                projs = await projectData.LoadProjectsByCategory(selectedCat);
-            }
-            else
-            {
-                projs = await projectData.LoadProjectsBySubCategory(selectedSubCat);
-            }
-
-            projs = projs.OrderBy(x => x.Name).ToList();
+            var projs = await ProjectService.GetInstance.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
             projs.ForEach(x => projects.Add(x));
         }
 
@@ -106,8 +82,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await categoryData.LoadAllCategories();
-            cats = cats.OrderBy(x => x.Name).ToList();
+            var cats = await CategoryService.GetInstance.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -115,7 +90,6 @@ namespace TimeTrackerUI
         {
             if (comboBoxCategory.SelectedItem == null)
             {
-                await LoadProjects();
                 return;
             }
 
@@ -123,16 +97,14 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await subcategoryData.LoadSubcategories(selectedCat);
-            subCats = subCats.OrderBy(x => x.Name).ToList();
+            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
-
-            await LoadProjects();
         }
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             await LoadSubcategories();
+            await LoadProjects();
         }
 
         private void checkBoxAllProjects_CheckedChanged(object sender, System.EventArgs e)
@@ -159,8 +131,6 @@ namespace TimeTrackerUI
                 return;
             }
 
-            CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
-            SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
             ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
 
             if(selectedProject == null)
@@ -182,9 +152,9 @@ namespace TimeTrackerUI
             textBoxNotes.Text = string.Empty;
         }
 
-        private void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
+        private async void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            LoadProjects();
+            await LoadProjects();
         }
     }
 }

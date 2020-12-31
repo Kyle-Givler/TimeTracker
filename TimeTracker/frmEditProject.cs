@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
-using TimeTrackerLibrary.Helpers;
+using TimeTrackerLibrary.Services;
 using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerUI
@@ -42,8 +42,6 @@ namespace TimeTrackerUI
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
         private readonly BindingList<ProjectModel> projects = new BindingList<ProjectModel>();
 
-        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
-        private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
         private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
 
         private bool editingProject = false;
@@ -79,7 +77,7 @@ namespace TimeTrackerUI
         {
             projects.Clear();
 
-            var proj = await ProjectHelper.LoadAllProjects();
+            var proj = await ProjectService.GetInstance.LoadAllProjects();
             proj.ForEach(x => projects.Add(x));
         }
 
@@ -87,7 +85,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await CategoryHelper.LoadAllCategories();
+            var cats = await CategoryService.GetInstance.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -100,7 +98,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await SubcategoryHelper.LoadSubcategories(category);
+            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(category);
             subCats.ForEach(x => subcategories.Add(x));
         }
 
@@ -116,62 +114,72 @@ namespace TimeTrackerUI
 
             if (editingProject)
             {
-                ProjectModel proj = (ProjectModel)listBoxProject.SelectedItem;
-
-                if(proj == null)
-                {
-                    return;
-                }    
-
-                if(textBoxProject.Text == string.Empty)
-                {
-                    MessageBox.Show("Please enter a valid project name");
-                    return;
-                }
-
-                proj.Name = textBoxProject.Text;
-                proj.Category = cat;
-                proj.CategoryId = cat.Id;
-                proj.Subcategory = subcat;
-                proj.SubcategoryId = subcat?.Id;
-
-                await projectData.UpdateProject(proj);
-
-                editingProject = false;
-
-                listBoxProject.Enabled = true;
-
-                btnAddProj.Text = "Add Project";
-                textBoxProject.Text = string.Empty;
+                await EditProject(cat, subcat);
             }
             else
             {
-                if (cat == null)
-                {
-                    MessageBox.Show("Please select a valid category");
-                    return;
-                }
-
-                if (textBoxProject.Text == string.Empty)
-                {
-                    MessageBox.Show("Please enter a valid project name");
-                    return;
-                }
-
-                ProjectModel project = new ProjectModel();
-
-                project.Name = textBoxProject.Text;
-                project.Category = cat;
-                project.CategoryId = cat.Id;
-                project.Subcategory = subcat;
-                project.SubcategoryId = subcat?.Id;
-
-                projectData.AddProject(project);
+                await AddProject(cat, subcat);
             }
 
             textBoxProject.Text = string.Empty;
             await LoadProjects();
             UpdateSelectedProjectLabels();
+        }
+
+        private async Task AddProject(CategoryModel cat, SubcategoryModel subcat)
+        {
+            if (cat == null)
+            {
+                MessageBox.Show("Please select a valid category");
+                return;
+            }
+
+            if (textBoxProject.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter a valid project name");
+                return;
+            }
+
+            ProjectModel project = new ProjectModel();
+
+            project.Name = textBoxProject.Text;
+            project.Category = cat;
+            project.CategoryId = cat.Id;
+            project.Subcategory = subcat;
+            project.SubcategoryId = subcat?.Id;
+
+            await projectData.AddProject(project);
+        }
+
+        private async Task EditProject(CategoryModel cat, SubcategoryModel subcat)
+        {
+            ProjectModel proj = (ProjectModel)listBoxProject.SelectedItem;
+
+            if (proj == null)
+            {
+                return;
+            }
+
+            if (textBoxProject.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter a valid project name");
+                return;
+            }
+
+            proj.Name = textBoxProject.Text;
+            proj.Category = cat;
+            proj.CategoryId = cat.Id;
+            proj.Subcategory = subcat;
+            proj.SubcategoryId = subcat?.Id;
+
+            await projectData.UpdateProject(proj);
+
+            editingProject = false;
+
+            listBoxProject.Enabled = true;
+
+            btnAddProj.Text = "Add Project";
+            textBoxProject.Text = string.Empty;
         }
 
         private async void btnDeleteProj_Click(object sender, EventArgs e)

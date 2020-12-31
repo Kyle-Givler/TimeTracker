@@ -30,8 +30,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
-using TimeTrackerLibrary.Helpers;
 using TimeTrackerLibrary.Models;
+using TimeTrackerLibrary.Services;
 
 namespace TimeTrackerUI
 {
@@ -72,13 +72,13 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await CategoryHelper.LoadAllCategories();
+            var cats = await CategoryService.GetInstance.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
         private async Task LoadSubcategories()
         {
-            if(listBoxCategory.SelectedItem == null)
+            if (listBoxCategory.SelectedItem == null)
             {
                 return;
             }
@@ -87,7 +87,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await SubcategoryHelper.LoadSubcategories(selectedCat);
+            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
         }
 
@@ -95,131 +95,151 @@ namespace TimeTrackerUI
         {
             if (editingCategory)
             {
-                CategoryModel cat = (CategoryModel)listBoxCategory.SelectedItem;
-
-                if(cat == null)
-                {
-                    return;
-                }
-
-                if(textBoxCategory.Text == string.Empty)
-                {
-                    MessageBox.Show("Please enter a valid category name");
-                    return;
-                }
-
-                cat.Name = textBoxCategory.Text;
-
-                await categoryData.UpdateCategory(cat);
-
-                editingCategory = false;
-
-                listBoxCategory.Enabled = true;
-
-                btnAddCat.Text = "Add Category";
-                textBoxCategory.Text = string.Empty;
+                await EditCategory();
             }
             else
             {
-                CategoryModel cat = new CategoryModel();
-
-                if (textBoxCategory.Text != string.Empty)
-                {
-                    cat.Name = textBoxCategory.Text;
-                }
-                else
-                {
-                    MessageBox.Show("Please enter a valid category.");
-                    return;
-                }
-
-                await categoryData.AddCategory(cat);
-
-                textBoxCategory.Text = string.Empty;
+                await AddCategory();
             }
 
             await LoadCategories();
             LoadSubcategories();
         }
 
+        private async Task AddCategory()
+        {
+            CategoryModel cat = new CategoryModel();
+
+            if (textBoxCategory.Text != string.Empty)
+            {
+                cat.Name = textBoxCategory.Text;
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid category.");
+                return;
+            }
+
+            await categoryData.AddCategory(cat);
+
+            textBoxCategory.Text = string.Empty;
+        }
+
+        private async Task EditCategory()
+        {
+            CategoryModel cat = (CategoryModel)listBoxCategory.SelectedItem;
+
+            if (cat == null)
+            {
+                return;
+            }
+
+            if (textBoxCategory.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter a valid category name");
+                return;
+            }
+
+            cat.Name = textBoxCategory.Text;
+
+            await categoryData.UpdateCategory(cat);
+
+            editingCategory = false;
+
+            listBoxCategory.Enabled = true;
+
+            btnAddCat.Text = "Add Category";
+            textBoxCategory.Text = string.Empty;
+        }
+
         private async void buttonAddSubCat_Click(object sender, EventArgs e)
         {
             if (editingSubcategory)
             {
-                SubcategoryModel subcat = (SubcategoryModel)listBoxSubcategory.SelectedItem;
-
-                if (subcat == null)
-                {
-                    return;
-                }
-
-                if (textBoxSubcategory.Text == string.Empty)
-                {
-                    MessageBox.Show("Please enter a valid subcategory name");
-                    return;
-                }
-
-                subcat.Name = textBoxSubcategory.Text;
-
-                await subcategoryData.UpdateSubcategory(subcat);
-
-                editingSubcategory = false;
-
-                listBoxSubcategory.Enabled = true;
-
-                btnAddSubCat.Text = "Add Category";
-                textBoxSubcategory.Text = string.Empty;
+                await EditSubcategory();
             }
             else
             {
-                var selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
-
-                if (selectedCat == null)
-                {
-                    MessageBox.Show("No category is selected!");
-                    return;
-                }
-
-                if (textBoxSubcategory.Text == string.Empty)
-                {
-                    MessageBox.Show("Please enter a valid subcategory.");
-                    return;
-                }
-
-                SubcategoryModel subCat = new SubcategoryModel();
-
-                subCat.Name = textBoxSubcategory.Text;
-                subCat.Category = selectedCat;
-                subCat.CategoryId = selectedCat.Id;
-
-                await subcategoryData.AddSubcategory(subCat);
-
-                textBoxSubcategory.Text = string.Empty;
+                await AddSubcategory();
             }
 
             LoadSubcategories();
+        }
+
+        private async Task EditSubcategory()
+        {
+            SubcategoryModel subcat = (SubcategoryModel)listBoxSubcategory.SelectedItem;
+
+            if (subcat == null)
+            {
+                return;
+            }
+
+            if (textBoxSubcategory.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter a valid subcategory name");
+                return;
+            }
+
+            subcat.Name = textBoxSubcategory.Text;
+
+            await subcategoryData.UpdateSubcategory(subcat);
+
+            editingSubcategory = false;
+
+            listBoxSubcategory.Enabled = true;
+
+            btnAddSubCat.Text = "Add Category";
+            textBoxSubcategory.Text = string.Empty;
+        }
+
+        private async Task AddSubcategory()
+        {
+            var selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
+
+            if (selectedCat == null)
+            {
+                MessageBox.Show("No category is selected!");
+                return;
+            }
+
+            if (textBoxSubcategory.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter a valid subcategory.");
+                return;
+            }
+
+            SubcategoryModel subCat = new SubcategoryModel();
+
+            subCat.Name = textBoxSubcategory.Text;
+            subCat.Category = selectedCat;
+            subCat.CategoryId = selectedCat.Id;
+
+            await subcategoryData.AddSubcategory(subCat);
+
+            textBoxSubcategory.Text = string.Empty;
         }
 
         private async void btnDeleteCat_Click(object sender, EventArgs e)
         {
             CategoryModel selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
 
-            if(selectedCat == null)
+            if (selectedCat == null)
             {
                 MessageBox.Show("No category is selected!");
                 return;
             }
 
             var rows = await GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};");
-            
-            if(rows.First() != 0)
+
+            if (rows.First() != 0)
             {
                 MessageBox.Show($"{selectedCat.Name} cannot be deleted until all of the subcategories have been deleted.");
                 return;
             }
 
             var confrim = MessageBox.Show($"Confirm Deletion of: {selectedCat.Name}?", "Delete Category", MessageBoxButtons.YesNo);
-            if(confrim == DialogResult.No)
+            if (confrim == DialogResult.No)
             {
                 return;
             }
@@ -236,9 +256,9 @@ namespace TimeTrackerUI
 
         private async void btnDeleteSubCat_Click(object sender, EventArgs e)
         {
-            var selectedSubCat = (SubcategoryModel) listBoxSubcategory.SelectedItem;
+            var selectedSubCat = (SubcategoryModel)listBoxSubcategory.SelectedItem;
 
-            if(selectedSubCat == null)
+            if (selectedSubCat == null)
             {
                 MessageBox.Show("No subcategory is selected!");
                 return;
@@ -247,6 +267,14 @@ namespace TimeTrackerUI
             var confrim = MessageBox.Show($"Confirm Deletion of: {selectedSubCat.Name}?", "Delete Category", MessageBoxButtons.YesNo);
             if (confrim == DialogResult.No)
             {
+                return;
+            }
+
+            var rows = await GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {selectedSubCat.Id};");
+
+            if (rows.First() != 0)
+            {
+                MessageBox.Show($"{selectedSubCat.Name} cannot be deleted until all of the projects under it have been deleted.");
                 return;
             }
 

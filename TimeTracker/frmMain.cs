@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Services;
 using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerUI
@@ -52,8 +53,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await categoryData.LoadAllCategories();
-            cats = cats.OrderBy(x => x.Name).ToList();
+            var cats = await CategoryService.GetInstance.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -69,8 +69,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await subcategoryData.LoadSubcategories(selectedCat);
-            subCats = subCats.OrderBy(x => x.Name).ToList();
+            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
 
             await LoadProjects();
@@ -81,29 +80,8 @@ namespace TimeTrackerUI
             CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
             SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
-            List<ProjectModel> projs;
+            var projs = await ProjectService.GetInstance.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
 
-            if (selectedCat == null)
-            {
-                return;
-            }
-
-            projects.Clear();
-
-            if (checkBoxAllProjects.Checked)
-            {
-                projs = await projectData.LoadAllProjects();
-            }
-            else if (selectedSubCat == null)
-            {
-                projs = await projectData.LoadProjectsByCategory(selectedCat);
-            }
-            else
-            {
-                projs = await projectData.LoadProjectsBySubCategory(selectedSubCat);
-            }
-
-            projs = projs.OrderBy(x => x.Name).ToList();
             projs.ForEach(x => projects.Add(x));
         }
 
