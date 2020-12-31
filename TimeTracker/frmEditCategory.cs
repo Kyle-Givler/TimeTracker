@@ -230,7 +230,7 @@ namespace TimeTrackerUI
                 return;
             }
 
-            var rows = await GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};");
+            var rows = await GlobalConfig.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};", new { });
 
             if (rows.First() != 0)
             {
@@ -270,7 +270,7 @@ namespace TimeTrackerUI
                 return;
             }
 
-            var rows = await GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {selectedSubCat.Id};");
+            var rows = await GlobalConfig.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {selectedSubCat.Id};", new { });
 
             if (rows.First() != 0)
             {

@@ -56,7 +56,7 @@ namespace TimeTrackerLibrary.Services
 
         public async Task DeleteCategory(CategoryModel category)
         {
-            var rows = await GlobalConfig.Connection.QueryRawSQL<int>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {category.Id};");
+            var rows = await GlobalConfig.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {category.Id};", new { });
 
             if (rows.First() != 0)
             {
