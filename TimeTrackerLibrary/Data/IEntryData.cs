@@ -9,5 +9,9 @@ namespace TimeTrackerLibrary.Data
         Task CreateEntry(EntryModel entry);
 
         Task<List<EntryModel>> LoadAllEntries();
+
+        Task<List<EntryModel>> LoadEntriesByCategory();
+
+        Task<List<EntryModel>> LoadEntriesBySubcategory();
     }
 }

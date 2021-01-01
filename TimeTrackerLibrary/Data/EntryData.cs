@@ -47,5 +47,15 @@ namespace TimeTrackerLibrary.Data
             
             return entries;
         }
+
+        public Task<List<EntryModel>> LoadEntriesByCategory()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<List<EntryModel>> LoadEntriesBySubcategory()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
