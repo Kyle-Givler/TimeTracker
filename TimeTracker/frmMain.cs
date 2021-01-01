@@ -46,7 +46,8 @@ namespace TimeTrackerUI
 
             await LoadCategories();
             await LoadSubcategories();
-            LoadEntries();
+            await LoadEntries();
+            PopulateEntryLabels();
         }
 
         private async Task LoadCategories()
@@ -147,6 +148,11 @@ namespace TimeTrackerUI
         private void PopulateEntryLabels()
         {
             var selectedEntry = (EntryModel)listBoxEntries.SelectedItem;
+
+            if (selectedEntry == null)
+            {
+                return;
+            }
 
             lblProjectValue.Text = selectedEntry.Project.Name;
             lblCategoryValue.Text = selectedEntry.Project.Category.Name;
