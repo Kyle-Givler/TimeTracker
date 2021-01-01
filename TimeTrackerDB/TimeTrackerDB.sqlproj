@@ -83,5 +83,7 @@
     <Build Include="dbo\Stored Procedures\spProject_GetByCatId.sql" />
     <Build Include="dbo\Stored Procedures\spProject_GetBySubCatId.sql" />
     <Build Include="dbo\Stored Procedures\spEntry_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\spEntry_GetByCategory.sql" />
+    <Build Include="dbo\Stored Procedures\spEntry_GetBySubcategory.sql" />
   </ItemGroup>
 </Project>
