@@ -66,6 +66,7 @@ namespace TimeTrackerUI
 
             await LoadCategories();
             await LoadSubcategories();
+            UpdateCategoryLabel();
         }
 
         private async Task LoadCategories()
@@ -251,7 +252,21 @@ namespace TimeTrackerUI
 
         private void listBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
+            UpdateCategoryLabel();
             LoadSubcategories();
+        }
+
+        private void UpdateCategoryLabel()
+        {
+            var selectedCat = (CategoryModel)listBoxCategory.SelectedItem;
+
+            if (selectedCat == null)
+            {
+                lblCategoryValue.Text = string.Empty;
+                return;
+            }
+
+            lblCategoryValue.Text = selectedCat.Name;
         }
 
         private async void btnDeleteSubCat_Click(object sender, EventArgs e)

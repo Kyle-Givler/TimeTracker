@@ -42,6 +42,7 @@ namespace TimeTrackerUI
             this.btnDeleteCat = new System.Windows.Forms.Button();
             this.btnDeleteSubCat = new System.Windows.Forms.Button();
             this.lblCatManagement = new System.Windows.Forms.Label();
+            this.lblCategoryValue = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listBoxCategory
@@ -113,9 +114,9 @@ namespace TimeTrackerUI
             this.lblAddSubcategory.AutoSize = true;
             this.lblAddSubcategory.Location = new System.Drawing.Point(506, 149);
             this.lblAddSubcategory.Name = "lblAddSubcategory";
-            this.lblAddSubcategory.Size = new System.Drawing.Size(301, 21);
+            this.lblAddSubcategory.Size = new System.Drawing.Size(167, 21);
             this.lblAddSubcategory.TabIndex = 6;
-            this.lblAddSubcategory.Text = "Add Subcategory to selected Category:";
+            this.lblAddSubcategory.Text = "Add Subcategory to: ";
             // 
             // btnAddCat
             // 
@@ -171,12 +172,23 @@ namespace TimeTrackerUI
             this.lblCatManagement.TabIndex = 14;
             this.lblCatManagement.Text = "Category Management";
             // 
+            // lblCategoryValue
+            // 
+            this.lblCategoryValue.AutoSize = true;
+            this.lblCategoryValue.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblCategoryValue.Location = new System.Drawing.Point(667, 149);
+            this.lblCategoryValue.Name = "lblCategoryValue";
+            this.lblCategoryValue.Size = new System.Drawing.Size(86, 21);
+            this.lblCategoryValue.TabIndex = 15;
+            this.lblCategoryValue.Text = "{category}";
+            // 
             // frmEditCategory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(828, 405);
+            this.Controls.Add(this.lblCategoryValue);
             this.Controls.Add(this.lblCatManagement);
             this.Controls.Add(this.btnDeleteSubCat);
             this.Controls.Add(this.btnDeleteCat);
@@ -215,5 +227,6 @@ namespace TimeTrackerUI
         private System.Windows.Forms.Button btnDeleteCat;
         private System.Windows.Forms.Button btnDeleteSubCat;
         private System.Windows.Forms.Label lblCatManagement;
+        private System.Windows.Forms.Label lblCategoryValue;
     }
 }

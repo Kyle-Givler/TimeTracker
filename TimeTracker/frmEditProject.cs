@@ -199,6 +199,7 @@ namespace TimeTrackerUI
                 return;
             }
 
+            //TODO - Delete all entries before deleing the Project
             await projectData.RemoveProject(selectedProj);
 
             LoadProjects();
