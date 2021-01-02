@@ -130,7 +130,7 @@ namespace TimeTrackerUI
 
         private void btnAddEntry_Click(object sender, System.EventArgs e)
         {
-            if(!int.TryParse(textBoxHoursSpent.Text, out int hours))
+            if(!double.TryParse(textBoxHoursSpent.Text, out double hours))
             {
                 MessageBox.Show("Please enter a valid number of hours");
                 return;
@@ -155,6 +155,8 @@ namespace TimeTrackerUI
 
             textBoxHoursSpent.Text = string.Empty;
             textBoxNotes.Text = string.Empty;
+
+            this.Close();
         }
 
         private async void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)

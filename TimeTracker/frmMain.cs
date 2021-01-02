@@ -116,12 +116,16 @@ namespace TimeTrackerUI
             var allEntries = await entryData.LoadEntriesByProject(selectedProject);
 
             allEntries.ForEach(x => entries.Add(x));
+
+            PopulateEntryLabels();
         }
 
         private void btnAddEntry_Click(object sender, EventArgs e)
         {
             frmAddEntry frm = new frmAddEntry();
             frm.ShowDialog(this);
+
+            LoadEntries();
         }
 
         private void btnEditCat_Click(object sender, EventArgs e)
@@ -183,6 +187,12 @@ namespace TimeTrackerUI
 
             if (selectedEntry == null)
             {
+                lblProjectValue.Text = string.Empty;
+                lblCategoryValue.Text = string.Empty;
+                lblsubcategoryValue.Text = string.Empty;
+                lblEntryDateValue.Text = string.Empty;
+                lblTimeSpentValue.Text = string.Empty;
+                textBoxNotes.Text = string.Empty;
                 return;
             }
 
@@ -194,14 +204,15 @@ namespace TimeTrackerUI
             textBoxNotes.Text = selectedEntry.Notes;
         }
 
-        private void listBoxProject_SelectedIndexChanged(object sender, EventArgs e)
+        private async void listBoxProject_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(listBoxProject.SelectedItem == null)
             {
                 return;
             }
 
-            LoadEntries();
+            await LoadEntries();
+            PopulateEntryLabels();
         }
     }
 }
