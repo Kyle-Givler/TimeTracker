@@ -60,7 +60,7 @@ namespace TimeTrackerUI
 
             comboBoxCategory.DataSource = categories;
             comboBoxCategory.DisplayMember = nameof(CategoryModel.Name);
-
+            
             comboBoxSubcategory.DataSource = subcategories;
             comboBoxSubcategory.DisplayMember = nameof(SubcategoryModel.Name);
 
@@ -112,6 +112,11 @@ namespace TimeTrackerUI
         {
             var selectedProject = (ProjectModel)listBoxProject.SelectedItem;
 
+            if(selectedProject == null)
+            {
+                return;
+            }
+
             entries.Clear();
             var allEntries = await entryData.LoadEntriesByProject(selectedProject);
 
@@ -128,10 +133,13 @@ namespace TimeTrackerUI
             LoadEntries();
         }
 
-        private void btnEditCat_Click(object sender, EventArgs e)
+        private async void btnEditCat_Click(object sender, EventArgs e)
         {
             frmEditCategory frm = new frmEditCategory();
             frm.ShowDialog(this);
+
+            await LoadCategories();
+            LoadSubcategories((CategoryModel)comboBoxCategory.SelectedItem);
         }
 
         private void btnEditProjects_Click(object sender, EventArgs e)
