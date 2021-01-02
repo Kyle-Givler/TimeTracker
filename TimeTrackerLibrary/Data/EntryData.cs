@@ -36,26 +36,43 @@ namespace TimeTrackerLibrary.Data
 
             foreach (var e in entries)
             {
-                // TODO fix this with a join or something!
-                var p = await dataAccess.QueryRawSQL<ProjectModel, dynamic>("SELECT * FROM Project WHERE ID = @Id", new { Id = e.ProjectId });
-                e.Project = p.First();
-                var c = await dataAccess.QueryRawSQL<CategoryModel, dynamic>("SELECT * FROM Category WHERE ID = @Id", new { Id = e.Project.CategoryId });
-                e.Project.Category = c.First();
-                var s = await dataAccess.QueryRawSQL<SubcategoryModel, dynamic>("SELECT * FROM Subcategory WHERE ID = @Id", new { Id = e.Project.SubcategoryId });
-                e.Project.Subcategory = s.FirstOrDefault();
+                await RehydrateObjects(e);
             }
             
             return entries;
         }
 
-        public Task<List<EntryModel>> LoadEntriesByCategory()
+        public Task<List<EntryModel>> LoadEntriesByCategory(CategoryModel category)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<List<EntryModel>> LoadEntriesBySubcategory()
+        public async Task<List<EntryModel>> LoadEntriesByProject(ProjectModel project)
+        {
+            var entries = await dataAccess.LoadData<EntryModel, dynamic>("dbo.spEntry_GetByProjectId", new { ProjectId = project.Id });
+
+            foreach (var e in entries)
+            {
+                await RehydrateObjects(e);
+            }
+
+            return entries;
+        }
+
+        public Task<List<EntryModel>> LoadEntriesBySubcategory(SubcategoryModel subcategory)
         {
             throw new System.NotImplementedException();
+        }
+
+        private async Task RehydrateObjects(EntryModel e)
+        {
+            // TODO fix this with a join or something!
+            var p = await dataAccess.QueryRawSQL<ProjectModel, dynamic>("SELECT * FROM Project WHERE ID = @Id", new { Id = e.ProjectId });
+            e.Project = p.First();
+            var c = await dataAccess.QueryRawSQL<CategoryModel, dynamic>("SELECT * FROM Category WHERE ID = @Id", new { Id = e.Project.CategoryId });
+            e.Project.Category = c.First();
+            var s = await dataAccess.QueryRawSQL<SubcategoryModel, dynamic>("SELECT * FROM Subcategory WHERE ID = @Id", new { Id = e.Project.SubcategoryId });
+            e.Project.Subcategory = s.FirstOrDefault();
         }
     }
 }
