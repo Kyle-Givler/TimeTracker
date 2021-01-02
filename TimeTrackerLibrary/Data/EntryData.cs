@@ -41,7 +41,7 @@ namespace TimeTrackerLibrary.Data
                 e.Project = p.First();
                 var c = await dataAccess.QueryRawSQL<CategoryModel, dynamic>("SELECT * FROM Category WHERE ID = @Id", new { Id = e.Project.CategoryId });
                 e.Project.Category = c.First();
-                var s = await dataAccess.QueryRawSQL<SubcategoryModel, dynamic>("SELECT * FROM Category WHERE ID = @Id", new { Id = e.Project.SubcategoryId });
+                var s = await dataAccess.QueryRawSQL<SubcategoryModel, dynamic>("SELECT * FROM Subcategory WHERE ID = @Id", new { Id = e.Project.SubcategoryId });
                 e.Project.Subcategory = s.FirstOrDefault();
             }
             
