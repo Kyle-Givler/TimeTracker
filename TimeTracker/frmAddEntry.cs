@@ -140,6 +140,7 @@ namespace TimeTrackerUI
 
             if(selectedProject == null)
             {
+                MessageBox.Show("Please select a project");
                 return;
             }
 
