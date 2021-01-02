@@ -64,7 +64,6 @@ namespace TimeTrackerUI
 
             await LoadCategories();
             await LoadSubcategories();
-            await LoadProjects();
         }
 
         private async Task LoadProjects()
@@ -99,12 +98,18 @@ namespace TimeTrackerUI
 
             var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
+
+            LoadProjects();
         }
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
+            if(comboBoxCategory.SelectedItem == null)
+            {
+                return;
+            }
+
             await LoadSubcategories();
-            await LoadProjects();
         }
 
         private void checkBoxAllProjects_CheckedChanged(object sender, System.EventArgs e)
@@ -154,6 +159,11 @@ namespace TimeTrackerUI
 
         private async void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
+            if(comboBoxSubcategory.SelectedItem == null)
+            {
+                return;
+            }
+
             await LoadProjects();
         }
     }

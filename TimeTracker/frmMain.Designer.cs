@@ -274,6 +274,7 @@ namespace TimeTrackerUI
             this.listBoxProject.Name = "listBoxProject";
             this.listBoxProject.Size = new System.Drawing.Size(293, 276);
             this.listBoxProject.TabIndex = 18;
+            this.listBoxProject.SelectedIndexChanged += new System.EventHandler(this.listBoxProject_SelectedIndexChanged);
             // 
             // lblSubCat
             // 
