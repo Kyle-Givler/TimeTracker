@@ -45,9 +45,7 @@ namespace TimeTrackerUI
             listBoxEntries.DisplayMember = nameof(EntryModel.Date);
 
             await LoadCategories();
-            await LoadSubcategories();
-            await LoadEntries();
-            PopulateEntryLabels();
+            await LoadSubcategories((CategoryModel)comboBoxCategory.SelectedItem);
         }
 
         private async Task LoadCategories()
@@ -58,22 +56,19 @@ namespace TimeTrackerUI
             cats.ForEach(x => categories.Add(x));
         }
 
-        private async Task LoadSubcategories()
+        private async Task LoadSubcategories(CategoryModel category)
         {
-            if (comboBoxCategory.SelectedItem == null)
+            if (category == null)
             {
-                await LoadProjects();
                 return;
             }
 
-            CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
-
             subcategories.Clear();
 
-            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
+            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(category);
             subCats.ForEach(x => subcategories.Add(x));
 
-            await LoadProjects();
+            LoadProjects();
         }
 
         private async Task LoadProjects()
@@ -84,8 +79,10 @@ namespace TimeTrackerUI
             SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
             var projs = await ProjectService.GetInstance.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
-
             projs.ForEach(x => projects.Add(x));
+
+            await LoadEntries();
+            PopulateEntryLabels();
         }
 
         private async Task LoadEntries()
@@ -116,7 +113,12 @@ namespace TimeTrackerUI
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            await LoadSubcategories();
+            if(comboBoxCategory.SelectedItem == null)
+            {
+                return;
+            }
+
+            await LoadSubcategories((CategoryModel) comboBoxCategory.SelectedItem);
         }
 
         private void checkBoxAllProjects_CheckedChanged(object sender, EventArgs e)
@@ -137,6 +139,11 @@ namespace TimeTrackerUI
 
         private void comboBoxSubcategory_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(comboBoxSubcategory.SelectedItem == null)
+            {
+                return;
+            }
+
             LoadProjects();
         }
 
