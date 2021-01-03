@@ -114,12 +114,13 @@ namespace TimeTrackerUI
         {
             var selectedProject = (ProjectModel)listBoxProject.SelectedItem;
 
-            if(selectedProject == null)
+            entries.Clear();
+
+            if (selectedProject == null)
             {
+                PopulateEntryLabels();
                 return;
             }
-
-            entries.Clear();
 
             var allEntries = await entryData.LoadEntriesByProject(selectedProject);
             allEntries = allEntries.OrderBy(x => x.Date).ToList();
@@ -200,7 +201,7 @@ namespace TimeTrackerUI
         {
             var selectedEntry = (EntryModel)listBoxEntries.SelectedItem;
 
-            if (selectedEntry == null)
+            if (selectedEntry == null || listBoxProject.SelectedItem == null)
             {
                 lblProjectValue.Text = string.Empty;
                 lblCategoryValue.Text = string.Empty;
