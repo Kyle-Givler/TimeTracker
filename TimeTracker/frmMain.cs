@@ -66,7 +66,7 @@ namespace TimeTrackerUI
             comboBoxSubcategory.DisplayMember = nameof(SubcategoryModel.Name);
 
             listBoxEntries.DataSource = entries;
-            listBoxEntries.DisplayMember = nameof(EntryModel.Date);
+            listBoxEntries.DisplayMember = nameof(EntryModel.FormattedDate);
 
             await LoadCategories();
             await LoadSubcategories((CategoryModel)comboBoxCategory.SelectedItem);
@@ -211,7 +211,7 @@ namespace TimeTrackerUI
             lblCategoryValue.Text = selectedEntry.Project.Category.Name;
             lblsubcategoryValue.Text = selectedEntry.Project.Subcategory == null ? "(none)" : selectedEntry.Project.Subcategory.Name;
             lblEntryDateValue.Text = selectedEntry.Date.ToString();
-            lblTimeSpentValue.Text = selectedEntry.HoursSpent.ToString();
+            lblTimeSpentValue.Text = $"{selectedEntry.HoursSpent} hours";
             textBoxNotes.Text = selectedEntry.Notes;
         }
 

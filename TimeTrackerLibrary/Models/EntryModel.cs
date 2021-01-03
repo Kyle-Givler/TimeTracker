@@ -29,11 +29,42 @@ namespace TimeTrackerLibrary.Models
 {
     public class EntryModel
     {
+        /// <summary>
+        /// Id of the row in the database
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Project Associated with this Entry
+        /// </summary>
         public ProjectModel Project { get; set; }
+
+        /// <summary>
+        /// Row id of the project associated with this entry
+        /// </summary>
         public int ProjectId { get; set; }
+
+        /// <summary>
+        /// Date of the Entry
+        /// </summary>
         public DateTimeOffset Date { get; set; }
+
+        public string FormattedDate 
+        {
+            get
+            {
+                return Date.ToString("D");
+            }
+        }
+
+        /// <summary>
+        /// Number of hours spent for this Entry
+        /// </summary>
         public double HoursSpent { get; set; }
+
+        /// <summary>
+        /// Notes associated with this Entry
+        /// </summary>
         public string Notes { get; set; }
     }
 }
