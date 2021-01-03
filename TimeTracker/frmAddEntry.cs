@@ -23,12 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System.Windows.Forms;
 using System.ComponentModel;
-using TimeTrackerLibrary.Models;
-using TimeTrackerLibrary.Data;
-using TimeTrackerLibrary;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using TimeTrackerLibrary;
+using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Models;
 using TimeTrackerLibrary.Services;
 
 namespace TimeTrackerUI
@@ -40,10 +40,14 @@ namespace TimeTrackerUI
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
         private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
+        private readonly ProjectModel project;
 
-        public frmAddEntry()
+        private bool loadingProject = false;
+
+        public frmAddEntry(ProjectModel project)
         {
             InitializeComponent();
+            this.project = project;
         }
 
         private void frmAddEntry_Load(object sender, System.EventArgs e)
@@ -62,8 +66,26 @@ namespace TimeTrackerUI
             comboBoxSubcategory.DataSource = subcategories;
             comboBoxSubcategory.DisplayMember = nameof(SubcategoryModel.Name);
 
+            if (project != null)
+            {
+                SelectProject();
+            }
+            else
+            {
+                await LoadCategories();
+                await LoadSubcategories();
+            }
+        }
+
+        private async Task SelectProject()
+        {
+            loadingProject = true;
+
             await LoadCategories();
+            comboBoxCategory.SelectedIndex = comboBoxCategory.FindStringExact(project.Category.Name);
+
             await LoadSubcategories();
+            comboBoxSubcategory.SelectedIndex = comboBoxSubcategory.FindStringExact(project.Subcategory.Name);
         }
 
         private async Task LoadProjects()
@@ -75,6 +97,12 @@ namespace TimeTrackerUI
 
             var projs = await ProjectService.GetInstance.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
             projs.ForEach(x => projects.Add(x));
+
+            if(loadingProject)
+            {
+                loadingProject = false;
+                listBoxProject.SelectedIndex = listBoxProject.FindStringExact(project.Name);
+            }
         }
 
         private async Task LoadCategories()
@@ -98,13 +126,11 @@ namespace TimeTrackerUI
 
             var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
-
-            LoadProjects();
         }
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if(comboBoxCategory.SelectedItem == null)
+            if (comboBoxCategory.SelectedItem == null)
             {
                 return;
             }
@@ -114,7 +140,7 @@ namespace TimeTrackerUI
 
         private void checkBoxAllProjects_CheckedChanged(object sender, System.EventArgs e)
         {
-            if(checkBoxAllProjects.Checked)
+            if (checkBoxAllProjects.Checked)
             {
                 comboBoxCategory.Enabled = false;
                 comboBoxSubcategory.Enabled = false;
@@ -130,7 +156,7 @@ namespace TimeTrackerUI
 
         private void btnAddEntry_Click(object sender, System.EventArgs e)
         {
-            if(!double.TryParse(textBoxHoursSpent.Text, out double hours))
+            if (!double.TryParse(textBoxHoursSpent.Text, out double hours))
             {
                 MessageBox.Show("Please enter a valid number of hours");
                 return;
@@ -138,7 +164,7 @@ namespace TimeTrackerUI
 
             ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
 
-            if(selectedProject == null)
+            if (selectedProject == null)
             {
                 MessageBox.Show("Please select a project");
                 return;
@@ -162,7 +188,7 @@ namespace TimeTrackerUI
 
         private async void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if(comboBoxSubcategory.SelectedItem == null)
+            if (comboBoxSubcategory.SelectedItem == null)
             {
                 return;
             }

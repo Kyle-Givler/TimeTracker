@@ -127,7 +127,9 @@ namespace TimeTrackerUI
 
         private void btnAddEntry_Click(object sender, EventArgs e)
         {
-            frmAddEntry frm = new frmAddEntry();
+            var selectedProject = (ProjectModel)listBoxProject.SelectedItem;
+
+            frmAddEntry frm = new frmAddEntry(selectedProject);
             frm.ShowDialog(this);
 
             LoadEntries();
