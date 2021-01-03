@@ -56,6 +56,7 @@ namespace TimeTrackerUI
             this.comboBoxSubcategory = new System.Windows.Forms.ComboBox();
             this.comboBoxCategory = new System.Windows.Forms.ComboBox();
             this.lblTimeTracker = new System.Windows.Forms.Label();
+            this.linkLabelGitHub = new System.Windows.Forms.LinkLabel();
             this.groupBoxSelectProj.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -328,12 +329,24 @@ namespace TimeTrackerUI
             this.lblTimeTracker.TabIndex = 34;
             this.lblTimeTracker.Text = "Time Tracker";
             // 
+            // linkLabelGitHub
+            // 
+            this.linkLabelGitHub.AutoSize = true;
+            this.linkLabelGitHub.Location = new System.Drawing.Point(782, 544);
+            this.linkLabelGitHub.Name = "linkLabelGitHub";
+            this.linkLabelGitHub.Size = new System.Drawing.Size(252, 21);
+            this.linkLabelGitHub.TabIndex = 35;
+            this.linkLabelGitHub.TabStop = true;
+            this.linkLabelGitHub.Text = "https://github.com/JoyfulReaper";
+            this.linkLabelGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelGitHub_LinkClicked);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1046, 574);
+            this.Controls.Add(this.linkLabelGitHub);
             this.Controls.Add(this.lblTimeTracker);
             this.Controls.Add(this.groupBoxSelectProj);
             this.Controls.Add(this.btnEditProjects);
@@ -395,5 +408,6 @@ namespace TimeTrackerUI
         private System.Windows.Forms.ComboBox comboBoxSubcategory;
         private System.Windows.Forms.ComboBox comboBoxCategory;
         private System.Windows.Forms.Label lblTimeTracker;
+        private System.Windows.Forms.LinkLabel linkLabelGitHub;
     }
 }

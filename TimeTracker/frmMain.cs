@@ -31,6 +31,7 @@ using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.Services;
 using TimeTrackerLibrary.Models;
+using System.Diagnostics;
 
 namespace TimeTrackerUI
 {
@@ -243,6 +244,11 @@ namespace TimeTrackerUI
             entryData.RemoveEntry(selectedEntry);
 
             LoadEntries();
+        }
+
+        private void linkLabelGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://github.com/JoyfulReaper") { UseShellExecute = true });
         }
     }
 }
