@@ -229,8 +229,15 @@ namespace TimeTrackerUI
             lblAllTimeValue.Text = $"{await entryService.GetTotalTimeAllEntries()} hours";
             lblProjectTotalValue.Text = $"{await entryService.GetTimeByProject(selectedEntry.Project)} hours";
             lblCategoryTimeValue.Text = $"{await entryService.GetTimeByCategory(selectedEntry.Project.Category)} hours";
-            var test = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory)} hours";
-            lblSubcategoryTotalValue.Text = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory)} hours";
+
+            if (selectedEntry.Project.Subcategory != null)
+            {
+                lblSubcategoryTotalValue.Text = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory)} hours";
+            }
+            else
+            {
+                lblSubcategoryTotalValue.Text = "N/A";
+            }
         }
 
         private async void listBoxProject_SelectedIndexChanged(object sender, EventArgs e)
