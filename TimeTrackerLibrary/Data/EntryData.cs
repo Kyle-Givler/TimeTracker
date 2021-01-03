@@ -64,6 +64,11 @@ namespace TimeTrackerLibrary.Data
             throw new System.NotImplementedException();
         }
 
+        public Task RemoveEntry(EntryModel entry)
+        {
+            return dataAccess.SaveData("spEntry_Delete", new { Id = entry.Id });
+        }
+
         private async Task RehydrateObjects(EntryModel e)
         {
             // TODO fix this with a join or something!

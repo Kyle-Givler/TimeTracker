@@ -222,5 +222,25 @@ namespace TimeTrackerUI
             await LoadEntries();
             PopulateEntryLabels();
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            var selectedEntry = (EntryModel)listBoxEntries.SelectedItem;
+
+            if(selectedEntry == null)
+            {
+                return;
+            }
+
+            var res = MessageBox.Show("Confirm Enty Deletion", "Delete Entry", MessageBoxButtons.YesNo);
+            if(res == DialogResult.No)
+            {
+                return;
+            }
+
+            entryData.RemoveEntry(selectedEntry);
+
+            LoadEntries();
+        }
     }
 }

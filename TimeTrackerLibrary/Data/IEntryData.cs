@@ -40,5 +40,7 @@ namespace TimeTrackerLibrary.Data
         Task<List<EntryModel>> LoadEntriesBySubcategory(SubcategoryModel subcategory);
 
         Task<List<EntryModel>> LoadEntriesByProject(ProjectModel project);
+
+        Task RemoveEntry(EntryModel entry);
     }
 }

@@ -86,5 +86,6 @@
     <Build Include="dbo\Stored Procedures\spEntry_GetByCategory.sql" />
     <Build Include="dbo\Stored Procedures\spEntry_GetBySubcategory.sql" />
     <Build Include="dbo\Stored Procedures\spEntry_GetByProjectId.sql" />
+    <Build Include="dbo\Stored Procedures\spEntry_Delete.sql" />
   </ItemGroup>
 </Project>
