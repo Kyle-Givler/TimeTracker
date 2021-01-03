@@ -24,6 +24,7 @@ SOFTWARE.
 */
 
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
@@ -42,7 +43,7 @@ namespace TimeTrackerUI
         private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
         private readonly ProjectModel project;
 
-        private bool loadingProject = false;
+        private bool ProcessIndexChange = true;
 
         public frmAddEntry(ProjectModel project)
         {
@@ -50,9 +51,9 @@ namespace TimeTrackerUI
             this.project = project;
         }
 
-        private void frmAddEntry_Load(object sender, System.EventArgs e)
+        private async void frmAddEntry_Load(object sender, System.EventArgs e)
         {
-            SetupData();
+            await SetupData();
         }
 
         private async Task SetupData()
@@ -68,24 +69,30 @@ namespace TimeTrackerUI
 
             if (project != null)
             {
-                SelectProject();
+                await SelectProject();
             }
             else
             {
                 await LoadCategories();
                 await LoadSubcategories();
+                await LoadProjects();
             }
         }
 
         private async Task SelectProject()
         {
-            loadingProject = true;
+            ProcessIndexChange = false;
 
             await LoadCategories();
-            comboBoxCategory.SelectedIndex = comboBoxCategory.FindStringExact(project.Category.Name);
+            comboBoxCategory.SelectedItem = categories.Where(x => x.Id == project.Category.Id).FirstOrDefault();
 
             await LoadSubcategories();
-            comboBoxSubcategory.SelectedIndex = comboBoxSubcategory.FindStringExact(project.Subcategory.Name);
+            comboBoxSubcategory.SelectedItem = subcategories.Where(x => x.Id == project.Subcategory.Id).FirstOrDefault();
+
+            await LoadProjects();
+            listBoxProject.SelectedItem = projects.Where(x => x.Id == project.Id).FirstOrDefault();
+
+            ProcessIndexChange = true;
         }
 
         private async Task LoadProjects()
@@ -97,12 +104,6 @@ namespace TimeTrackerUI
 
             var projs = await ProjectService.GetInstance.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
             projs.ForEach(x => projects.Add(x));
-
-            if(loadingProject)
-            {
-                loadingProject = false;
-                listBoxProject.SelectedIndex = listBoxProject.FindStringExact(project.Name);
-            }
         }
 
         private async Task LoadCategories()
@@ -127,17 +128,20 @@ namespace TimeTrackerUI
             var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
 
-            LoadProjects();
         }
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (comboBoxCategory.SelectedItem == null)
+            if (ProcessIndexChange)
             {
-                return;
-            }
+                if (comboBoxCategory.SelectedItem == null)
+                {
+                    return;
+                }
 
-            await LoadSubcategories();
+                await LoadSubcategories();
+                await LoadProjects(); 
+            }
         }
 
         private void checkBoxAllProjects_CheckedChanged(object sender, System.EventArgs e)
@@ -190,12 +194,15 @@ namespace TimeTrackerUI
 
         private async void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (comboBoxSubcategory.SelectedItem == null)
+            if (ProcessIndexChange)
             {
-                return;
-            }
+                if (comboBoxSubcategory.SelectedItem == null)
+                {
+                    return;
+                }
 
-            await LoadProjects();
+                await LoadProjects(); 
+            }
         }
     }
 }
