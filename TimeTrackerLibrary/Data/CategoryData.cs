@@ -24,10 +24,8 @@ SOFTWARE.
 */
 
 using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.DataAccess;
 using TimeTrackerLibrary.Models;
