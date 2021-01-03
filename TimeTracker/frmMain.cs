@@ -32,6 +32,7 @@ using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.Services;
 using TimeTrackerLibrary.Models;
 using System.Diagnostics;
+using System.Linq;
 
 namespace TimeTrackerUI
 {
@@ -119,8 +120,9 @@ namespace TimeTrackerUI
             }
 
             entries.Clear();
-            var allEntries = await entryData.LoadEntriesByProject(selectedProject);
 
+            var allEntries = await entryData.LoadEntriesByProject(selectedProject);
+            allEntries = allEntries.OrderBy(x => x.Date).ToList();
             allEntries.ForEach(x => entries.Add(x));
 
             PopulateEntryLabels();
@@ -194,7 +196,7 @@ namespace TimeTrackerUI
             PopulateEntryLabels();
         }
 
-        private void PopulateEntryLabels()
+        private async Task PopulateEntryLabels()
         {
             var selectedEntry = (EntryModel)listBoxEntries.SelectedItem;
 
@@ -206,15 +208,28 @@ namespace TimeTrackerUI
                 lblEntryDateValue.Text = string.Empty;
                 lblTimeSpentValue.Text = string.Empty;
                 textBoxNotes.Text = string.Empty;
+
+                lblAllTimeValue.Text = string.Empty;
+                lblProjectTotalValue.Text = string.Empty;
+                lblCategoryTimeValue.Text = string.Empty;
+                lblSubcategoryTotalValue.Text = string.Empty;
                 return;
             }
 
             lblProjectValue.Text = selectedEntry.Project.Name;
             lblCategoryValue.Text = selectedEntry.Project.Category.Name;
             lblsubcategoryValue.Text = selectedEntry.Project.Subcategory == null ? "(none)" : selectedEntry.Project.Subcategory.Name;
-            lblEntryDateValue.Text = selectedEntry.Date.ToString();
+            lblEntryDateValue.Text = selectedEntry.FormattedDate;
             lblTimeSpentValue.Text = $"{selectedEntry.HoursSpent} hours";
             textBoxNotes.Text = selectedEntry.Notes;
+
+            var entryService = EntryService.GetInstance;
+
+            lblAllTimeValue.Text = $"{await entryService.GetTotalTimeAllEntries()} hours";
+            lblProjectTotalValue.Text = $"{await entryService.GetTimeByProject(selectedEntry.Project)} hours";
+            lblCategoryTimeValue.Text = $"{await entryService.GetTimeByCategory(selectedEntry.Project.Category)} hours";
+            var test = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory)} hours";
+            lblSubcategoryTotalValue.Text = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory)} hours";
         }
 
         private async void listBoxProject_SelectedIndexChanged(object sender, EventArgs e)
@@ -251,6 +266,34 @@ namespace TimeTrackerUI
         private void linkLabelGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(new ProcessStartInfo("https://github.com/JoyfulReaper") { UseShellExecute = true });
+        }
+
+        private async void checkBoxEntries_CheckedChanged(object sender, EventArgs e)
+        {
+            entries.Clear();
+
+            if(checkBoxEntries.Checked)
+            {
+                comboBoxCategory.Enabled = false;
+                comboBoxSubcategory.Enabled = false;
+                listBoxProject.Enabled = false;
+                checkBoxAllProjects.Enabled = false;
+
+                var allEntries = await entryData.LoadAllEntries();
+                allEntries = allEntries.OrderBy(x => x.Date).ToList();
+                allEntries.ForEach(x => entries.Add(x));
+            }
+            else
+            {
+                comboBoxCategory.Enabled = true;
+                comboBoxSubcategory.Enabled = true;
+                listBoxProject.Enabled = true;
+                checkBoxAllProjects.Enabled = true;
+
+                LoadEntries();
+            }
+
+            PopulateEntryLabels();
         }
     }
 }
