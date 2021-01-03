@@ -126,6 +126,8 @@ namespace TimeTrackerUI
 
             var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
+
+            LoadProjects();
         }
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, System.EventArgs e)
