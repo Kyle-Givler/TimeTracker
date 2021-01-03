@@ -149,6 +149,8 @@ namespace TimeTrackerUI
         {
             frmEditProject frm = new frmEditProject();
             frm.ShowDialog(this);
+
+            LoadProjects();
         }
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)

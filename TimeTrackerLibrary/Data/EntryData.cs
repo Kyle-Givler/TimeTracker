@@ -69,6 +69,11 @@ namespace TimeTrackerLibrary.Data
             return dataAccess.SaveData("spEntry_Delete", new { Id = entry.Id });
         }
 
+        public Task RemoveEntryByProject(ProjectModel project)
+        {
+            return dataAccess.SaveData("spEntry_DeleteByProject", new { ProjectId = project.Id});
+        }
+
         private async Task RehydrateObjects(EntryModel e)
         {
             // TODO fix this with a join or something!

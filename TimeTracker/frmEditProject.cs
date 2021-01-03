@@ -43,6 +43,7 @@ namespace TimeTrackerUI
         private readonly BindingList<ProjectModel> projects = new BindingList<ProjectModel>();
 
         private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
+        private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
 
         private bool editingProject = false;
 
@@ -192,14 +193,14 @@ namespace TimeTrackerUI
                 return;
             }
 
-            var res = MessageBox.Show($"Delete project {selectedProj.Name}?", "Delete Project", MessageBoxButtons.YesNo);
+            var res = MessageBox.Show($"Delete project {selectedProj.Name}?\nAll Entries for this project will be deleted also!", "Delete Project", MessageBoxButtons.YesNo);
 
             if(res == DialogResult.No)
             {
                 return;
             }
 
-            //TODO - Delete all entries before deleing the Project
+            await entryData.RemoveEntryByProject(selectedProj);
             await projectData.RemoveProject(selectedProj);
 
             LoadProjects();

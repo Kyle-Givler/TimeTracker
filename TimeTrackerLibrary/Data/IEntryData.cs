@@ -42,5 +42,11 @@ namespace TimeTrackerLibrary.Data
         Task<List<EntryModel>> LoadEntriesByProject(ProjectModel project);
 
         Task RemoveEntry(EntryModel entry);
+
+        /// <summary>
+        /// Delete all entries for a given project
+        /// </summary>
+        /// <param name="project">The project for which to delete entries</param>
+        Task RemoveEntryByProject(ProjectModel project);
     }
 }
