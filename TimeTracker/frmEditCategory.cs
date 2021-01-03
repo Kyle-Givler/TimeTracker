@@ -104,7 +104,9 @@ namespace TimeTrackerUI
             }
 
             await LoadCategories();
-            LoadSubcategories();
+            await LoadSubcategories();
+
+            UpdateCategoryLabel();
         }
 
         private async Task AddCategory()
