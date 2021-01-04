@@ -29,6 +29,7 @@ namespace TimeTrackerUI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblCreateEntry = new System.Windows.Forms.Label();
             this.lblProject = new System.Windows.Forms.Label();
             this.listBoxProject = new System.Windows.Forms.ListBox();
@@ -41,13 +42,25 @@ namespace TimeTrackerUI
             this.dateTimePickerDate = new System.Windows.Forms.DateTimePicker();
             this.lblDate = new System.Windows.Forms.Label();
             this.btnAddEntry = new System.Windows.Forms.Button();
-            this.textBoxHoursSpent = new System.Windows.Forms.TextBox();
-            this.lblHoursSpent = new System.Windows.Forms.Label();
             this.textBoxNotes = new System.Windows.Forms.TextBox();
             this.lblNotes = new System.Windows.Forms.Label();
             this.groupBoxEntry = new System.Windows.Forms.GroupBox();
+            this.lblHoursSpent = new System.Windows.Forms.Label();
+            this.textBoxHoursSpent = new System.Windows.Forms.TextBox();
+            this.lblStartTime = new System.Windows.Forms.Label();
+            this.lblEndTime = new System.Windows.Forms.Label();
+            this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
+            this.timerTimeSpent = new System.Windows.Forms.Timer(this.components);
+            this.groupBoxMethod = new System.Windows.Forms.GroupBox();
+            this.btnStopTimer = new System.Windows.Forms.Button();
+            this.buttonStartTimer = new System.Windows.Forms.Button();
+            this.radioButtonHours = new System.Windows.Forms.RadioButton();
+            this.radioButtonTimes = new System.Windows.Forms.RadioButton();
+            this.radioButtonTimer = new System.Windows.Forms.RadioButton();
             this.groupBoxSelectProj.SuspendLayout();
             this.groupBoxEntry.SuspendLayout();
+            this.groupBoxMethod.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblCreateEntry
@@ -148,7 +161,7 @@ namespace TimeTrackerUI
             // 
             this.dateTimePickerDate.CalendarFont = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dateTimePickerDate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dateTimePickerDate.Location = new System.Drawing.Point(23, 64);
+            this.dateTimePickerDate.Location = new System.Drawing.Point(23, 48);
             this.dateTimePickerDate.Name = "dateTimePickerDate";
             this.dateTimePickerDate.Size = new System.Drawing.Size(269, 27);
             this.dateTimePickerDate.TabIndex = 33;
@@ -156,7 +169,7 @@ namespace TimeTrackerUI
             // lblDate
             // 
             this.lblDate.AutoSize = true;
-            this.lblDate.Location = new System.Drawing.Point(23, 41);
+            this.lblDate.Location = new System.Drawing.Point(23, 25);
             this.lblDate.Name = "lblDate";
             this.lblDate.Size = new System.Drawing.Size(48, 21);
             this.lblDate.TabIndex = 34;
@@ -165,7 +178,7 @@ namespace TimeTrackerUI
             // btnAddEntry
             // 
             this.btnAddEntry.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnAddEntry.Location = new System.Drawing.Point(86, 412);
+            this.btnAddEntry.Location = new System.Drawing.Point(72, 377);
             this.btnAddEntry.Name = "btnAddEntry";
             this.btnAddEntry.Size = new System.Drawing.Size(164, 37);
             this.btnAddEntry.TabIndex = 37;
@@ -173,25 +186,9 @@ namespace TimeTrackerUI
             this.btnAddEntry.UseVisualStyleBackColor = true;
             this.btnAddEntry.Click += new System.EventHandler(this.btnAddEntry_Click);
             // 
-            // textBoxHoursSpent
-            // 
-            this.textBoxHoursSpent.Location = new System.Drawing.Point(23, 123);
-            this.textBoxHoursSpent.Name = "textBoxHoursSpent";
-            this.textBoxHoursSpent.Size = new System.Drawing.Size(269, 29);
-            this.textBoxHoursSpent.TabIndex = 35;
-            // 
-            // lblHoursSpent
-            // 
-            this.lblHoursSpent.AutoSize = true;
-            this.lblHoursSpent.Location = new System.Drawing.Point(23, 99);
-            this.lblHoursSpent.Name = "lblHoursSpent";
-            this.lblHoursSpent.Size = new System.Drawing.Size(105, 21);
-            this.lblHoursSpent.TabIndex = 36;
-            this.lblHoursSpent.Text = "Hours Spent:";
-            // 
             // textBoxNotes
             // 
-            this.textBoxNotes.Location = new System.Drawing.Point(23, 185);
+            this.textBoxNotes.Location = new System.Drawing.Point(23, 165);
             this.textBoxNotes.Multiline = true;
             this.textBoxNotes.Name = "textBoxNotes";
             this.textBoxNotes.Size = new System.Drawing.Size(269, 206);
@@ -200,7 +197,7 @@ namespace TimeTrackerUI
             // lblNotes
             // 
             this.lblNotes.AutoSize = true;
-            this.lblNotes.Location = new System.Drawing.Point(23, 161);
+            this.lblNotes.Location = new System.Drawing.Point(23, 141);
             this.lblNotes.Name = "lblNotes";
             this.lblNotes.Size = new System.Drawing.Size(58, 21);
             this.lblNotes.TabIndex = 38;
@@ -212,22 +209,144 @@ namespace TimeTrackerUI
             this.groupBoxEntry.Controls.Add(this.textBoxNotes);
             this.groupBoxEntry.Controls.Add(this.dateTimePickerDate);
             this.groupBoxEntry.Controls.Add(this.lblNotes);
-            this.groupBoxEntry.Controls.Add(this.lblHoursSpent);
             this.groupBoxEntry.Controls.Add(this.btnAddEntry);
-            this.groupBoxEntry.Controls.Add(this.textBoxHoursSpent);
             this.groupBoxEntry.Location = new System.Drawing.Point(383, 37);
             this.groupBoxEntry.Name = "groupBoxEntry";
-            this.groupBoxEntry.Size = new System.Drawing.Size(337, 483);
+            this.groupBoxEntry.Size = new System.Drawing.Size(308, 482);
             this.groupBoxEntry.TabIndex = 32;
             this.groupBoxEntry.TabStop = false;
             this.groupBoxEntry.Text = "Add Entry";
+            // 
+            // lblHoursSpent
+            // 
+            this.lblHoursSpent.AutoSize = true;
+            this.lblHoursSpent.Location = new System.Drawing.Point(6, 31);
+            this.lblHoursSpent.Name = "lblHoursSpent";
+            this.lblHoursSpent.Size = new System.Drawing.Size(105, 21);
+            this.lblHoursSpent.TabIndex = 38;
+            this.lblHoursSpent.Text = "Hours Spent:";
+            // 
+            // textBoxHoursSpent
+            // 
+            this.textBoxHoursSpent.Location = new System.Drawing.Point(6, 55);
+            this.textBoxHoursSpent.Name = "textBoxHoursSpent";
+            this.textBoxHoursSpent.Size = new System.Drawing.Size(105, 29);
+            this.textBoxHoursSpent.TabIndex = 37;
+            // 
+            // lblStartTime
+            // 
+            this.lblStartTime.AutoSize = true;
+            this.lblStartTime.Location = new System.Drawing.Point(6, 113);
+            this.lblStartTime.Name = "lblStartTime";
+            this.lblStartTime.Size = new System.Drawing.Size(89, 21);
+            this.lblStartTime.TabIndex = 40;
+            this.lblStartTime.Text = "Start Time:";
+            // 
+            // lblEndTime
+            // 
+            this.lblEndTime.AutoSize = true;
+            this.lblEndTime.Location = new System.Drawing.Point(6, 181);
+            this.lblEndTime.Name = "lblEndTime";
+            this.lblEndTime.Size = new System.Drawing.Size(81, 21);
+            this.lblEndTime.TabIndex = 42;
+            this.lblEndTime.Text = "End Time:";
+            // 
+            // dateTimePickerStart
+            // 
+            this.dateTimePickerStart.CustomFormat = "";
+            this.dateTimePickerStart.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePickerStart.Location = new System.Drawing.Point(6, 137);
+            this.dateTimePickerStart.Name = "dateTimePickerStart";
+            this.dateTimePickerStart.ShowUpDown = true;
+            this.dateTimePickerStart.Size = new System.Drawing.Size(128, 29);
+            this.dateTimePickerStart.TabIndex = 43;
+            // 
+            // dateTimePickerEnd
+            // 
+            this.dateTimePickerEnd.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(6, 202);
+            this.dateTimePickerEnd.Name = "dateTimePickerEnd";
+            this.dateTimePickerEnd.ShowUpDown = true;
+            this.dateTimePickerEnd.Size = new System.Drawing.Size(128, 29);
+            this.dateTimePickerEnd.TabIndex = 44;
+            // 
+            // groupBoxMethod
+            // 
+            this.groupBoxMethod.Controls.Add(this.btnStopTimer);
+            this.groupBoxMethod.Controls.Add(this.buttonStartTimer);
+            this.groupBoxMethod.Controls.Add(this.radioButtonHours);
+            this.groupBoxMethod.Controls.Add(this.radioButtonTimes);
+            this.groupBoxMethod.Controls.Add(this.radioButtonTimer);
+            this.groupBoxMethod.Controls.Add(this.lblHoursSpent);
+            this.groupBoxMethod.Controls.Add(this.dateTimePickerEnd);
+            this.groupBoxMethod.Controls.Add(this.textBoxHoursSpent);
+            this.groupBoxMethod.Controls.Add(this.dateTimePickerStart);
+            this.groupBoxMethod.Controls.Add(this.lblStartTime);
+            this.groupBoxMethod.Controls.Add(this.lblEndTime);
+            this.groupBoxMethod.Location = new System.Drawing.Point(718, 37);
+            this.groupBoxMethod.Name = "groupBoxMethod";
+            this.groupBoxMethod.Size = new System.Drawing.Size(251, 470);
+            this.groupBoxMethod.TabIndex = 45;
+            this.groupBoxMethod.TabStop = false;
+            this.groupBoxMethod.Text = "EntryMethod";
+            // 
+            // btnStopTimer
+            // 
+            this.btnStopTimer.Location = new System.Drawing.Point(6, 311);
+            this.btnStopTimer.Name = "btnStopTimer";
+            this.btnStopTimer.Size = new System.Drawing.Size(114, 33);
+            this.btnStopTimer.TabIndex = 50;
+            this.btnStopTimer.Text = "Stop Timer";
+            this.btnStopTimer.UseVisualStyleBackColor = true;
+            // 
+            // buttonStartTimer
+            // 
+            this.buttonStartTimer.Location = new System.Drawing.Point(6, 265);
+            this.buttonStartTimer.Name = "buttonStartTimer";
+            this.buttonStartTimer.Size = new System.Drawing.Size(114, 33);
+            this.buttonStartTimer.TabIndex = 49;
+            this.buttonStartTimer.Text = "Start Timer";
+            this.buttonStartTimer.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonHours
+            // 
+            this.radioButtonHours.AutoSize = true;
+            this.radioButtonHours.Checked = true;
+            this.radioButtonHours.Location = new System.Drawing.Point(154, 56);
+            this.radioButtonHours.Name = "radioButtonHours";
+            this.radioButtonHours.Size = new System.Drawing.Size(94, 25);
+            this.radioButtonHours.TabIndex = 48;
+            this.radioButtonHours.TabStop = true;
+            this.radioButtonHours.Text = "By Hours";
+            this.radioButtonHours.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonTimes
+            // 
+            this.radioButtonTimes.AutoSize = true;
+            this.radioButtonTimes.Location = new System.Drawing.Point(154, 179);
+            this.radioButtonTimes.Name = "radioButtonTimes";
+            this.radioButtonTimes.Size = new System.Drawing.Size(86, 25);
+            this.radioButtonTimes.TabIndex = 47;
+            this.radioButtonTimes.Text = "By Time";
+            this.radioButtonTimes.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonTimer
+            // 
+            this.radioButtonTimer.AutoSize = true;
+            this.radioButtonTimer.Location = new System.Drawing.Point(148, 293);
+            this.radioButtonTimer.Name = "radioButtonTimer";
+            this.radioButtonTimer.Size = new System.Drawing.Size(92, 25);
+            this.radioButtonTimer.TabIndex = 46;
+            this.radioButtonTimer.Text = "By Timer";
+            this.radioButtonTimer.UseVisualStyleBackColor = true;
             // 
             // frmAddEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(733, 532);
+            this.ClientSize = new System.Drawing.Size(981, 532);
+            this.Controls.Add(this.groupBoxMethod);
             this.Controls.Add(this.groupBoxEntry);
             this.Controls.Add(this.groupBoxSelectProj);
             this.Controls.Add(this.lblCreateEntry);
@@ -240,6 +359,8 @@ namespace TimeTrackerUI
             this.groupBoxSelectProj.PerformLayout();
             this.groupBoxEntry.ResumeLayout(false);
             this.groupBoxEntry.PerformLayout();
+            this.groupBoxMethod.ResumeLayout(false);
+            this.groupBoxMethod.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -259,10 +380,21 @@ namespace TimeTrackerUI
         private System.Windows.Forms.DateTimePicker dateTimePickerDate;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.Button btnAddEntry;
-        private System.Windows.Forms.TextBox textBoxHoursSpent;
-        private System.Windows.Forms.Label lblHoursSpent;
         private System.Windows.Forms.TextBox textBoxNotes;
         private System.Windows.Forms.Label lblNotes;
         private System.Windows.Forms.GroupBox groupBoxEntry;
+        private System.Windows.Forms.Label lblHoursSpent;
+        private System.Windows.Forms.TextBox textBoxHoursSpent;
+        private System.Windows.Forms.Label lblStartTime;
+        private System.Windows.Forms.Label lblEndTime;
+        private System.Windows.Forms.DateTimePicker dateTimePickerStart;
+        private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
+        private System.Windows.Forms.Timer timerTimeSpent;
+        private System.Windows.Forms.GroupBox groupBoxMethod;
+        private System.Windows.Forms.RadioButton radioButtonHours;
+        private System.Windows.Forms.RadioButton radioButtonTimes;
+        private System.Windows.Forms.RadioButton radioButtonTimer;
+        private System.Windows.Forms.Button btnStopTimer;
+        private System.Windows.Forms.Button buttonStartTimer;
     }
 }
