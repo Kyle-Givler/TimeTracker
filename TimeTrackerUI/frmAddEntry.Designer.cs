@@ -53,11 +53,13 @@ namespace TimeTrackerUI
             this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.timerTimeSpent = new System.Windows.Forms.Timer(this.components);
             this.groupBoxMethod = new System.Windows.Forms.GroupBox();
+            this.lblTimerTest = new System.Windows.Forms.Label();
             this.btnStopTimer = new System.Windows.Forms.Button();
             this.buttonStartTimer = new System.Windows.Forms.Button();
             this.radioButtonHours = new System.Windows.Forms.RadioButton();
             this.radioButtonTimes = new System.Windows.Forms.RadioButton();
             this.radioButtonTimer = new System.Windows.Forms.RadioButton();
+            this.timerUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.groupBoxSelectProj.SuspendLayout();
             this.groupBoxEntry.SuspendLayout();
             this.groupBoxMethod.SuspendLayout();
@@ -253,8 +255,8 @@ namespace TimeTrackerUI
             // 
             // dateTimePickerStart
             // 
-            this.dateTimePickerStart.CustomFormat = "";
-            this.dateTimePickerStart.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePickerStart.CustomFormat = "h:mm tt";
+            this.dateTimePickerStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePickerStart.Location = new System.Drawing.Point(6, 137);
             this.dateTimePickerStart.Name = "dateTimePickerStart";
             this.dateTimePickerStart.ShowUpDown = true;
@@ -263,15 +265,22 @@ namespace TimeTrackerUI
             // 
             // dateTimePickerEnd
             // 
-            this.dateTimePickerEnd.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePickerEnd.CustomFormat = "h:mm tt";
+            this.dateTimePickerEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePickerEnd.Location = new System.Drawing.Point(6, 202);
             this.dateTimePickerEnd.Name = "dateTimePickerEnd";
             this.dateTimePickerEnd.ShowUpDown = true;
             this.dateTimePickerEnd.Size = new System.Drawing.Size(128, 29);
             this.dateTimePickerEnd.TabIndex = 44;
             // 
+            // timerTimeSpent
+            // 
+            this.timerTimeSpent.Interval = 1000;
+            this.timerTimeSpent.Tick += new System.EventHandler(this.timerTimeSpent_Tick);
+            // 
             // groupBoxMethod
             // 
+            this.groupBoxMethod.Controls.Add(this.lblTimerTest);
             this.groupBoxMethod.Controls.Add(this.btnStopTimer);
             this.groupBoxMethod.Controls.Add(this.buttonStartTimer);
             this.groupBoxMethod.Controls.Add(this.radioButtonHours);
@@ -290,6 +299,15 @@ namespace TimeTrackerUI
             this.groupBoxMethod.TabStop = false;
             this.groupBoxMethod.Text = "EntryMethod";
             // 
+            // lblTimerTest
+            // 
+            this.lblTimerTest.AutoSize = true;
+            this.lblTimerTest.Location = new System.Drawing.Point(60, 377);
+            this.lblTimerTest.Name = "lblTimerTest";
+            this.lblTimerTest.Size = new System.Drawing.Size(51, 21);
+            this.lblTimerTest.TabIndex = 51;
+            this.lblTimerTest.Text = "label1";
+            // 
             // btnStopTimer
             // 
             this.btnStopTimer.Location = new System.Drawing.Point(6, 311);
@@ -307,6 +325,7 @@ namespace TimeTrackerUI
             this.buttonStartTimer.TabIndex = 49;
             this.buttonStartTimer.Text = "Start Timer";
             this.buttonStartTimer.UseVisualStyleBackColor = true;
+            this.buttonStartTimer.Click += new System.EventHandler(this.buttonStartTimer_Click);
             // 
             // radioButtonHours
             // 
@@ -339,6 +358,11 @@ namespace TimeTrackerUI
             this.radioButtonTimer.TabIndex = 46;
             this.radioButtonTimer.Text = "By Timer";
             this.radioButtonTimer.UseVisualStyleBackColor = true;
+            // 
+            // timerUpdateDisplay
+            // 
+            this.timerUpdateDisplay.Interval = 1000;
+            this.timerUpdateDisplay.Tick += new System.EventHandler(this.timerUpdateDisplay_Tick);
             // 
             // frmAddEntry
             // 
@@ -396,5 +420,7 @@ namespace TimeTrackerUI
         private System.Windows.Forms.RadioButton radioButtonTimer;
         private System.Windows.Forms.Button btnStopTimer;
         private System.Windows.Forms.Button buttonStartTimer;
+        private System.Windows.Forms.Timer timerUpdateDisplay;
+        private System.Windows.Forms.Label lblTimerTest;
     }
 }
