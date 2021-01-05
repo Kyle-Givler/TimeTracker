@@ -53,13 +53,19 @@ namespace TimeTrackerUI
             this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.timerTimeSpent = new System.Windows.Forms.Timer(this.components);
             this.groupBoxMethod = new System.Windows.Forms.GroupBox();
-            this.lblTimerTest = new System.Windows.Forms.Label();
+            this.lblSecondsValue = new System.Windows.Forms.Label();
+            this.lblSeconds = new System.Windows.Forms.Label();
+            this.lblMinutesValue = new System.Windows.Forms.Label();
+            this.lblMinutes = new System.Windows.Forms.Label();
+            this.lblHoursValue = new System.Windows.Forms.Label();
+            this.lblHours = new System.Windows.Forms.Label();
+            this.lblTimerHoursValue = new System.Windows.Forms.Label();
+            this.lblTimerHours = new System.Windows.Forms.Label();
             this.btnStopTimer = new System.Windows.Forms.Button();
             this.buttonStartTimer = new System.Windows.Forms.Button();
             this.radioButtonHours = new System.Windows.Forms.RadioButton();
             this.radioButtonTimes = new System.Windows.Forms.RadioButton();
             this.radioButtonTimer = new System.Windows.Forms.RadioButton();
-            this.timerUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.groupBoxSelectProj.SuspendLayout();
             this.groupBoxEntry.SuspendLayout();
             this.groupBoxMethod.SuspendLayout();
@@ -280,7 +286,14 @@ namespace TimeTrackerUI
             // 
             // groupBoxMethod
             // 
-            this.groupBoxMethod.Controls.Add(this.lblTimerTest);
+            this.groupBoxMethod.Controls.Add(this.lblSecondsValue);
+            this.groupBoxMethod.Controls.Add(this.lblSeconds);
+            this.groupBoxMethod.Controls.Add(this.lblMinutesValue);
+            this.groupBoxMethod.Controls.Add(this.lblMinutes);
+            this.groupBoxMethod.Controls.Add(this.lblHoursValue);
+            this.groupBoxMethod.Controls.Add(this.lblHours);
+            this.groupBoxMethod.Controls.Add(this.lblTimerHoursValue);
+            this.groupBoxMethod.Controls.Add(this.lblTimerHours);
             this.groupBoxMethod.Controls.Add(this.btnStopTimer);
             this.groupBoxMethod.Controls.Add(this.buttonStartTimer);
             this.groupBoxMethod.Controls.Add(this.radioButtonHours);
@@ -297,16 +310,96 @@ namespace TimeTrackerUI
             this.groupBoxMethod.Size = new System.Drawing.Size(251, 470);
             this.groupBoxMethod.TabIndex = 45;
             this.groupBoxMethod.TabStop = false;
-            this.groupBoxMethod.Text = "EntryMethod";
+            this.groupBoxMethod.Text = "Entry Method";
             // 
-            // lblTimerTest
+            // lblSecondsValue
             // 
-            this.lblTimerTest.AutoSize = true;
-            this.lblTimerTest.Location = new System.Drawing.Point(60, 377);
-            this.lblTimerTest.Name = "lblTimerTest";
-            this.lblTimerTest.Size = new System.Drawing.Size(51, 21);
-            this.lblTimerTest.TabIndex = 51;
-            this.lblTimerTest.Text = "label1";
+            this.lblSecondsValue.AutoSize = true;
+            this.lblSecondsValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblSecondsValue.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblSecondsValue.Location = new System.Drawing.Point(108, 418);
+            this.lblSecondsValue.Name = "lblSecondsValue";
+            this.lblSecondsValue.Size = new System.Drawing.Size(72, 20);
+            this.lblSecondsValue.TabIndex = 58;
+            this.lblSecondsValue.Text = "{seconds}";
+            this.lblSecondsValue.Visible = false;
+            // 
+            // lblSeconds
+            // 
+            this.lblSeconds.AutoSize = true;
+            this.lblSeconds.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblSeconds.Location = new System.Drawing.Point(27, 417);
+            this.lblSeconds.Name = "lblSeconds";
+            this.lblSeconds.Size = new System.Drawing.Size(76, 21);
+            this.lblSeconds.TabIndex = 57;
+            this.lblSeconds.Text = "Seconds:";
+            this.lblSeconds.Visible = false;
+            // 
+            // lblMinutesValue
+            // 
+            this.lblMinutesValue.AutoSize = true;
+            this.lblMinutesValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblMinutesValue.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblMinutesValue.Location = new System.Drawing.Point(109, 397);
+            this.lblMinutesValue.Name = "lblMinutesValue";
+            this.lblMinutesValue.Size = new System.Drawing.Size(71, 20);
+            this.lblMinutesValue.TabIndex = 56;
+            this.lblMinutesValue.Text = "{minutes}";
+            this.lblMinutesValue.Visible = false;
+            // 
+            // lblMinutes
+            // 
+            this.lblMinutes.AutoSize = true;
+            this.lblMinutes.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblMinutes.Location = new System.Drawing.Point(27, 396);
+            this.lblMinutes.Name = "lblMinutes";
+            this.lblMinutes.Size = new System.Drawing.Size(73, 21);
+            this.lblMinutes.TabIndex = 55;
+            this.lblMinutes.Text = "Minutes:";
+            this.lblMinutes.Visible = false;
+            // 
+            // lblHoursValue
+            // 
+            this.lblHoursValue.AutoSize = true;
+            this.lblHoursValue.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblHoursValue.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblHoursValue.Location = new System.Drawing.Point(109, 376);
+            this.lblHoursValue.Name = "lblHoursValue";
+            this.lblHoursValue.Size = new System.Drawing.Size(55, 20);
+            this.lblHoursValue.TabIndex = 54;
+            this.lblHoursValue.Text = "{hours}";
+            this.lblHoursValue.Visible = false;
+            // 
+            // lblHours
+            // 
+            this.lblHours.AutoSize = true;
+            this.lblHours.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblHours.Location = new System.Drawing.Point(27, 375);
+            this.lblHours.Name = "lblHours";
+            this.lblHours.Size = new System.Drawing.Size(58, 21);
+            this.lblHours.TabIndex = 53;
+            this.lblHours.Text = "Hours:";
+            this.lblHours.Visible = false;
+            // 
+            // lblTimerHoursValue
+            // 
+            this.lblTimerHoursValue.AutoSize = true;
+            this.lblTimerHoursValue.Location = new System.Drawing.Point(120, 350);
+            this.lblTimerHoursValue.Name = "lblTimerHoursValue";
+            this.lblTimerHoursValue.Size = new System.Drawing.Size(61, 21);
+            this.lblTimerHoursValue.TabIndex = 52;
+            this.lblTimerHoursValue.Text = "{hours}";
+            this.lblTimerHoursValue.Visible = false;
+            // 
+            // lblTimerHours
+            // 
+            this.lblTimerHours.AutoSize = true;
+            this.lblTimerHours.Location = new System.Drawing.Point(6, 350);
+            this.lblTimerHours.Name = "lblTimerHours";
+            this.lblTimerHours.Size = new System.Drawing.Size(108, 21);
+            this.lblTimerHours.TabIndex = 51;
+            this.lblTimerHours.Text = "Timer Hours: ";
+            this.lblTimerHours.Visible = false;
             // 
             // btnStopTimer
             // 
@@ -316,6 +409,7 @@ namespace TimeTrackerUI
             this.btnStopTimer.TabIndex = 50;
             this.btnStopTimer.Text = "Stop Timer";
             this.btnStopTimer.UseVisualStyleBackColor = true;
+            this.btnStopTimer.Click += new System.EventHandler(this.btnStopTimer_Click);
             // 
             // buttonStartTimer
             // 
@@ -358,11 +452,6 @@ namespace TimeTrackerUI
             this.radioButtonTimer.TabIndex = 46;
             this.radioButtonTimer.Text = "By Timer";
             this.radioButtonTimer.UseVisualStyleBackColor = true;
-            // 
-            // timerUpdateDisplay
-            // 
-            this.timerUpdateDisplay.Interval = 1000;
-            this.timerUpdateDisplay.Tick += new System.EventHandler(this.timerUpdateDisplay_Tick);
             // 
             // frmAddEntry
             // 
@@ -420,7 +509,13 @@ namespace TimeTrackerUI
         private System.Windows.Forms.RadioButton radioButtonTimer;
         private System.Windows.Forms.Button btnStopTimer;
         private System.Windows.Forms.Button buttonStartTimer;
-        private System.Windows.Forms.Timer timerUpdateDisplay;
-        private System.Windows.Forms.Label lblTimerTest;
+        private System.Windows.Forms.Label lblTimerHours;
+        private System.Windows.Forms.Label lblTimerHoursValue;
+        private System.Windows.Forms.Label lblSecondsValue;
+        private System.Windows.Forms.Label lblSeconds;
+        private System.Windows.Forms.Label lblMinutesValue;
+        private System.Windows.Forms.Label lblMinutes;
+        private System.Windows.Forms.Label lblHoursValue;
+        private System.Windows.Forms.Label lblHours;
     }
 }

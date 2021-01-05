@@ -44,6 +44,8 @@ namespace TimeTrackerUI
         private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
         private readonly ProjectModel project;
 
+        private uint timerSeconds = 0;
+
         private bool ProcessIndexChange = true;
 
         public frmAddEntry(ProjectModel project)
@@ -178,13 +180,36 @@ namespace TimeTrackerUI
             }
             else if (radioButtonTimer.Checked)
             {
-
+                valid = AddEntryByTimer();
             }
 
             if (valid)
             {
                 this.Close();
             }
+        }
+
+        private bool AddEntryByTimer()
+        {
+            if (timerTimeSpent.Enabled)
+            {
+                MessageBox.Show("Please stop the timer first!");
+                return false;
+            }
+
+            ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
+            EntryModel entry = new EntryModel();
+
+            entry.Project = selectedProject;
+            entry.ProjectId = selectedProject.Id;
+            entry.Date = dateTimePickerDate.Value;
+            entry.Notes = textBoxNotes.Text;
+            entry.HoursSpent = Math.Round(timerSeconds / 3600d, 2);
+
+            entryData.CreateEntry(entry);
+            textBoxNotes.Text = string.Empty;
+
+            return true;
         }
 
         private bool AddEntryByTimes()
@@ -266,22 +291,45 @@ namespace TimeTrackerUI
             if (!radioButtonTimer.Checked)
             {
                 MessageBox.Show("Timer method is not selected");
+                return;
             }
 
-            timerTimeSpent.Tag = 0;
+            lblTimerHours.Visible = true;
+            lblTimerHoursValue.Visible = true;
+
+            lblHours.Visible = true;
+            lblHoursValue.Visible = true;
+            lblMinutes.Visible = true;
+            lblMinutesValue.Visible = true;
+            lblSeconds.Visible = true;
+            lblSecondsValue.Visible = true;
+
+            UpdateTimerLabels();
+
             timerTimeSpent.Enabled = true;
             timerTimeSpent.Start();
-            timerUpdateDisplay.Start();
-        }
-
-        private void timerUpdateDisplay_Tick(object sender, System.EventArgs e)
-        {
-            lblTimerTest.Text = timerTimeSpent.Tag.ToString();
         }
 
         private void timerTimeSpent_Tick(object sender, System.EventArgs e)
         {
-            timerTimeSpent.Tag = (int)timerTimeSpent.Tag + 1;
+            timerSeconds++;
+            UpdateTimerLabels();
+        }
+
+        private void btnStopTimer_Click(object sender, EventArgs e)
+        {
+            timerTimeSpent.Stop();
+        }
+
+        private void UpdateTimerLabels()
+        {
+            TimeSpan time = TimeSpan.FromSeconds(timerSeconds);
+
+            lblTimerHoursValue.Text = $"{(timerSeconds / 3600d):F4}";
+
+            lblHoursValue.Text = $"{time.Hours}";
+            lblMinutesValue.Text = $"{time.Minutes}";
+            lblSecondsValue.Text = $"{time.Seconds}";
         }
     }
 }
