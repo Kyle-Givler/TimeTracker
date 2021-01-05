@@ -1,2 +1,5 @@
+Version 0.2.0 - 01/04/2021
+	- Allow Entries to be added by Hours Spent, Start and Stop time, or by a timer.
+
 Version 0.1.0 - 01/03/2021
 	- Initial Release
