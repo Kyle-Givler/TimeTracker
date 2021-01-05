@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +44,8 @@ namespace TimeTrackerUI
         private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
         private readonly ProjectModel project;
 
+        private uint timerSeconds = 0;
+
         private bool ProcessIndexChange = true;
 
         public frmAddEntry(ProjectModel project)
@@ -53,6 +56,9 @@ namespace TimeTrackerUI
 
         private async void frmAddEntry_Load(object sender, System.EventArgs e)
         {
+            dateTimePickerStart.Value = dateTimePickerStart.Value.Date + new TimeSpan(dateTimePickerStart.Value.TimeOfDay.Hours, dateTimePickerStart.Value.TimeOfDay.Minutes, 0);
+            dateTimePickerEnd.Value = dateTimePickerEnd.Value.Date + new TimeSpan(dateTimePickerEnd.Value.TimeOfDay.Hours, dateTimePickerEnd.Value.TimeOfDay.Minutes, 0);
+
             await SetupData();
         }
 
@@ -162,10 +168,85 @@ namespace TimeTrackerUI
 
         private void btnAddEntry_Click(object sender, System.EventArgs e)
         {
+            bool valid = false;
+
+            if (radioButtonHours.Checked)
+            {
+                valid = AddEntryByHoursSpent();
+            }
+            else if (radioButtonTimes.Checked)
+            {
+                valid = AddEntryByTimes();
+            }
+            else if (radioButtonTimer.Checked)
+            {
+                valid = AddEntryByTimer();
+            }
+
+            if (valid)
+            {
+                this.Close();
+            }
+        }
+
+        private bool AddEntryByTimer()
+        {
+            if (timerTimeSpent.Enabled)
+            {
+                MessageBox.Show("Please stop the timer first!");
+                return false;
+            }
+
+            ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
+            EntryModel entry = new EntryModel();
+
+            entry.Project = selectedProject;
+            entry.ProjectId = selectedProject.Id;
+            entry.Date = dateTimePickerDate.Value;
+            entry.Notes = textBoxNotes.Text;
+            entry.HoursSpent = Math.Round(timerSeconds / 3600d, 2);
+
+            entryData.CreateEntry(entry);
+            textBoxNotes.Text = string.Empty;
+
+            return true;
+        }
+
+        private bool AddEntryByTimes()
+        {
+            var startTime = dateTimePickerStart.Value;
+            var endTime = dateTimePickerEnd.Value;
+
+            if (startTime > endTime)
+            {
+                MessageBox.Show("Start time must be before end time.");
+                return false;
+            }
+
+            ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
+
+            var difference = endTime - startTime;
+
+            EntryModel entry = new EntryModel();
+
+            entry.Project = selectedProject;
+            entry.ProjectId = selectedProject.Id;
+            entry.Date = dateTimePickerDate.Value;
+            entry.Notes = textBoxNotes.Text;
+            entry.HoursSpent = Math.Round(difference.TotalHours, 2);
+
+            entryData.CreateEntry(entry);
+            textBoxNotes.Text = string.Empty;
+
+            return true;
+        }
+
+        private bool AddEntryByHoursSpent()
+        {
             if (!double.TryParse(textBoxHoursSpent.Text, out double hours))
             {
                 MessageBox.Show("Please enter a valid number of hours");
-                return;
+                return false;
             }
 
             ProjectModel selectedProject = (ProjectModel)listBoxProject.SelectedItem;
@@ -173,7 +254,7 @@ namespace TimeTrackerUI
             if (selectedProject == null)
             {
                 MessageBox.Show("Please select a project");
-                return;
+                return false;
             }
 
             EntryModel entry = new EntryModel();
@@ -189,7 +270,7 @@ namespace TimeTrackerUI
             textBoxHoursSpent.Text = string.Empty;
             textBoxNotes.Text = string.Empty;
 
-            this.Close();
+            return true;
         }
 
         private async void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -203,6 +284,52 @@ namespace TimeTrackerUI
 
                 await LoadProjects(); 
             }
+        }
+
+        private void buttonStartTimer_Click(object sender, System.EventArgs e)
+        {
+            if (!radioButtonTimer.Checked)
+            {
+                MessageBox.Show("Timer method is not selected");
+                return;
+            }
+
+            lblTimerHours.Visible = true;
+            lblTimerHoursValue.Visible = true;
+
+            lblHours.Visible = true;
+            lblHoursValue.Visible = true;
+            lblMinutes.Visible = true;
+            lblMinutesValue.Visible = true;
+            lblSeconds.Visible = true;
+            lblSecondsValue.Visible = true;
+
+            UpdateTimerLabels();
+
+            timerTimeSpent.Enabled = true;
+            timerTimeSpent.Start();
+        }
+
+        private void timerTimeSpent_Tick(object sender, System.EventArgs e)
+        {
+            timerSeconds++;
+            UpdateTimerLabels();
+        }
+
+        private void btnStopTimer_Click(object sender, EventArgs e)
+        {
+            timerTimeSpent.Stop();
+        }
+
+        private void UpdateTimerLabels()
+        {
+            TimeSpan time = TimeSpan.FromSeconds(timerSeconds);
+
+            lblTimerHoursValue.Text = $"{(timerSeconds / 3600d):F4}";
+
+            lblHoursValue.Text = $"{time.Hours}";
+            lblMinutesValue.Text = $"{time.Minutes}";
+            lblSecondsValue.Text = $"{time.Seconds}";
         }
     }
 }

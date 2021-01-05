@@ -123,7 +123,7 @@ namespace TimeTrackerUI
             }
 
             var allEntries = await entryData.LoadEntriesByProject(selectedProject);
-            allEntries = allEntries.OrderBy(x => x.Date).ToList();
+            allEntries = allEntries.OrderByDescending(x => x.Date).ToList();
             allEntries.ForEach(x => entries.Add(x));
 
             PopulateEntryLabels();
