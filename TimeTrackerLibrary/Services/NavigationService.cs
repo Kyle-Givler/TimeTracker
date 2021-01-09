@@ -24,50 +24,33 @@ SOFTWARE.
 */
 
 using System;
+using System.Threading.Tasks;
+using TimeTrackerLibrary.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace TimeTrackerLibrary.Models
+namespace TimeTrackerLibrary.Services
 {
-    public class EntryModel
+    public class NavigationService : INavigationService
     {
-        /// <summary>
-        /// Id of the row in the database
-        /// </summary>
-        public int Id { get; set; }
+        private readonly IServiceProvider serviceProvider;
 
-        /// <summary>
-        /// Project Associated with this Entry
-        /// </summary>
-        public ProjectModel Project { get; set; }
-
-        /// <summary>
-        /// Row id of the project associated with this entry
-        /// </summary>
-        public int ProjectId { get; set; }
-
-        /// <summary>
-        /// Date of the Entry
-        /// </summary>
-        public DateTimeOffset Date { get; set; }
-
-        /// <summary>
-        /// Returns formatted date
-        /// </summary>
-        public string FormattedDate 
+        public NavigationService(IServiceProvider serviceProvider)
         {
-            get
-            {
-                return Date.ToString("D");
-            }
+            this.serviceProvider = serviceProvider;
         }
 
-        /// <summary>
-        /// Number of hours spent for this Entry
-        /// </summary>
-        public double HoursSpent { get; set; }
+        //public Task<bool> NavigateTo<TView>() where TView : INavigatable
+        //{
+        //    var view = serviceProvider.GetRequiredService<TView>();
+        //    view.Navigate();
 
-        /// <summary>
-        /// Notes associated with this Entry
-        /// </summary>
-        public string Notes { get; set; }
+        //    return Task.FromResult(true);
+        //}
+
+        public TView NavigateTo<TView>() where TView : INavigatable
+        {
+            var view = serviceProvider.GetRequiredService<TView>();
+            return view;
+        }
     }
 }

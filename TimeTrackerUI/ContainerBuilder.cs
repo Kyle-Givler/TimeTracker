@@ -23,47 +23,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.DataAccess;
+using TimeTrackerLibrary.Services;
+using TimeTrackerUI;
 
 namespace TimeTrackerLibrary
 {
-    public enum DatabaseType { MSSQL };
-
-    public static class GlobalConfig
+    public class ContainerBuilder
     {
-        public static IDataAccess Connection { get; private set; }
-        public static IConfiguration Configuration { get; private set; }
-        public static DatabaseType DBTtype { get; private set; }
-
-        static GlobalConfig()
+        public IServiceProvider Build(DatabaseType db)
         {
-            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-        }
+            var container = new ServiceCollection();
 
-        public static void Initialize(DatabaseType db)
-        {
-            if(db == DatabaseType.MSSQL)
+            if (db == DatabaseType.MSSQL)
             {
-                SqlDb sql = new SqlDb();
-                Connection = sql;
-                DBTtype = db;
-                return;
+                container.AddSingleton<ISubcategoryData, SubcategoryData>()
+                    .AddSingleton<ICategoryData, CategoryData>()
+                    .AddSingleton<IEntryData, EntryData>()
+                    .AddSingleton<IProjectData, ProjectData>()
+                    .AddSingleton<IDataAccess, SqlDb>()
+                    .AddSingleton<IEntryService, EntryService>()
+                    .AddSingleton<ICategoryService, CategoryService>()
+                    .AddSingleton<ISubcategoryService, SubcategoryService>()
+                    .AddSingleton<IProjectService, ProjectService>()
+                    .AddSingleton(_ => container)
+                    .AddSingleton<INavigationService, NavigationService>()
+                    .AddTransient<frmMain>()
+                    .AddTransient<frmAddEntry>()
+                    .AddTransient<frmEditCategory>()
+                    .AddTransient<frmEditProject>();
             }
 
-            throw new ArgumentException("Data source not valid", "db");
-        }
-
-        public static string ConnectionString()
-        {
-            if(DBTtype == DatabaseType.MSSQL)
-            {
-                return Configuration.GetConnectionString("MSSQL");
-            }
-
-            throw new InvalidOperationException("DBType is not valid");
+            return container.BuildServiceProvider();
         }
     }
 }

@@ -33,23 +33,36 @@ using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.Services;
 using TimeTrackerLibrary.Models;
+using TimeTrackerLibrary.Interfaces;
 
 namespace TimeTrackerUI
 {
-    public partial class frmEditProject : Form
+    public partial class frmEditProject : Form, INavigatable
     {
         private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
         private readonly BindingList<ProjectModel> projects = new BindingList<ProjectModel>();
 
-        private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
-        private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
+        private readonly IProjectData projectData;
+        private readonly IEntryData entryData;
+        private readonly IProjectService projectService;
+        private readonly ICategoryService categoryService;
+        private readonly ISubcategoryService subcategoryService;
 
         private bool editingProject = false;
 
-        public frmEditProject()
+        public frmEditProject(IProjectData projectData, 
+            IEntryData entryData, 
+            IProjectService projectService,
+            ICategoryService categoryService,
+            ISubcategoryService subcategoryService)
         {
             InitializeComponent();
+            this.projectData = projectData;
+            this.entryData = entryData;
+            this.projectService = projectService;
+            this.categoryService = categoryService;
+            this.subcategoryService = subcategoryService;
         }
 
         private void frmEditProject_Load(object sender, EventArgs e)
@@ -78,7 +91,7 @@ namespace TimeTrackerUI
         {
             projects.Clear();
 
-            var proj = await ProjectService.GetInstance.LoadAllProjects();
+            var proj = await projectService.LoadAllProjects();
             proj.ForEach(x => projects.Add(x));
         }
 
@@ -86,7 +99,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await CategoryService.GetInstance.LoadAllCategories();
+            var cats = await categoryService.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -99,7 +112,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(category);
+            var subCats = await subcategoryService.LoadSubcategories(category);
             subCats.ForEach(x => subcategories.Add(x));
         }
 
@@ -251,6 +264,11 @@ namespace TimeTrackerUI
             lblProjectNameValue.Text = selectedProject.Name;
             lblCategoryValue.Text = selectedProject.Category.Name;
             lblSubcategoryValue.Text = selectedProject.Subcategory == null ? "(none)" : selectedProject.Subcategory.Name;
+        }
+
+        public void Navigate()
+        {
+            Show();
         }
     }
 }

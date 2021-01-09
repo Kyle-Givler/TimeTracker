@@ -23,51 +23,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TimeTrackerLibrary.Models;
 
-namespace TimeTrackerLibrary.Models
+namespace TimeTrackerLibrary.Services
 {
-    public class EntryModel
+    public interface ICategoryService
     {
         /// <summary>
-        /// Id of the row in the database
+        /// Delete a category
         /// </summary>
-        public int Id { get; set; }
+        /// <param name="category">The category to delete</param>
+        /// <returns></returns>
+        Task DeleteCategory(CategoryModel category);
 
         /// <summary>
-        /// Project Associated with this Entry
+        /// Load all catagories
         /// </summary>
-        public ProjectModel Project { get; set; }
-
-        /// <summary>
-        /// Row id of the project associated with this entry
-        /// </summary>
-        public int ProjectId { get; set; }
-
-        /// <summary>
-        /// Date of the Entry
-        /// </summary>
-        public DateTimeOffset Date { get; set; }
-
-        /// <summary>
-        /// Returns formatted date
-        /// </summary>
-        public string FormattedDate 
-        {
-            get
-            {
-                return Date.ToString("D");
-            }
-        }
-
-        /// <summary>
-        /// Number of hours spent for this Entry
-        /// </summary>
-        public double HoursSpent { get; set; }
-
-        /// <summary>
-        /// Notes associated with this Entry
-        /// </summary>
-        public string Notes { get; set; }
+        /// <returns>List of all categories</returns>
+        Task<List<CategoryModel>> LoadAllCategories();
     }
 }

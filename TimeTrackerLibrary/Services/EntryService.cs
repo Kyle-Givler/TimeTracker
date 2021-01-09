@@ -30,18 +30,11 @@ using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Services
 {
-    public sealed class EntryService
+    public sealed class EntryService : IEntryService
     {
-        private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
-
-        private static readonly EntryService instance = new EntryService();
-
-        public static EntryService GetInstance
+        public EntryService()
         {
-            get
-            {
-                return instance;
-            }
+
         }
 
         public async Task<double> GetTotalTimeAllEntries()
@@ -59,7 +52,7 @@ namespace TimeTrackerLibrary.Services
         public async Task<double> GetTimeByCategory(CategoryModel category)
         {
             var sql = $"select SUM(e.hoursSpent) from Entry e inner join Project p on e.ProjectId = p.Id inner join Category c on p.CategoryId = c.Id where p.CategoryId = {category.Id};";
-        
+
             var res = await GlobalConfig.Connection.QueryRawSQL<double, dynamic>(sql, new { });
             return res.FirstOrDefault();
         }

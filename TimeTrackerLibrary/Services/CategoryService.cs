@@ -32,18 +32,13 @@ using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Services
 {
-    public sealed class CategoryService
+    public sealed class CategoryService : ICategoryService
     {
-        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
+        private readonly ICategoryData categoryData;
 
-        private static readonly CategoryService instance = new CategoryService();
-
-        public static CategoryService GetInstance
+        public CategoryService(ICategoryData categoryData)
         {
-            get
-            {
-                return instance;
-            }
+            this.categoryData = categoryData;
         }
 
         public async Task<List<Models.CategoryModel>> LoadAllCategories()

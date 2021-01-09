@@ -27,45 +27,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.Models;
 
-namespace TimeTrackerLibrary.Data
+namespace TimeTrackerLibrary.Services
 {
-    public interface IProjectData
+    public interface IProjectService
     {
         /// <summary>
-        /// Save a project to the database
+        /// Load all Projects
         /// </summary>
-        /// <param name="project">The project to save</param>
-        /// <returns>The id of the project</returns>
-        Task<int> AddProject(ProjectModel project);
-
-        /// <summary>
-        /// Remove a Project
-        /// </summary>
-        /// <param name="project">The project to remove</param>
-        Task RemoveProject(ProjectModel project);
-
-        /// <summary>
-        /// Update a Project
-        /// </summary>
-        /// <param name="project">The Project to update</param>
-        Task UpdateProject(ProjectModel project);
-
-        /// <summary>
-        /// Load all projects from the database
-        /// </summary>
-        /// <returns>A list of all the ProjectModels saved to the database</returns>
+        /// <returns>A list of all projects</returns>
         Task<List<ProjectModel>> LoadAllProjects();
 
         /// <summary>
-        /// Load all the projects in the given category
+        /// Load Projects based on category or subcategory
         /// </summary>
-        /// <param name="category">The category for which to load projects</param>
-        Task<List<ProjectModel>> LoadProjectsByCategory(CategoryModel category);
-
-        /// <summary>
-        /// Load all the projects in the given subcategory
-        /// </summary>
-        /// <param name="subcategory">The subcategory for which to load projects</param>
-        Task<List<ProjectModel>> LoadProjectsBySubCategory(SubcategoryModel subcategory);
+        /// <param name="selectedCat">The category for which to get projects</param>
+        /// <param name="selectedSubcat">The subcategory for which to get projects</param>
+        /// <param name="allProjects">if true return all projects</param>
+        /// <returns></returns>
+        Task<List<ProjectModel>> LoadProjects(CategoryModel selectedCat, SubcategoryModel selectedSubcat, bool allProjects);
     }
 }

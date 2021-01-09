@@ -23,51 +23,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TimeTrackerLibrary.Models;
 
-namespace TimeTrackerLibrary.Models
+namespace TimeTrackerLibrary.Services
 {
-    public class EntryModel
+    public interface ISubcategoryService
     {
         /// <summary>
-        /// Id of the row in the database
+        /// Delete a subcategory
         /// </summary>
-        public int Id { get; set; }
+        /// <param name="subcategory">The subcategory to delete</param>
+        Task DeleteSubcategory(SubcategoryModel subcategory);
 
         /// <summary>
-        /// Project Associated with this Entry
+        /// Load subcateogies that are under the given category
         /// </summary>
-        public ProjectModel Project { get; set; }
-
-        /// <summary>
-        /// Row id of the project associated with this entry
-        /// </summary>
-        public int ProjectId { get; set; }
-
-        /// <summary>
-        /// Date of the Entry
-        /// </summary>
-        public DateTimeOffset Date { get; set; }
-
-        /// <summary>
-        /// Returns formatted date
-        /// </summary>
-        public string FormattedDate 
-        {
-            get
-            {
-                return Date.ToString("D");
-            }
-        }
-
-        /// <summary>
-        /// Number of hours spent for this Entry
-        /// </summary>
-        public double HoursSpent { get; set; }
-
-        /// <summary>
-        /// Notes associated with this Entry
-        /// </summary>
-        public string Notes { get; set; }
+        /// <param name="category">The caergory for which to load subcategories</param>
+        /// <returns>A list of subcategoires under a given category</returns>
+        Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category);
     }
 }

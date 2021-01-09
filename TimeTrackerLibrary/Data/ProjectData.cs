@@ -103,7 +103,7 @@ namespace TimeTrackerLibrary.Data
 
         private async Task RehydrateObjects(List<ProjectModel> projects)
         {
-            //TODO use a join and get rid of this method
+            //TODO Look into a better way to do this with Dapper
             foreach (var project in projects)
             {
                 var category = await dataAccess.LoadData<CategoryModel, dynamic>("spCategory_GetById", new { Id = project.CategoryId });

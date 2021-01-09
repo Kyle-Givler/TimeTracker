@@ -76,7 +76,7 @@ namespace TimeTrackerLibrary.Data
 
         private async Task RehydrateObjects(EntryModel e)
         {
-            // TODO fix this with a join or something!
+            // TODO find a better way to do this with Dapper
             var p = await dataAccess.QueryRawSQL<ProjectModel, dynamic>("SELECT * FROM Project WHERE ID = @Id", new { Id = e.ProjectId });
             e.Project = p.First();
             var c = await dataAccess.QueryRawSQL<CategoryModel, dynamic>("SELECT * FROM Category WHERE ID = @Id", new { Id = e.Project.CategoryId });
