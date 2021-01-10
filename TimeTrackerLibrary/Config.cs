@@ -24,30 +24,29 @@ SOFTWARE.
 */
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using TimeTrackerLibrary.DataAccess;
+using TimeTrackerLibrary.Interfaces;
 
 namespace TimeTrackerLibrary
 {
-    public enum DatabaseType { MSSQL };
 
-    public static class GlobalConfig
+    public class Config : IConfig
     {
         public static IDataAccess Connection { get; private set; }
         public static IConfiguration Configuration { get; private set; }
         public static DatabaseType DBTtype { get; private set; }
 
-        static GlobalConfig()
+        public Config()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
         }
 
-        public static void Initialize(DatabaseType db)
+        public void Initialize(DatabaseType db)
         {
-            if(db == DatabaseType.MSSQL)
+            if (db == DatabaseType.MSSQL)
             {
-                SqlDb sql = new SqlDb();
+                SqlDb sql = new SqlDb(this);
                 Connection = sql;
                 DBTtype = db;
                 return;
@@ -56,9 +55,9 @@ namespace TimeTrackerLibrary
             throw new ArgumentException("Data source not valid", "db");
         }
 
-        public static string ConnectionString()
+        public string ConnectionString()
         {
-            if(DBTtype == DatabaseType.MSSQL)
+            if (DBTtype == DatabaseType.MSSQL)
             {
                 return Configuration.GetConnectionString("MSSQL");
             }

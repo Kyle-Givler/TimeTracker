@@ -61,7 +61,7 @@ namespace TimeTrackerLibrary.Services
                 throw new ArgumentNullException("subcategory", "subcategory must not be null");
             }
 
-            var rows = await GlobalConfig.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {subcategory.Id};", new { });
+            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {subcategory.Id};", new { });
 
             if (rows.First() != 0)
             {

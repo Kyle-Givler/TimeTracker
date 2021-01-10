@@ -27,6 +27,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.DataAccess;
+using TimeTrackerLibrary.Interfaces;
 using TimeTrackerLibrary.Services;
 using TimeTrackerUI;
 
@@ -48,14 +49,16 @@ namespace TimeTrackerLibrary
                     .AddSingleton<IEntryService, EntryService>()
                     .AddSingleton<ICategoryService, CategoryService>()
                     .AddSingleton<ISubcategoryService, SubcategoryService>()
-                    .AddSingleton<IProjectService, ProjectService>()
-                    .AddSingleton(_ => container)
+                    .AddSingleton<IProjectService, ProjectService>();
+            }
+
+            container.AddSingleton(_ => container)
                     .AddSingleton<INavigationService, NavigationService>()
                     .AddTransient<frmMain>()
                     .AddTransient<frmAddEntry>()
                     .AddTransient<frmEditCategory>()
-                    .AddTransient<frmEditProject>();
-            }
+                    .AddTransient<frmEditProject>()
+                    .AddSingleton<IConfig, Config>();
 
             return container.BuildServiceProvider();
         }

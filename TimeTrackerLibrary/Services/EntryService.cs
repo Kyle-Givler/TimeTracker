@@ -39,13 +39,13 @@ namespace TimeTrackerLibrary.Services
 
         public async Task<double> GetTotalTimeAllEntries()
         {
-            var res = await GlobalConfig.Connection.QueryRawSQL<double, dynamic>("select SUM(hoursSpent) from Entry;", new { });
+            var res = await Config.Connection.QueryRawSQL<double, dynamic>("select SUM(hoursSpent) from Entry;", new { });
             return res.FirstOrDefault();
         }
 
         public async Task<double> GetTimeByProject(ProjectModel project)
         {
-            var res = await GlobalConfig.Connection.QueryRawSQL<double, dynamic>($"select SUM(hoursSpent) from Entry WHERE ProjectId = {project.Id};", new { });
+            var res = await Config.Connection.QueryRawSQL<double, dynamic>($"select SUM(hoursSpent) from Entry WHERE ProjectId = {project.Id};", new { });
             return res.FirstOrDefault();
         }
 
@@ -53,7 +53,7 @@ namespace TimeTrackerLibrary.Services
         {
             var sql = $"select SUM(e.hoursSpent) from Entry e inner join Project p on e.ProjectId = p.Id inner join Category c on p.CategoryId = c.Id where p.CategoryId = {category.Id};";
 
-            var res = await GlobalConfig.Connection.QueryRawSQL<double, dynamic>(sql, new { });
+            var res = await Config.Connection.QueryRawSQL<double, dynamic>(sql, new { });
             return res.FirstOrDefault();
         }
 
@@ -61,7 +61,7 @@ namespace TimeTrackerLibrary.Services
         {
             var sql = $"select SUM(e.hoursSpent) from Entry e inner join Project p on e.ProjectId = p.Id inner join Subcategory s on p.SubcategoryId = s.Id where p.SubcategoryId = {subcategory.Id};";
 
-            var res = await GlobalConfig.Connection.QueryRawSQL<double, dynamic>(sql, new { });
+            var res = await Config.Connection.QueryRawSQL<double, dynamic>(sql, new { });
             return res.FirstOrDefault();
         }
     }
