@@ -29,11 +29,19 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using TimeTrackerLibrary.Interfaces;
 
 namespace TimeTrackerLibrary.DataAccess
 {
     public class SqlDb : IDataAccess
     {
+        private readonly IConfig config;
+
+        public SqlDb(IConfig config)
+        {
+            this.config = config;
+        }
+
         /// <summary>
         /// Load data from the database
         /// </summary>
@@ -43,7 +51,7 @@ namespace TimeTrackerLibrary.DataAccess
         /// <returns>A list of type T</returns>
         public async Task<List<T>> LoadData<T, U>(string storedProcedure, U parameters)
         {
-            using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))
+            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
             {
                 var rows = await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
 
@@ -59,7 +67,7 @@ namespace TimeTrackerLibrary.DataAccess
         /// <returns>The number of rows affected</returns>
         public async Task<int> SaveData<T>(string storedProcedure, T parameters)
         {
-            using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))
+            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
             {
                 return await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
             }
@@ -67,7 +75,7 @@ namespace TimeTrackerLibrary.DataAccess
 
         public async Task<List<T>> QueryRawSQL<T, U>(string sql, U parameters)
         {
-            using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))
+            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
             {
                 var res = await connection.QueryAsync<T>(sql, parameters);
                 return res.ToList();
@@ -76,7 +84,7 @@ namespace TimeTrackerLibrary.DataAccess
 
         public async Task<int> ExecuteRawSQL<T, U>(string sql, U parameters)
         {
-            using (IDbConnection connection = new SqlConnection(GlobalConfig.ConnectionString()))
+            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
             {
                 var res = await connection.ExecuteAsync(sql, parameters);
                 return res;

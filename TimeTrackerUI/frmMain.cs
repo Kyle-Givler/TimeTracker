@@ -27,27 +27,44 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
 using TimeTrackerLibrary.Services;
 using TimeTrackerLibrary.Models;
 using System.Diagnostics;
 using System.Linq;
+using TimeTrackerLibrary.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TimeTrackerUI
 {
-    public partial class frmMain : Form
+    public partial class frmMain : Form, INavigatable
     {
         private readonly BindingList<EntryModel> entries = new BindingList<EntryModel>();
         private readonly BindingList<ProjectModel> projects = new BindingList<ProjectModel>();
         private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
-        private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
+        private readonly IEntryData entryData;
+        private readonly ICategoryService categoryService;
+        private readonly ISubcategoryService subcategoryService;
+        private readonly IProjectService projectService;
+        private readonly IEntryService entryService;
+        private readonly INavigationService navigationService;
 
-        public frmMain()
+        public frmMain(IEntryData entryData, 
+            ICategoryService categoryService,
+            ISubcategoryService subcategoryService,
+            IProjectService projectService, 
+            IEntryService entryService,
+            INavigationService navigationService)
         {
             InitializeComponent();
+            this.entryData = entryData;
+            this.categoryService = categoryService;
+            this.subcategoryService = subcategoryService;
+            this.projectService = projectService;
+            this.entryService = entryService;
+            this.navigationService = navigationService;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -77,7 +94,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await CategoryService.GetInstance.LoadAllCategories();
+            var cats = await categoryService.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -90,7 +107,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(category);
+            var subCats = await subcategoryService.LoadSubcategories(category);
             subCats.ForEach(x => subcategories.Add(x));
 
             LoadProjects();
@@ -103,7 +120,7 @@ namespace TimeTrackerUI
             CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
             SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
-            var projs = await ProjectService.GetInstance.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
+            var projs = await projectService.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
             projs.ForEach(x => projects.Add(x));
 
             await LoadEntries();
@@ -132,8 +149,11 @@ namespace TimeTrackerUI
         private void btnAddEntry_Click(object sender, EventArgs e)
         {
             var selectedProject = (ProjectModel)listBoxProject.SelectedItem;
+            var frm = navigationService.NavigateTo<frmAddEntry>();
 
-            frmAddEntry frm = new frmAddEntry(selectedProject);
+            frm.InitialProject = selectedProject;
+
+            //frmAddEntry frm = new frmAddEntry(selectedProject);
             frm.ShowDialog(this);
 
             LoadEntries();
@@ -141,7 +161,9 @@ namespace TimeTrackerUI
 
         private async void btnEditCat_Click(object sender, EventArgs e)
         {
-            frmEditCategory frm = new frmEditCategory();
+            //frmEditCategory frm = new frmEditCategory();
+            var frm = navigationService.NavigateTo<frmEditCategory>();
+
             frm.ShowDialog(this);
 
             await LoadCategories();
@@ -150,7 +172,9 @@ namespace TimeTrackerUI
 
         private void btnEditProjects_Click(object sender, EventArgs e)
         {
-            frmEditProject frm = new frmEditProject();
+            //frmEditProject frm = new frmEditProject();
+            var frm = navigationService.NavigateTo<frmEditProject>();
+
             frm.ShowDialog(this);
 
             LoadProjects();
@@ -221,18 +245,16 @@ namespace TimeTrackerUI
             lblCategoryValue.Text = selectedEntry.Project.Category.Name;
             lblsubcategoryValue.Text = selectedEntry.Project.Subcategory == null ? "(none)" : selectedEntry.Project.Subcategory.Name;
             lblEntryDateValue.Text = selectedEntry.FormattedDate;
-            lblTimeSpentValue.Text = $"{selectedEntry.HoursSpent} hours";
+            lblTimeSpentValue.Text = $"{selectedEntry.HoursSpent:N2} hours";
             textBoxNotes.Text = selectedEntry.Notes;
 
-            var entryService = EntryService.GetInstance;
-
-            lblAllTimeValue.Text = $"{await entryService.GetTotalTimeAllEntries()} hours";
-            lblProjectTotalValue.Text = $"{await entryService.GetTimeByProject(selectedEntry.Project)} hours";
-            lblCategoryTimeValue.Text = $"{await entryService.GetTimeByCategory(selectedEntry.Project.Category)} hours";
+            lblAllTimeValue.Text = $"{await entryService.GetTotalTimeAllEntries():N2} hours";
+            lblProjectTotalValue.Text = $"{await entryService.GetTimeByProject(selectedEntry.Project):N2} hours";
+            lblCategoryTimeValue.Text = $"{await entryService.GetTimeByCategory(selectedEntry.Project.Category):N2} hours";
 
             if (selectedEntry.Project.Subcategory != null)
             {
-                lblSubcategoryTotalValue.Text = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory)} hours";
+                lblSubcategoryTotalValue.Text = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory):N2} hours";
             }
             else
             {
@@ -302,6 +324,11 @@ namespace TimeTrackerUI
             }
 
             PopulateEntryLabels();
+        }
+
+        public void Navigate()
+        {
+            Show();
         }
     }
 }

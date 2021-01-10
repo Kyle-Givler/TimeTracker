@@ -32,23 +32,18 @@ using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Services
 {
-    public sealed class SubcategoryService
+    public sealed class SubcategoryService : ISubcategoryService
     {
-        private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
+        private readonly ISubcategoryData subcategoryData;
 
-        private static readonly SubcategoryService instance = new SubcategoryService();
-
-        public static SubcategoryService GetInstance
+        public SubcategoryService(ISubcategoryData subcategoryData)
         {
-            get
-            {
-                return instance;
-            }
+            this.subcategoryData = subcategoryData;
         }
 
         public async Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category)
         {
-            if(category == null)
+            if (category == null)
             {
                 throw new ArgumentNullException("category", "category must not be null");
             }
@@ -66,7 +61,7 @@ namespace TimeTrackerLibrary.Services
                 throw new ArgumentNullException("subcategory", "subcategory must not be null");
             }
 
-            var rows = await GlobalConfig.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {subcategory.Id};", new { });
+            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {subcategory.Id};", new { });
 
             if (rows.First() != 0)
             {

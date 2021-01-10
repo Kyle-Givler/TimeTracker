@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -24,35 +24,13 @@ SOFTWARE.
 */
 
 using System;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
-using Microsoft.Extensions.DependencyInjection;
-using TimeTrackerLibrary.Interfaces;
+using System.Collections.Generic;
+using System.Text;
 
-namespace TimeTrackerUI
+namespace TimeTrackerLibrary.Interfaces
 {
-    static class Program
+    public interface INavigatable
     {
-        public static DatabaseType dbType = DatabaseType.MSSQL;
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
-
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            var config = Container.GetRequiredService<IConfig>();
-
-            config.Initialize(dbType);
-
-            var mainForm = Container.GetRequiredService<frmMain>();
-
-            Application.Run(mainForm);
-        }
+        void Navigate();
     }
 }

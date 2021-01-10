@@ -30,25 +30,32 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Interfaces;
 using TimeTrackerLibrary.Models;
 using TimeTrackerLibrary.Services;
 
 namespace TimeTrackerUI
 {
-    public partial class frmEditCategory : Form
+    public partial class frmEditCategory : Form, INavigatable
     {
         private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
-        private readonly ISubcategoryData subcategoryData = new SubcategoryData(GlobalConfig.Connection);
-        private readonly ICategoryData categoryData = new CategoryData(GlobalConfig.Connection);
+        private readonly ICategoryService categoryService;
+        private readonly ISubcategoryService subcategoryService;
+        private readonly ICategoryData categoryData;
+        private readonly ISubcategoryData subcategoryData;
 
         private bool editingCategory = false;
         private bool editingSubcategory = false;
 
-        public frmEditCategory()
+        public frmEditCategory(ICategoryService categoryService, ISubcategoryService subcategoryService, ICategoryData categoryData, ISubcategoryData subcategoryData)
         {
             InitializeComponent();
+            this.categoryService = categoryService;
+            this.subcategoryService = subcategoryService;
+            this.categoryData = categoryData;
+            this.subcategoryData = subcategoryData;
         }
 
         private async void frmEditCategory_Load(object sender, EventArgs e)
@@ -73,7 +80,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await CategoryService.GetInstance.LoadAllCategories();
+            var cats = await categoryService.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -88,7 +95,7 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
+            var subCats = await subcategoryService.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
         }
 
@@ -233,7 +240,7 @@ namespace TimeTrackerUI
                 return;
             }
 
-            var rows = await GlobalConfig.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};", new { });
+            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};", new { });
 
             if (rows.First() != 0)
             {
@@ -287,7 +294,7 @@ namespace TimeTrackerUI
                 return;
             }
 
-            var rows = await GlobalConfig.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {selectedSubCat.Id};", new { });
+            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {selectedSubCat.Id};", new { });
 
             if (rows.First() != 0)
             {
@@ -330,6 +337,11 @@ namespace TimeTrackerUI
 
             btnAddSubCat.Text = "Update Subcategory";
             textBoxSubcategory.Text = selectedSubcat.Name;
+        }
+
+        public void Navigate()
+        {
+            Show();
         }
     }
 }

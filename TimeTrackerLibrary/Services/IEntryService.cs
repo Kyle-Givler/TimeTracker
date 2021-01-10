@@ -23,49 +23,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.Models;
 
-namespace TimeTrackerLibrary.Data
+namespace TimeTrackerLibrary.Services
 {
-    public interface IProjectData
+    public interface IEntryService
     {
         /// <summary>
-        /// Save a project to the database
+        /// Get the number of hours tracked in a given category
         /// </summary>
-        /// <param name="project">The project to save</param>
-        /// <returns>The id of the project</returns>
-        Task<int> AddProject(ProjectModel project);
+        /// <param name="category">The category to get total hours tracked for</param>
+        /// <returns>The number of hours tracked in the given category</returns>
+        Task<double> GetTimeByCategory(CategoryModel category);
 
         /// <summary>
-        /// Remove a Project
+        /// Get the number of hours tracked in a given category
         /// </summary>
-        /// <param name="project">The project to remove</param>
-        Task RemoveProject(ProjectModel project);
+        /// <param name="project">The project to get total hours tracked for</param>
+        /// <returns>The number of hours tracked in the given project</returns>
+        Task<double> GetTimeByProject(ProjectModel project);
 
         /// <summary>
-        /// Update a Project
+        /// Get the number of hours tracked in a given subcategory
         /// </summary>
-        /// <param name="project">The Project to update</param>
-        Task UpdateProject(ProjectModel project);
+        /// <param name="subcategory">The subcategory to get total hours tracked for</param>
+        /// <returns>The number of hours tracked in the given subcategory</returns>
+        Task<double> GetTimeBySubcategory(SubcategoryModel subcategory);
 
         /// <summary>
-        /// Load all projects from the database
+        /// Get the number of hours tracked by the application
         /// </summary>
-        /// <returns>A list of all the ProjectModels saved to the database</returns>
-        Task<List<ProjectModel>> LoadAllProjects();
-
-        /// <summary>
-        /// Load all the projects in the given category
-        /// </summary>
-        /// <param name="category">The category for which to load projects</param>
-        Task<List<ProjectModel>> LoadProjectsByCategory(CategoryModel category);
-
-        /// <summary>
-        /// Load all the projects in the given subcategory
-        /// </summary>
-        /// <param name="subcategory">The subcategory for which to load projects</param>
-        Task<List<ProjectModel>> LoadProjectsBySubCategory(SubcategoryModel subcategory);
+        /// <returns>The number of hours tracked by the application</returns>
+        Task<double> GetTotalTimeAllEntries();
     }
 }

@@ -49,6 +49,9 @@ namespace TimeTrackerLibrary.Models
         /// </summary>
         public DateTimeOffset Date { get; set; }
 
+        /// <summary>
+        /// Returns formatted date
+        /// </summary>
         public string FormattedDate 
         {
             get

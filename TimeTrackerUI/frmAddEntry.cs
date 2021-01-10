@@ -28,30 +28,58 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TimeTrackerLibrary;
 using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Interfaces;
 using TimeTrackerLibrary.Models;
 using TimeTrackerLibrary.Services;
 
 namespace TimeTrackerUI
 {
-    public partial class frmAddEntry : Form
+    public partial class frmAddEntry : Form, INavigatable
     {
         private readonly BindingList<ProjectModel> projects = new BindingList<ProjectModel>();
         private readonly BindingList<CategoryModel> categories = new BindingList<CategoryModel>();
         private readonly BindingList<SubcategoryModel> subcategories = new BindingList<SubcategoryModel>();
 
-        private readonly IEntryData entryData = new EntryData(GlobalConfig.Connection);
-        private readonly ProjectModel project;
+        private readonly IProjectService projectService;
+        private readonly ICategoryService categoryService;
+        private readonly ISubcategoryService subcategoryService;
+        private readonly IEntryData entryData;
 
         private uint timerSeconds = 0;
 
-        private bool ProcessIndexChange = true;
+        private bool processIndexChange = true;
+        private bool projectAssigned = false;
 
-        public frmAddEntry(ProjectModel project)
+        private ProjectModel project;
+
+        public ProjectModel InitialProject {
+            set
+            {
+                if (projectAssigned)
+                {
+                    throw new InvalidOperationException("Project has already been assigned");
+                }
+
+                project = value;
+            }
+
+            get 
+            {
+                return project;
+            }
+        }
+
+        public frmAddEntry(IProjectService projectService,
+            ICategoryService categoryService,
+            ISubcategoryService subcategoryService,
+            IEntryData entryData)
         {
             InitializeComponent();
-            this.project = project;
+            this.projectService = projectService;
+            this.categoryService = categoryService;
+            this.subcategoryService = subcategoryService;
+            this.entryData = entryData;
         }
 
         private async void frmAddEntry_Load(object sender, System.EventArgs e)
@@ -87,7 +115,7 @@ namespace TimeTrackerUI
 
         private async Task SelectProject()
         {
-            ProcessIndexChange = false;
+            processIndexChange = false;
 
             await LoadCategories();
             comboBoxCategory.SelectedItem = categories.Where(x => x.Id == project.Category.Id).FirstOrDefault();
@@ -98,7 +126,7 @@ namespace TimeTrackerUI
             await LoadProjects();
             listBoxProject.SelectedItem = projects.Where(x => x.Id == project.Id).FirstOrDefault();
 
-            ProcessIndexChange = true;
+            processIndexChange = true;
         }
 
         private async Task LoadProjects()
@@ -108,7 +136,7 @@ namespace TimeTrackerUI
             CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
             SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
-            var projs = await ProjectService.GetInstance.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
+            var projs = await projectService.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
             projs.ForEach(x => projects.Add(x));
         }
 
@@ -116,7 +144,7 @@ namespace TimeTrackerUI
         {
             categories.Clear();
 
-            var cats = await CategoryService.GetInstance.LoadAllCategories();
+            var cats = await categoryService.LoadAllCategories();
             cats.ForEach(x => categories.Add(x));
         }
 
@@ -131,14 +159,14 @@ namespace TimeTrackerUI
 
             subcategories.Clear();
 
-            var subCats = await SubcategoryService.GetInstance.LoadSubcategories(selectedCat);
+            var subCats = await subcategoryService.LoadSubcategories(selectedCat);
             subCats.ForEach(x => subcategories.Add(x));
 
         }
 
         private async void comboBoxCategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (ProcessIndexChange)
+            if (processIndexChange)
             {
                 if (comboBoxCategory.SelectedItem == null)
                 {
@@ -275,7 +303,7 @@ namespace TimeTrackerUI
 
         private async void comboBoxSubcategory_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (ProcessIndexChange)
+            if (processIndexChange)
             {
                 if (comboBoxSubcategory.SelectedItem == null)
                 {
@@ -330,6 +358,11 @@ namespace TimeTrackerUI
             lblHoursValue.Text = $"{time.Hours}";
             lblMinutesValue.Text = $"{time.Minutes}";
             lblSecondsValue.Text = $"{time.Seconds}";
+        }
+
+        public void Navigate()
+        {
+            Show();
         }
     }
 }

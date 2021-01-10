@@ -23,46 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Microsoft.Extensions.Configuration;
-using System;
-using TimeTrackerLibrary.DataAccess;
-
 namespace TimeTrackerLibrary
 {
     public enum DatabaseType { MSSQL };
-
-    public static class GlobalConfig
-    {
-        public static IDataAccess Connection { get; private set; }
-        public static IConfiguration Configuration { get; private set; }
-        public static DatabaseType DBTtype { get; private set; }
-
-        static GlobalConfig()
-        {
-            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-        }
-
-        public static void Initialize(DatabaseType db)
-        {
-            if(db == DatabaseType.MSSQL)
-            {
-                SqlDb sql = new SqlDb();
-                Connection = sql;
-                DBTtype = db;
-                return;
-            }
-
-            throw new ArgumentException("Data source not valid", "db");
-        }
-
-        public static string ConnectionString()
-        {
-            if(DBTtype == DatabaseType.MSSQL)
-            {
-                return Configuration.GetConnectionString("MSSQL");
-            }
-
-            throw new InvalidOperationException("DBType is not valid");
-        }
-    }
 }

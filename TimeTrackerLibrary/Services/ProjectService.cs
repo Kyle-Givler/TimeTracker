@@ -32,18 +32,13 @@ using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Services
 {
-    public sealed class ProjectService
+    public sealed class ProjectService : IProjectService
     {
-        private readonly IProjectData projectData = new ProjectData(GlobalConfig.Connection);
+        private readonly IProjectData projectData;
 
-        private static readonly ProjectService instance = new ProjectService();
-
-        public static ProjectService GetInstance
+        public ProjectService(IProjectData projectData)
         {
-            get
-            {
-                return instance;
-            }
+            this.projectData = projectData;
         }
 
         public async Task<List<ProjectModel>> LoadAllProjects()
