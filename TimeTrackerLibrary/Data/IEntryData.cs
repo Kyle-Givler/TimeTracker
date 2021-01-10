@@ -31,16 +31,44 @@ namespace TimeTrackerLibrary.Data
 {
     public interface IEntryData
     {
+        /// <summary>
+        /// Create an Entry
+        /// </summary>
+        /// <param name="entry">The Entry to save in the database</param>
+        /// <returns></returns>
         Task CreateEntry(EntryModel entry);
 
+        /// <summary>
+        /// Load all Entries from the database
+        /// </summary>
+        /// <returns>List of all Entries</returns>
         Task<List<EntryModel>> LoadAllEntries();
 
+        /// <summary>
+        /// Load all entries by category
+        /// </summary>
+        /// <param name="category">The category for which to load entries</param>
+        /// <returns>List of entires in the given category</returns>
         Task<List<EntryModel>> LoadEntriesByCategory(CategoryModel category);
 
+        /// <summary>
+        /// Load all entries by subcategory
+        /// </summary>
+        /// <param name="subcategory">The category for which to load entries</param>
+        /// <returns>List of entires in the given subcategory</returns>
         Task<List<EntryModel>> LoadEntriesBySubcategory(SubcategoryModel subcategory);
 
+        /// <summary>
+        /// Load all entries by Project
+        /// </summary>
+        /// <param name="subcategory">The project for which to load entries</param>
+        /// <returns>List of entires in the given project</returns>
         Task<List<EntryModel>> LoadEntriesByProject(ProjectModel project);
 
+        /// <summary>
+        /// Remove an entry
+        /// </summary>
+        /// <param name="entry">The Entry to remove</param>
         Task RemoveEntry(EntryModel entry);
 
         /// <summary>

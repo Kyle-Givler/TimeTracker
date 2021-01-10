@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -23,36 +23,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
-using Microsoft.Extensions.DependencyInjection;
-using TimeTrackerLibrary.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TimeTrackerLibrary.Models;
 
-namespace TimeTrackerUI
+namespace TimeTrackerLibrary.Services
 {
-    static class Program
+    public interface ISubcategoryService
     {
-        public static DatabaseType dbType = DatabaseType.MSSQL;
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
+        /// <summary>
+        /// Delete a subcategory
+        /// </summary>
+        /// <param name="subcategory">The subcategory to delete</param>
+        Task DeleteSubcategory(SubcategoryModel subcategory);
 
         /// <summary>
-        ///  The main entry point for the application.
+        /// Load subcateogies that are under the given category
         /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            var config = Container.GetRequiredService<IConfig>();
-
-            config.Initialize(dbType);
-
-            var mainForm = Container.GetRequiredService<frmMain>();
-
-            Application.Run(mainForm);
-        }
+        /// <param name="category">The caergory for which to load subcategories</param>
+        /// <returns>A list of subcategoires under a given category</returns>
+        Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category);
     }
 }

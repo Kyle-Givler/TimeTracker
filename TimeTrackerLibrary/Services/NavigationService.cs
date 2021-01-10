@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -24,35 +24,33 @@ SOFTWARE.
 */
 
 using System;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
-using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using TimeTrackerLibrary.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace TimeTrackerUI
+namespace TimeTrackerLibrary.Services
 {
-    static class Program
+    public class NavigationService : INavigationService
     {
-        public static DatabaseType dbType = DatabaseType.MSSQL;
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
+        private readonly IServiceProvider serviceProvider;
 
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        public NavigationService(IServiceProvider serviceProvider)
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            this.serviceProvider = serviceProvider;
+        }
 
-            var config = Container.GetRequiredService<IConfig>();
+        //public Task<bool> NavigateTo<TView>() where TView : INavigatable
+        //{
+        //    var view = serviceProvider.GetRequiredService<TView>();
+        //    view.Navigate();
 
-            config.Initialize(dbType);
+        //    return Task.FromResult(true);
+        //}
 
-            var mainForm = Container.GetRequiredService<frmMain>();
-
-            Application.Run(mainForm);
+        public TView NavigateTo<TView>() where TView : INavigatable
+        {
+            var view = serviceProvider.GetRequiredService<TView>();
+            return view;
         }
     }
 }

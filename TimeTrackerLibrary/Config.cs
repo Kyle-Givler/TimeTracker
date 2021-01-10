@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -23,36 +23,46 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
-using Microsoft.Extensions.DependencyInjection;
+using TimeTrackerLibrary.DataAccess;
 using TimeTrackerLibrary.Interfaces;
 
-namespace TimeTrackerUI
+namespace TimeTrackerLibrary
 {
-    static class Program
+
+    public class Config : IConfig
     {
-        public static DatabaseType dbType = DatabaseType.MSSQL;
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
+        public static IDataAccess Connection { get; private set; }
+        public static IConfiguration Configuration { get; private set; }
+        public static DatabaseType DBTtype { get; private set; }
 
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        public Config()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
+        }
 
-            var config = Container.GetRequiredService<IConfig>();
+        public void Initialize(DatabaseType db)
+        {
+            if (db == DatabaseType.MSSQL)
+            {
+                SqlDb sql = new SqlDb(this);
+                Connection = sql;
+                DBTtype = db;
+                return;
+            }
 
-            config.Initialize(dbType);
+            throw new ArgumentException("Data source not valid", "db");
+        }
 
-            var mainForm = Container.GetRequiredService<frmMain>();
+        public string ConnectionString()
+        {
+            if (DBTtype == DatabaseType.MSSQL)
+            {
+                return Configuration.GetConnectionString("MSSQL");
+            }
 
-            Application.Run(mainForm);
+            throw new InvalidOperationException("DBType is not valid");
         }
     }
 }

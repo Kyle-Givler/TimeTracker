@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 
 Copyright(c) 2020 Kyle Givler
@@ -23,36 +23,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
-using System.Windows.Forms;
-using TimeTrackerLibrary;
-using Microsoft.Extensions.DependencyInjection;
-using TimeTrackerLibrary.Interfaces;
-
-namespace TimeTrackerUI
+namespace TimeTrackerLibrary.Interfaces
 {
-    static class Program
+    public interface IConfig
     {
-        public static DatabaseType dbType = DatabaseType.MSSQL;
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
+        /// <summary>
+        /// Return the connection string
+        /// </summary>
+        /// <returns>Connection string</returns>
+        string ConnectionString();
 
         /// <summary>
-        ///  The main entry point for the application.
+        /// Initiliaze data access
         /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            var config = Container.GetRequiredService<IConfig>();
-
-            config.Initialize(dbType);
-
-            var mainForm = Container.GetRequiredService<frmMain>();
-
-            Application.Run(mainForm);
-        }
+        /// <param name="db"></param>
+        void Initialize(DatabaseType db);
     }
 }
