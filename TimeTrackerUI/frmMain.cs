@@ -245,16 +245,16 @@ namespace TimeTrackerUI
             lblCategoryValue.Text = selectedEntry.Project.Category.Name;
             lblsubcategoryValue.Text = selectedEntry.Project.Subcategory == null ? "(none)" : selectedEntry.Project.Subcategory.Name;
             lblEntryDateValue.Text = selectedEntry.FormattedDate;
-            lblTimeSpentValue.Text = $"{selectedEntry.HoursSpent} hours";
+            lblTimeSpentValue.Text = $"{selectedEntry.HoursSpent:N2} hours";
             textBoxNotes.Text = selectedEntry.Notes;
 
-            lblAllTimeValue.Text = $"{await entryService.GetTotalTimeAllEntries()} hours";
-            lblProjectTotalValue.Text = $"{await entryService.GetTimeByProject(selectedEntry.Project)} hours";
-            lblCategoryTimeValue.Text = $"{await entryService.GetTimeByCategory(selectedEntry.Project.Category)} hours";
+            lblAllTimeValue.Text = $"{await entryService.GetTotalTimeAllEntries():N2} hours";
+            lblProjectTotalValue.Text = $"{await entryService.GetTimeByProject(selectedEntry.Project):N2} hours";
+            lblCategoryTimeValue.Text = $"{await entryService.GetTimeByCategory(selectedEntry.Project.Category):N2} hours";
 
             if (selectedEntry.Project.Subcategory != null)
             {
-                lblSubcategoryTotalValue.Text = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory)} hours";
+                lblSubcategoryTotalValue.Text = $"{await entryService.GetTimeBySubcategory(selectedEntry.Project.Subcategory):N2} hours";
             }
             else
             {
