@@ -46,13 +46,9 @@ namespace TimeTrackerLibrary.Data
         {
             string sql = "insert into Subcategory (Name, CategoryId) values (@Name, @CategoryId);";
 
-            //await dataAccess.ExecuteRawSQL<dynamic>(sql, new { Name = subcategory.Name, CategoryId = subcategory.Category.Id });
-            //subcategory.Id = (int)dataAccess.QueryRawSQL<Int64, dynamic>("select last_insert_rowid();", new { }).Result.ToList().FirstOrDefault();
-
             var sqlResult = await dataAccess.ExecuteRawSQL<dynamic>(sql, new { Name = subcategory.Name, CategoryId = subcategory.Category.Id });
             var queryResult = await dataAccess.QueryRawSQL<Int64, dynamic>("select last_insert_rowid();", new { });
             subcategory.Id = (int)queryResult.FirstOrDefault();
-
 
             return subcategory.Id;
         }

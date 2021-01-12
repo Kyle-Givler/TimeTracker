@@ -1,4 +1,29 @@
-﻿using System;
+﻿/*
+MIT License
+
+Copyright(c) 2020 Kyle Givler
+https://github.com/JoyfulReaper
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,17 +45,17 @@ namespace TimeTrackerLibrary.Data
         public async Task<int> CreateEntry(EntryModel entry)
         {
             StringBuilder sql = new StringBuilder("insert into Entry (ProjectId, HoursSpent, Date, Notes) ");
-            sql.Append("values (@ProjectId, @HoursSpent, @Date, @Notes");
+            sql.Append("values (@ProjectId, @HoursSpent, @Date, @Notes);");
 
-            await dataAccess.ExecuteRawSQL<dynamic>(sql.ToString(), new
+            var sqlResult = await dataAccess.ExecuteRawSQL<dynamic>(sql.ToString(), new
             {
                 ProjectId = entry.Project.Id,
                 HoursSpent = entry.HoursSpent,
                 Date = entry.Date,
                 Notes = entry.Notes
             });
-
-            entry.Id = (int)dataAccess.QueryRawSQL<Int64, dynamic>("select last_insert_rowid(); ", new { }).Result.ToList().FirstOrDefault();
+            var queryResult = await dataAccess.QueryRawSQL<Int64, dynamic>("select last_insert_rowid();", new { });
+            entry.Id = (int)queryResult.FirstOrDefault();
 
             return entry.Id;
         }
@@ -58,7 +83,7 @@ namespace TimeTrackerLibrary.Data
         {
             string sql = "select [Id], [ProjectId], [HoursSpent], [Date], [Notes] from Entry where ProjectId = @ProjectId;";
 
-            var entries = await dataAccess.QueryRawSQL<EntryModel, dynamic>(sql, new { });
+            var entries = await dataAccess.QueryRawSQL<EntryModel, dynamic>(sql, new { ProjectId = project.Id});
 
             foreach (var e in entries)
             {

@@ -66,9 +66,9 @@ namespace TimeTrackerUI
             this.navigationService = navigationService;
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
+        private async void frmMain_Load(object sender, EventArgs e)
         {
-            SetupData();
+            await SetupData();
         }
 
         private async Task SetupData()
@@ -123,7 +123,7 @@ namespace TimeTrackerUI
             projs.ForEach(x => projects.Add(x));
 
             await LoadEntries();
-            PopulateEntryLabels();
+            await PopulateEntryLabels();
         }
 
         private async Task LoadEntries()

@@ -47,12 +47,13 @@ namespace TimeTrackerLibrary.Data
             StringBuilder sql = new StringBuilder("insert into Project (Name, CategoryId, SubcategoryId) ");
             sql.Append("values (@Name, @CategoryId, @SubcategoryId);");
 
-            await dataAccess.ExecuteRawSQL<dynamic>(sql.ToString(), new {
+            var sqlResult = await dataAccess.ExecuteRawSQL<dynamic>(sql.ToString(), new {
                 Name = project.Name,
                 CategoryId = project.Category.Id,
                 SubcategoryId = project.Subcategory.Id});
 
-            project.Id = (int)dataAccess.QueryRawSQL<Int64, dynamic>("select last_insert_rowid(); ", new { }).Result.ToList().FirstOrDefault();
+            var queryResult = await dataAccess.QueryRawSQL<Int64, dynamic>("select last_insert_rowid(); ", new { });
+            project.Id = (int)queryResult.FirstOrDefault();
 
             return project.Id;
         }
@@ -83,7 +84,7 @@ namespace TimeTrackerLibrary.Data
             StringBuilder sql = new StringBuilder("select [Id], [Name], [CategoryId], [SubcategoryId] from Project ");
             sql.Append("where SubcategoryId = @SubcategoryId;");
 
-            var projects = await dataAccess.QueryRawSQL<ProjectModel, dynamic>(sql.ToString(), new { Id = subcategory.Id });
+            var projects = await dataAccess.QueryRawSQL<ProjectModel, dynamic>(sql.ToString(), new { SubcategoryId = subcategory.Id });
             await RehydrateObjects(projects);
 
             return projects;
