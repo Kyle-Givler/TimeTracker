@@ -42,6 +42,10 @@ namespace TimeTrackerLibrary.DataAccess
         public SqlliteDb(IConfig config)
         {
             this.config = config;
+
+            SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
+            SqlMapper.AddTypeHandler(new GuidHandler());
+            SqlMapper.AddTypeHandler(new TimeSpanHandler());
         }
 
         public Task<List<T>> LoadData<T, U>(string storedProcedure, U parameters)
