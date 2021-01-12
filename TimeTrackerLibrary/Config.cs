@@ -33,9 +33,14 @@ namespace TimeTrackerLibrary
 
     public class Config : IConfig
     {
-        public static IDataAccess Connection { get; private set; }
-        public static IConfiguration Configuration { get; private set; }
-        public static DatabaseType DBTtype { get; private set; }
+        public IDataAccess Connection { get; private set; }
+        public IConfiguration Configuration { get; private set; }
+        public DatabaseType DBTtype { get; private set; }
+
+        // Probably a better way, since we would have to change this here and in appsettings.json if we change the name
+        public string SQLiteDBFile { get; } = "TimeTracker.db";
+        // TODO implement a better solution like log4net
+        public string Logfile { get; } = ".\\TimeTracker.log";
 
         public Config()
         {
@@ -49,6 +54,16 @@ namespace TimeTrackerLibrary
                 SqlDb sql = new SqlDb(this);
                 Connection = sql;
                 DBTtype = db;
+
+                return;
+            }
+
+            if (db == DatabaseType.SQLite)
+            {
+                SqlliteDb sql = new SqlliteDb(this);
+                Connection = sql;
+                DBTtype = db;
+
                 return;
             }
 
@@ -60,6 +75,11 @@ namespace TimeTrackerLibrary
             if (DBTtype == DatabaseType.MSSQL)
             {
                 return Configuration.GetConnectionString("MSSQL");
+            }
+
+            if(DBTtype == DatabaseType.SQLite)
+            {
+                return Configuration.GetConnectionString("SQLITE");
             }
 
             throw new InvalidOperationException("DBType is not valid");

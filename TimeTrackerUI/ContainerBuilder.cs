@@ -45,11 +45,16 @@ namespace TimeTrackerLibrary
                     .AddSingleton<ICategoryData, CategoryData>()
                     .AddSingleton<IEntryData, EntryData>()
                     .AddSingleton<IProjectData, ProjectData>()
-                    .AddSingleton<IDataAccess, SqlDb>()
-                    .AddSingleton<IEntryService, EntryService>()
-                    .AddSingleton<ICategoryService, CategoryService>()
-                    .AddSingleton<ISubcategoryService, SubcategoryService>()
-                    .AddSingleton<IProjectService, ProjectService>();
+                    .AddSingleton<IDataAccess, SqlDb>();
+            }
+
+            if(db == DatabaseType.SQLite)
+            {
+                container.AddSingleton<IDataAccess, SqlliteDb>()
+                    .AddSingleton<ICategoryData, SQLiteCategoryData>()
+                    .AddSingleton<ISubcategoryData, SQLiteSubcategoryData>()
+                    .AddSingleton<IProjectData, SQLiteProjectData>()
+                    .AddSingleton<IEntryData, SQLiteEntryData>();
             }
 
             container.AddSingleton(_ => container)
@@ -58,7 +63,11 @@ namespace TimeTrackerLibrary
                     .AddTransient<frmAddEntry>()
                     .AddTransient<frmEditCategory>()
                     .AddTransient<frmEditProject>()
-                    .AddSingleton<IConfig, Config>();
+                    .AddSingleton<IConfig, Config>()
+                    .AddSingleton<IEntryService, EntryService>()
+                    .AddSingleton<ICategoryService, CategoryService>()
+                    .AddSingleton<ISubcategoryService, SubcategoryService>()
+                    .AddSingleton<IProjectService, ProjectService>();
 
             return container.BuildServiceProvider();
         }

@@ -25,5 +25,5 @@ SOFTWARE.
 
 namespace TimeTrackerLibrary
 {
-    public enum DatabaseType { MSSQL };
+    public enum DatabaseType { MSSQL, SQLite };
 }

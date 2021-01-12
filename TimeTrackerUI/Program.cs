@@ -28,31 +28,57 @@ using System.Windows.Forms;
 using TimeTrackerLibrary;
 using Microsoft.Extensions.DependencyInjection;
 using TimeTrackerLibrary.Interfaces;
+using System.IO;
+using TimeTrackerLibrary.DataAccess;
+using System.Threading.Tasks;
 
 namespace TimeTrackerUI
 {
     static class Program
     {
-        public static DatabaseType dbType = DatabaseType.MSSQL;
+        public static DatabaseType dbType = DatabaseType.SQLite;
         public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
 
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static async Task Main()
         {
+            var config = Container.GetRequiredService<IConfig>();
+            config.Initialize(dbType);
+
+            await CreateSQLiteDatabase(config, Container.GetRequiredService<IDataAccess>());
+
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var config = Container.GetRequiredService<IConfig>();
+            Application.Run(Container.GetRequiredService<frmMain>());
+        }
 
-            config.Initialize(dbType);
+        private static async Task CreateSQLiteDatabase(IConfig config, IDataAccess dataAccess)
+        {
+            SqlliteDb db = dataAccess as SqlliteDb;
 
-            var mainForm = Container.GetRequiredService<frmMain>();
+            if (dbType == DatabaseType.SQLite)
+            {
+                if(db == null)
+                {
+                    throw new ArgumentException("db is null", "dataAccess");
+                }
 
-            Application.Run(mainForm);
+                if ( !File.Exists(config.SQLiteDBFile) )
+                {
+                    File.AppendAllText(config.Logfile, $"{DateTimeOffset.Now}: Database {config.SQLiteDBFile} does not exist. Creating.");
+
+                    await db.CreateDatabase();
+                }
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

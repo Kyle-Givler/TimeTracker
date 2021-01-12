@@ -24,58 +24,40 @@ SOFTWARE.
 */
 
 using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.Interfaces;
+using TimeTrackerLibrary.Properties;
 
 namespace TimeTrackerLibrary.DataAccess
 {
-    public class SqlDb : IDataAccess
+    public class SqlliteDb : IDataAccess
     {
         private readonly IConfig config;
 
-        public SqlDb(IConfig config)
+        public SqlliteDb(IConfig config)
         {
             this.config = config;
         }
 
-        /// <summary>
-        /// Load data from the database
-        /// </summary>
-        /// <typeparam name="T">Type of the data to retreive</typeparam>
-        /// <param name="storedProcedure">The store procedure to execute</param>
-        /// <param name="parameters">Paramaters for the stored procedure</param>
-        /// <returns>A list of type T</returns>
-        public async Task<List<T>> LoadData<T, U>(string storedProcedure, U parameters)
+        public Task<List<T>> LoadData<T, U>(string storedProcedure, U parameters)
         {
-            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
-            {
-                var rows = await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
-
-                return rows.ToList();
-            }
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Save data to the database
-        /// </summary>
-        /// <param name="storedProcedure">The stored procedure to execute</param>
-        /// <param name="parameters">The paremeters for the store procedure</param>
-        /// <returns>The number of rows affected</returns>
-        public async Task<int> SaveData<T>(string storedProcedure, T parameters)
+
+        public Task<int> SaveData<T>(string storedProcedure, T parameters)
         {
-            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
-            {
-                return await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
-            }
+            throw new NotImplementedException();
         }
 
         public async Task<List<T>> QueryRawSQL<T, U>(string sql, U parameters)
         {
-            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
+            using (IDbConnection connection = new SQLiteConnection(config.ConnectionString()))
             {
                 var res = await connection.QueryAsync<T>(sql, parameters);
                 return res.ToList();
@@ -84,11 +66,18 @@ namespace TimeTrackerLibrary.DataAccess
 
         public async Task<int> ExecuteRawSQL<T>(string sql, T parameters)
         {
-            using (IDbConnection connection = new SqlConnection(config.ConnectionString()))
+            using (IDbConnection connection = new SQLiteConnection(config.ConnectionString()))
             {
                 var res = await connection.ExecuteAsync(sql, parameters);
                 return res;
             }
+        }
+
+        public async Task CreateDatabase()
+        {
+            string sql = Resources.CreateSQLiteDB;
+
+            await ExecuteRawSQL<dynamic>(sql, null);
         }
     }
 }
