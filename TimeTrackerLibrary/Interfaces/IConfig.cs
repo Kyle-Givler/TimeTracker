@@ -23,6 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using TimeTrackerLibrary.DataAccess;
+
 namespace TimeTrackerLibrary.Interfaces
 {
     public interface IConfig
@@ -38,5 +40,12 @@ namespace TimeTrackerLibrary.Interfaces
         /// </summary>
         /// <param name="db"></param>
         void Initialize(DatabaseType db);
+
+        public IDataAccess Connection { get; }
+
+        // TODO Find a way to pull this out of the interface
+        public string SQLiteDBFile { get; }
+        // TODO implement a better solution like log4net
+        public string Logfile { get; }
     }
 }

@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Interfaces;
 using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Services
@@ -35,10 +36,12 @@ namespace TimeTrackerLibrary.Services
     public sealed class CategoryService : ICategoryService
     {
         private readonly ICategoryData categoryData;
+        private readonly IConfig config;
 
-        public CategoryService(ICategoryData categoryData)
+        public CategoryService(ICategoryData categoryData, IConfig config)
         {
             this.categoryData = categoryData;
+            this.config = config;
         }
 
         public async Task<List<Models.CategoryModel>> LoadAllCategories()
@@ -51,7 +54,7 @@ namespace TimeTrackerLibrary.Services
 
         public async Task DeleteCategory(CategoryModel category)
         {
-            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {category.Id};", new { });
+            var rows = await config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {category.Id};", new { });
 
             if (rows.First() != 0)
             {
