@@ -17,7 +17,7 @@ namespace TimeTrackerLibrary.Data
             this.dataAccess = dataAccess;
         }
 
-        public Task CreateEntry(EntryModel entry)
+        public Task<int> CreateEntry(EntryModel entry)
         {
             DynamicParameters p = new DynamicParameters();
 
