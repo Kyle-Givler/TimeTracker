@@ -33,7 +33,6 @@ using TimeTrackerLibrary.Models;
 using System.Diagnostics;
 using System.Linq;
 using TimeTrackerLibrary.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace TimeTrackerUI
 {
@@ -110,7 +109,7 @@ namespace TimeTrackerUI
             var subCats = await subcategoryService.LoadSubcategories(category);
             subCats.ForEach(x => subcategories.Add(x));
 
-            LoadProjects();
+            await LoadProjects();
         }
 
         private async Task LoadProjects()
