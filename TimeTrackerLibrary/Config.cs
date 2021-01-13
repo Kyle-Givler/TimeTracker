@@ -35,10 +35,9 @@ namespace TimeTrackerLibrary
     {
         public IDataAccess Connection { get; private set; }
         public IConfiguration Configuration { get; private set; }
-        public DatabaseType DBTtype { get; private set; }
+        public DatabaseType DBType { get; private set; }
+        public string SQLiteDBFile { get; private set; } = null;
 
-        // Probably a better way, since we would have to change this here and in appsettings.json if we change the name
-        public string SQLiteDBFile { get; } = "TimeTracker.db";
         // TODO implement a better solution like log4net
         public string Logfile { get; } = ".\\TimeTracker.log";
 
@@ -47,39 +46,44 @@ namespace TimeTrackerLibrary
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
         }
 
-        public void Initialize(DatabaseType db)
+        public void Initialize()
         {
-            if (db == DatabaseType.MSSQL)
-            {
-                SqlDb sql = new SqlDb(this);
-                Connection = sql;
-                DBTtype = db;
+            var databaseSetting = Configuration.GetSection("DatabaseType").Value;
 
-                return;
-            }
-
-            if (db == DatabaseType.SQLite)
+            if (databaseSetting == "SQLite")
             {
+                SQLiteDBFile = Configuration.GetSection("SQLiteSettings").GetSection("DatabaseFile").Value;
+
+                DBType = DatabaseType.SQLite;
                 SqlliteDb sql = new SqlliteDb(this);
                 Connection = sql;
-                DBTtype = db;
+
+                return;
+            } else if (databaseSetting == "MSSQL")
+            {
+                DBType = DatabaseType.MSSQL;
+                SqlDb sql = new SqlDb(this);
+                Connection = sql;
 
                 return;
             }
-
-            throw new ArgumentException("Data source not valid", "db");
+            else
+            {
+                throw new InvalidOperationException("DatabaseType must be MSSQL or SQLite");
+            }
         }
 
         public string ConnectionString()
         {
-            if (DBTtype == DatabaseType.MSSQL)
+            if (DBType == DatabaseType.MSSQL)
             {
                 return Configuration.GetConnectionString("MSSQL");
             }
 
-            if(DBTtype == DatabaseType.SQLite)
+            if(DBType == DatabaseType.SQLite)
             {
-                return Configuration.GetConnectionString("SQLITE");
+                //return Configuration.GetConnectionString("SQLite");
+                return $"Data Source={SQLiteDBFile};Version=3;";
             }
 
             throw new InvalidOperationException("DBType is not valid");

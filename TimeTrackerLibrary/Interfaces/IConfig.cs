@@ -29,6 +29,13 @@ namespace TimeTrackerLibrary.Interfaces
 {
     public interface IConfig
     {
+        public IDataAccess Connection { get; }
+        public DatabaseType DBType { get; }
+        public string SQLiteDBFile { get; }
+
+        // TODO implement a better solution like log4net
+        public string Logfile { get; }
+
         /// <summary>
         /// Return the connection string
         /// </summary>
@@ -39,13 +46,6 @@ namespace TimeTrackerLibrary.Interfaces
         /// Initiliaze data access
         /// </summary>
         /// <param name="db"></param>
-        void Initialize(DatabaseType db);
-
-        public IDataAccess Connection { get; }
-
-        // TODO Find a way to pull this out of the interface
-        public string SQLiteDBFile { get; }
-        // TODO implement a better solution like log4net
-        public string Logfile { get; }
+        void Initialize();
     }
 }

@@ -36,8 +36,7 @@ namespace TimeTrackerUI
 {
     static class Program
     {
-        public static DatabaseType dbType = DatabaseType.SQLite;
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
+        public static readonly IServiceProvider Container = new ContainerBuilder().Build();
 
         /// <summary>
         ///  The main entry point for the application.
@@ -45,10 +44,7 @@ namespace TimeTrackerUI
         [STAThread]
         static async Task Main()
         {
-            var config = Container.GetRequiredService<IConfig>();
-            config.Initialize(dbType);
-
-            await CreateSQLiteDatabase(config, Container.GetRequiredService<IDataAccess>());
+            await CreateSQLiteDatabase(Container.GetRequiredService<IConfig>(), Container.GetRequiredService<IDataAccess>());
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
@@ -61,7 +57,7 @@ namespace TimeTrackerUI
         {
             SqlliteDb db = dataAccess as SqlliteDb;
 
-            if (dbType == DatabaseType.SQLite)
+            if (config.DBType == DatabaseType.SQLite)
             {
                 if(db == null)
                 {

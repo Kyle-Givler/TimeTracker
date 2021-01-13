@@ -35,9 +35,13 @@ namespace TimeTrackerLibrary
 {
     public class ContainerBuilder
     {
-        public IServiceProvider Build(DatabaseType db)
+        public IServiceProvider Build()
         {
             var container = new ServiceCollection();
+
+            IConfig config = new Config();
+            config.Initialize();
+            var db = config.DBType;
 
             if (db == DatabaseType.MSSQL)
             {
@@ -63,7 +67,7 @@ namespace TimeTrackerLibrary
                     .AddTransient<frmAddEntry>()
                     .AddTransient<frmEditCategory>()
                     .AddTransient<frmEditProject>()
-                    .AddSingleton<IConfig, Config>()
+                    .AddSingleton(_ => config)
                     .AddSingleton<IEntryService, EntryService>()
                     .AddSingleton<ICategoryService, CategoryService>()
                     .AddSingleton<ISubcategoryService, SubcategoryService>()
