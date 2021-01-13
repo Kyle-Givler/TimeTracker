@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.Interfaces;
@@ -79,21 +80,15 @@ namespace TimeTrackerLibrary.DataAccess
             }
         }
 
-        public async Task CreateDatabaseIfNotExists()
+        private void CreateDatabaseIfNotExists()
         {
-            var queryResult = await QueryRawSQL<int, dynamic>("select name from sqlite_master where type='table' and name in ('Category', 'Subcategory', 'Project', 'Entry');", new { });
-            int numTables = queryResult.FirstOrDefault();
-
-            if (numTables != 4)
+            if (!File.Exists(config.SQLiteDBFile))
             {
-                CreateDataBase();
+                using (IDbConnection connection = new SQLiteConnection(config.ConnectionString()))
+                {
+                    connection.Execute(Resources.CreateSQLiteDB);
+                }
             }
-        }
-
-        private async void CreateDataBase()
-        {
-            string sql = Resources.CreateSQLiteDB;
-            await ExecuteRawSQL<dynamic>(sql, null);
         }
     }
 }

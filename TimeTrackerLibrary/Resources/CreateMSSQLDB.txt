@@ -1,0 +1,593 @@
+USE [master]
+GO
+/****** Object:  Database [TimeTrackerDbTEST]    Script Date: 1/13/2021 12:01:37 AM ******/
+CREATE DATABASE [TimeTrackerDbTEST]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'TimeTrackerDbTEST', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\TimeTrackerDbTEST_Primary.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'TimeTrackerDbTEST_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\TimeTrackerDbTEST_Primary.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [TimeTrackerDbTEST].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET ANSI_NULL_DEFAULT ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET ANSI_NULLS ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET ANSI_PADDING ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET ANSI_WARNINGS ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET ARITHABORT ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET CURSOR_DEFAULT  LOCAL 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET CONCAT_NULL_YIELDS_NULL ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET QUOTED_IDENTIFIER ON 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET RECOVERY FULL 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET  MULTI_USER 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET PAGE_VERIFY NONE  
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'TimeTrackerDbTEST', N'ON'
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET QUERY_STORE = OFF
+GO
+USE [TimeTrackerDbTEST]
+GO
+/****** Object:  Table [dbo].[Category]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Category](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Entry]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Entry](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectId] [int] NOT NULL,
+	[HoursSpent] [float] NOT NULL,
+	[Date] [datetimeoffset](7) NOT NULL,
+	[Notes] [nvarchar](1000) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Project]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Project](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[CategoryId] [int] NOT NULL,
+	[SubcategoryId] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Subcategory]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Subcategory](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[CategoryId] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Entry]  WITH CHECK ADD  CONSTRAINT [FK_Entry_Project] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Project] ([Id])
+GO
+ALTER TABLE [dbo].[Entry] CHECK CONSTRAINT [FK_Entry_Project]
+GO
+ALTER TABLE [dbo].[Project]  WITH CHECK ADD  CONSTRAINT [FK_Project_Category] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Category] ([Id])
+GO
+ALTER TABLE [dbo].[Project] CHECK CONSTRAINT [FK_Project_Category]
+GO
+ALTER TABLE [dbo].[Project]  WITH CHECK ADD  CONSTRAINT [FK_Project_Subcategory] FOREIGN KEY([SubcategoryId])
+REFERENCES [dbo].[Subcategory] ([Id])
+GO
+ALTER TABLE [dbo].[Project] CHECK CONSTRAINT [FK_Project_Subcategory]
+GO
+ALTER TABLE [dbo].[Subcategory]  WITH CHECK ADD  CONSTRAINT [FK_subcategory_Category] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Category] ([Id])
+GO
+ALTER TABLE [dbo].[Subcategory] CHECK CONSTRAINT [FK_subcategory_Category]
+GO
+/****** Object:  StoredProcedure [dbo].[spCategory_Delete]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spCategory_Delete]
+	@Id int
+AS
+begin
+
+	set nocount on;
+
+	delete from Category where Id = @Id;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spCategory_GetAll]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spCategory_GetAll]
+AS
+begin
+
+	set nocount on;
+
+	select [Id], [Name]
+	from dbo.Category;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spCategory_GetById]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spCategory_GetById]
+	@Id int
+AS
+begin
+
+	set nocount on;
+
+	select [Id], [Name]
+	from dbo.Category
+	where Id = @Id;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spCategory_Insert]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spCategory_Insert]
+	@Name nvarchar(50),
+	@Id int = 0 output
+AS
+begin
+
+	set nocount on;
+
+	insert into dbo.Category (Name)
+	values (@Name);
+
+	select @Id = SCOPE_IDENTITY();
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spCategory_Update]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spCategory_Update]
+	@Name nvarchar(50),
+	@Id int
+AS
+begin
+
+	set nocount on;
+
+	update Category
+	set Name = @Name
+	where Id = @Id;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spEntry_Delete]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spEntry_Delete]
+	@Id int
+AS
+begin
+
+	set nocount on;
+
+	delete 
+	from Entry
+	where Id = @Id;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spEntry_DeleteByProject]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spEntry_DeleteByProject]
+	@ProjectId int
+AS
+begin
+
+	set nocount on;
+
+	delete 
+	from Entry
+	Where ProjectId = @ProjectId;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spEntry_GetAll]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spEntry_GetAll]
+AS
+begin
+
+	set nocount on;
+
+	select [Id], [ProjectId], [HoursSpent], [Date], [Notes]
+	from dbo.Entry;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spEntry_GetByCategory]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spEntry_GetByCategory]
+	@CategoryId int
+AS
+begin
+
+	set nocount on;
+
+	select [e].[Id], [e].[ProjectId], [e].[HoursSpent], [e].[Date], [e].[Notes]
+	from Entry e
+	inner join Project p on e.ProjectId = p.Id
+	inner join Category c on p.CategoryId = c.Id
+	where p.CategoryId = @CategoryId;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spEntry_GetByProjectId]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spEntry_GetByProjectId]
+	@ProjectId int
+AS
+begin
+
+	set nocount on;
+
+	select *
+	from Entry
+	where ProjectId = @ProjectId;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spEntry_GetBySubcategory]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spEntry_GetBySubcategory]
+	@SubcategoryId int
+AS
+begin
+
+	set nocount on;
+
+	select [e].[Id], [e].[ProjectId], [e].[HoursSpent], [e].[Date], [e].[Notes]
+	from Entry e
+	inner join Project p on e.ProjectId = p.Id
+	inner join Subcategory s on p.SubcategoryId = s.Id
+	where p.SubcategoryId = @SubcategoryId;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spEntry_Insert]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spEntry_Insert]
+	@ProjectId int,
+	@HoursSpent float,
+	@Date datetimeoffset(7),
+	@Notes nvarchar(1000),
+	@Id int = 0 out
+AS
+begin
+
+	set nocount on;
+
+	insert into Entry (ProjectId, HoursSpent, Date, Notes)
+	values (@ProjectId, @HoursSpent, @Date, @Notes);
+
+	select @Id = SCOPE_IDENTITY();
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spProject_Delete]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spProject_Delete]
+	@Id int
+AS
+begin
+
+	set nocount on;
+
+	delete
+	from Project
+	where Id = @Id;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spProject_GetAll]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spProject_GetAll]
+AS
+begin
+
+set nocount on;
+
+select [Id], [Name], [CategoryId], [SubcategoryId]
+from Project;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spProject_GetByCatId]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spProject_GetByCatId]
+	@CategoryId int
+AS
+begin
+	set nocount on;
+
+	select * 
+	from Project
+	where CategoryId = @CategoryId;
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spProject_GetBySubCatId]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spProject_GetBySubCatId]
+	@SubcategoryId int
+AS
+begin
+
+	set nocount on;
+
+	select * 
+	from Project
+	where SubcategoryId = @SubcategoryId;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spProject_Insert]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spProject_Insert]
+	@Name nvarchar(50),
+	@CategoryId int,
+	@SubcategoryId int,
+	@Id int = 0 output
+AS
+begin
+
+	set nocount on;
+
+	insert into Project (Name, CategoryId, SubcategoryId)
+	values (@Name, @CategoryId, @SubcategoryId);
+
+	select @Id = SCOPE_IDENTITY();
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spProject_Update]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spProject_Update]
+	@Name nvarchar(50),
+	@Id int,
+	@CategoryId int,
+	@SubcategoryId int
+AS
+begin
+
+	set nocount on;
+
+	update Project
+	set Name = @Name, CategoryId = @CategoryId, SubcategoryId = @SubcategoryId
+	where Id = @Id;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spSubcategory_Delete]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spSubcategory_Delete]
+	@Id int
+AS
+begin
+	set nocount on;
+
+	delete from Subcategory where Id = @Id;
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spSubcategory_GetByCategoryId]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spSubcategory_GetByCategoryId]
+	@CategoryId int
+AS
+begin
+
+set nocount on;
+
+select [Id], [Name], [CategoryId]
+from dbo.Subcategory
+where CategoryId = @CategoryId;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spSubcategory_GetById]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spSubcategory_GetById]
+	@Id int
+AS
+begin
+
+set nocount on;
+
+	select [Id], [Name], [CategoryId]
+	from dbo.Subcategory
+	where Id = @Id;
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spSubcategory_Insert]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spSubcategory_Insert]
+	@Name varchar(50),
+	@CategoryId int,
+	@Id int = 0 output
+AS
+begin
+
+set nocount on;
+
+insert into Subcategory (Name, CategoryId)
+values (@Name, @CategoryId);
+
+select @Id = SCOPE_IDENTITY();
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[spSubcategory_Update]    Script Date: 1/13/2021 12:01:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spSubcategory_Update]
+	@Name varchar(50),
+	@Id int
+AS
+begin
+
+	set nocount on;
+
+	update Subcategory
+	set Name = @Name
+	where Id = @Id;
+
+end
+GO
+USE [master]
+GO
+ALTER DATABASE [TimeTrackerDbTEST] SET  READ_WRITE 
+GO

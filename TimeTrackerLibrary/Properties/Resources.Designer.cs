@@ -61,6 +61,23 @@ namespace TimeTrackerLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to USE [master]
+        ///GO
+        ////****** Object:  Database [TimeTrackerDbTEST]    Script Date: 1/13/2021 12:01:37 AM ******/
+        ///CREATE DATABASE [TimeTrackerDbTEST]
+        /// CONTAINMENT = NONE
+        /// ON  PRIMARY 
+        ///( NAME = N&apos;TimeTrackerDbTEST&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\TimeTrackerDbTEST_Primary.mdf&apos; , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+        /// LOG ON 
+        ///( NAME = N&apos;TimeTrackerDbTEST_log&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CreateMSSQLDB {
+            get {
+                return ResourceManager.GetString("CreateMSSQLDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BEGIN TRANSACTION;
         ///CREATE TABLE IF NOT EXISTS &quot;Category&quot; (
         ///	&quot;Id&quot;	INTEGER NOT NULL,

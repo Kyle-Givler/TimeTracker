@@ -37,7 +37,5 @@ namespace TimeTrackerLibrary.DataAccess
         Task<List<T>> QueryRawSQL<T, U>(string sql, U parameters);
 
         Task<int> ExecuteRawSQL<T>(string sql, T parameters);
-
-        Task CreateDatabaseIfNotExists();
     }
 }
