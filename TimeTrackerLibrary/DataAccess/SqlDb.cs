@@ -90,5 +90,10 @@ namespace TimeTrackerLibrary.DataAccess
                 return res;
             }
         }
+
+        public Task CreateDatabaseIfNotExists()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

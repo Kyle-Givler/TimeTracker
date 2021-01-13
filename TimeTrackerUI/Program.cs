@@ -44,37 +44,11 @@ namespace TimeTrackerUI
         [STAThread]
         static async Task Main()
         {
-            await CreateSQLiteDatabase(Container.GetRequiredService<IConfig>(), Container.GetRequiredService<IDataAccess>());
-
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             Application.Run(Container.GetRequiredService<frmMain>());
-        }
-
-        private static async Task CreateSQLiteDatabase(IConfig config, IDataAccess dataAccess)
-        {
-            SqlliteDb db = dataAccess as SqlliteDb;
-
-            if (config.DBType == DatabaseType.SQLite)
-            {
-                if(db == null)
-                {
-                    throw new ArgumentException("db is null", "dataAccess");
-                }
-
-                if ( !File.Exists(config.SQLiteDBFile) )
-                {
-                    File.AppendAllText(config.Logfile, $"{DateTimeOffset.Now}: Database {config.SQLiteDBFile} does not exist. Creating.");
-
-                    await db.CreateDatabase();
-                }
-            }
-            else
-            {
-                return;
-            }
         }
     }
 }

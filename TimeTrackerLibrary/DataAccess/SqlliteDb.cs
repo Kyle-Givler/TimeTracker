@@ -46,6 +46,8 @@ namespace TimeTrackerLibrary.DataAccess
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
             SqlMapper.AddTypeHandler(new GuidHandler());
             SqlMapper.AddTypeHandler(new TimeSpanHandler());
+
+            CreateDatabaseIfNotExists();
         }
 
         public Task<List<T>> LoadData<T, U>(string storedProcedure, U parameters)
@@ -77,10 +79,20 @@ namespace TimeTrackerLibrary.DataAccess
             }
         }
 
-        public async Task CreateDatabase()
+        public async Task CreateDatabaseIfNotExists()
+        {
+            var queryResult = await QueryRawSQL<int, dynamic>("select name from sqlite_master where type='table' and name in ('Category', 'Subcategory', 'Project', 'Entry');", new { });
+            int numTables = queryResult.FirstOrDefault();
+
+            if (numTables != 4)
+            {
+                CreateDataBase();
+            }
+        }
+
+        private async void CreateDataBase()
         {
             string sql = Resources.CreateSQLiteDB;
-
             await ExecuteRawSQL<dynamic>(sql, null);
         }
     }
