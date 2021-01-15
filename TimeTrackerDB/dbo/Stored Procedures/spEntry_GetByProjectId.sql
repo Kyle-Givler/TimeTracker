@@ -5,7 +5,7 @@ begin
 
 	set nocount on;
 
-	select *
+	select [Id], [ProjectId], [HoursSpent], [Date], [Notes]
 	from Entry
 	where ProjectId = @ProjectId;
 

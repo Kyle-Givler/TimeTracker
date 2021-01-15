@@ -27,14 +27,12 @@ using System;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using Microsoft.Extensions.DependencyInjection;
-using TimeTrackerLibrary.Interfaces;
 
 namespace TimeTrackerUI
 {
     static class Program
     {
-        public static DatabaseType dbType = DatabaseType.MSSQL;
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build(dbType);
+        public static readonly IServiceProvider Container = new ContainerBuilder().Build();
 
         /// <summary>
         ///  The main entry point for the application.
@@ -46,13 +44,7 @@ namespace TimeTrackerUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var config = Container.GetRequiredService<IConfig>();
-
-            config.Initialize(dbType);
-
-            var mainForm = Container.GetRequiredService<frmMain>();
-
-            Application.Run(mainForm);
+            Application.Run(Container.GetRequiredService<frmMain>());
         }
     }
 }

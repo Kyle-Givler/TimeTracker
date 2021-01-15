@@ -45,17 +45,23 @@ namespace TimeTrackerUI
         private readonly ISubcategoryService subcategoryService;
         private readonly ICategoryData categoryData;
         private readonly ISubcategoryData subcategoryData;
+        private readonly IConfig config;
 
         private bool editingCategory = false;
         private bool editingSubcategory = false;
 
-        public frmEditCategory(ICategoryService categoryService, ISubcategoryService subcategoryService, ICategoryData categoryData, ISubcategoryData subcategoryData)
+        public frmEditCategory(ICategoryService categoryService, 
+            ISubcategoryService subcategoryService, 
+            ICategoryData categoryData,
+            ISubcategoryData subcategoryData,
+            IConfig config)
         {
             InitializeComponent();
             this.categoryService = categoryService;
             this.subcategoryService = subcategoryService;
             this.categoryData = categoryData;
             this.subcategoryData = subcategoryData;
+            this.config = config;
         }
 
         private async void frmEditCategory_Load(object sender, EventArgs e)
@@ -240,7 +246,7 @@ namespace TimeTrackerUI
                 return;
             }
 
-            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};", new { });
+            var rows = await config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Subcategory WHERE CategoryId = {selectedCat.Id};", new { });
 
             if (rows.First() != 0)
             {
@@ -294,7 +300,7 @@ namespace TimeTrackerUI
                 return;
             }
 
-            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {selectedSubCat.Id};", new { });
+            var rows = await config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {selectedSubCat.Id};", new { });
 
             if (rows.First() != 0)
             {

@@ -49,7 +49,7 @@ namespace TimeTrackerLibrary.Data
         /// </summary>
         /// <param name="category">The category for which to load subcategories</param>
         /// <returns>A list of SubcategoryModels associates with a category</returns>
-        Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category);
+        Task<List<SubcategoryModel>> LoadAllSubcategories(CategoryModel category);
 
         /// <summary>
         /// Remove a subcategory
