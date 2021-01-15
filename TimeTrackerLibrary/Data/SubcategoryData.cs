@@ -74,7 +74,7 @@ namespace TimeTrackerLibrary.Data
         /// </summary>
         /// <param name="category">The category for which to load subcategories</param>
         /// <returns>A list of SubcategoryModels associates with a category</returns>
-        public async Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category)
+        public async Task<List<SubcategoryModel>> LoadAllSubcategories(CategoryModel category)
         {
             var subcats = await dataAccess.LoadData<SubcategoryModel, dynamic>("dbo.spSubcategory_GetByCategoryId", new { CategoryId = category.Id });
 

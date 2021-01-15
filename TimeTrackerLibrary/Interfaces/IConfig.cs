@@ -23,10 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using TimeTrackerLibrary.DataAccess;
+
 namespace TimeTrackerLibrary.Interfaces
 {
     public interface IConfig
     {
+        public IDataAccess Connection { get; }
+        public DatabaseType DBType { get; }
+
         /// <summary>
         /// Return the connection string
         /// </summary>
@@ -37,6 +42,6 @@ namespace TimeTrackerLibrary.Interfaces
         /// Initiliaze data access
         /// </summary>
         /// <param name="db"></param>
-        void Initialize(DatabaseType db);
+        void Initialize();
     }
 }

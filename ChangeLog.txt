@@ -1,3 +1,11 @@
+Version 0.3.1 - 01/14/21
+	- Fix compilation issue
+	- Updated README
+
+Version 0.3.0 - 01/14/21
+	- Finalize SQLite backend implementation
+	- Make SQLite backend the default
+
 Version 0.2.1 - 01/10/21
 	- Use dependency injection
 	- Display hours on main form two two decimal places

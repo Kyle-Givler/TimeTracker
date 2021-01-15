@@ -33,7 +33,6 @@ using TimeTrackerLibrary.Models;
 using System.Diagnostics;
 using System.Linq;
 using TimeTrackerLibrary.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace TimeTrackerUI
 {
@@ -67,9 +66,9 @@ namespace TimeTrackerUI
             this.navigationService = navigationService;
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
+        private async void frmMain_Load(object sender, EventArgs e)
         {
-            SetupData();
+            await SetupData();
         }
 
         private async Task SetupData()
@@ -110,7 +109,7 @@ namespace TimeTrackerUI
             var subCats = await subcategoryService.LoadSubcategories(category);
             subCats.ForEach(x => subcategories.Add(x));
 
-            LoadProjects();
+            await LoadProjects();
         }
 
         private async Task LoadProjects()
@@ -124,7 +123,7 @@ namespace TimeTrackerUI
             projs.ForEach(x => projects.Add(x));
 
             await LoadEntries();
-            PopulateEntryLabels();
+            await PopulateEntryLabels();
         }
 
         private async Task LoadEntries()

@@ -136,6 +136,11 @@ namespace TimeTrackerUI
             CategoryModel selectedCat = (CategoryModel)comboBoxCategory.SelectedItem;
             SubcategoryModel selectedSubCat = (SubcategoryModel)comboBoxSubcategory.SelectedItem;
 
+            if(selectedCat == null)
+            {
+                return;
+            }
+
             var projs = await projectService.LoadProjects(selectedCat, selectedSubCat, checkBoxAllProjects.Checked);
             projs.ForEach(x => projects.Add(x));
         }

@@ -33,33 +33,50 @@ namespace TimeTrackerLibrary
 
     public class Config : IConfig
     {
-        public static IDataAccess Connection { get; private set; }
-        public static IConfiguration Configuration { get; private set; }
-        public static DatabaseType DBTtype { get; private set; }
+        public IDataAccess Connection { get; private set; }
+        public IConfiguration Configuration { get; private set; }
+        public DatabaseType DBType { get; private set; }
 
         public Config()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
         }
 
-        public void Initialize(DatabaseType db)
+        public void Initialize()
         {
-            if (db == DatabaseType.MSSQL)
+            var databaseSetting = Configuration.GetSection("DatabaseType").Value;
+
+            if (databaseSetting == "SQLite")
             {
+                DBType = DatabaseType.SQLite;
+                SqlliteDb sql = new SqlliteDb(this);
+                Connection = sql;
+
+                return;
+            } else if (databaseSetting == "MSSQL")
+            {
+                DBType = DatabaseType.MSSQL;
                 SqlDb sql = new SqlDb(this);
                 Connection = sql;
-                DBTtype = db;
+
                 return;
             }
-
-            throw new ArgumentException("Data source not valid", "db");
+            else
+            {
+                throw new InvalidOperationException("DatabaseType must be MSSQL or SQLite");
+            }
         }
 
         public string ConnectionString()
         {
-            if (DBTtype == DatabaseType.MSSQL)
+            if (DBType == DatabaseType.MSSQL)
             {
                 return Configuration.GetConnectionString("MSSQL");
+            }
+
+            if(DBType == DatabaseType.SQLite)
+            {
+                return Configuration.GetConnectionString("SQLite");
             }
 
             throw new InvalidOperationException("DBType is not valid");
