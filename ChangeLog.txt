@@ -1,3 +1,7 @@
+Version 0.3.1 - 01/14/21
+	- Fix compilation issue
+	- Updated README
+
 Version 0.3.0 - 01/14/21
 	- Finalize SQLite backend implementation
 	- Make SQLite backend the default

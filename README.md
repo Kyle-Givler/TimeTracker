@@ -26,4 +26,10 @@ Please feel free to contact me if interested in talking about this project, C#, 
 Kyle Givler - https://www.linkedin.com/in/kyle-givler/
 
 # Time Tracker Notes:
-This program will automaticly (re-)create the SQLite database if it does not exist. Unfortunately this turned out to be a lot harder than I expected for SQL Server using Dapper. Due to this the database will not be created automaticly for SQL Server.  Therefore, if using the SQL Server database option I would reccoment publishing the database from the SQL Server database project in the soultion. Another option is using the provided script (TimeTrackerDB.sql) after checking to see if any modification are needed for your setup. For SQL Server the connection string will need to be modified in appsettings.json. The default database is SQLite. Valid settings for "DatabaseType" in appsettings.json are SQLite and MSSQL. I would love to hear any suggestion on how to automaticly create the database, tables and stored procedured for SQL Server using Dapper.
+This program will automaticly (re-)create the SQLite database if it does not exist. 
+
+Unfortunately automaticly creating the database turned out to be harder than I expected for SQL Server using Dapper. Due to this the database will not be created automaticly. Therefore, if using the SQL Server database option I would reccomend publishing the database from the SQL Server database project in the soultion. Another option is using the provided script (TimeTrackerDB.sql) after checking to see if any modification are needed for your setup. For SQL Server the connection string will need to be modified in appsettings.json.
+
+The default database is SQLite. Valid settings for "DatabaseType" in appsettings.json are SQLite and MSSQL. 
+
+I would love to hear any suggestion on how to automaticly create the database, tables and stored procedured if they do not already exists for SQL Server using Dapper.
