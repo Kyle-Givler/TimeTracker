@@ -55,7 +55,7 @@ namespace TimeTrackerLibrary.Services
 
             if (selectedCat == null)
             {
-                throw new ArgumentNullException("selectedCat", "Selected Category Cannont be null");
+                throw new ArgumentNullException("selectedCat", "Selected Category cannot be null");
             }
 
             if (allProjects)

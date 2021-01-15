@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.Data;
+using TimeTrackerLibrary.Interfaces;
 using TimeTrackerLibrary.Models;
 
 namespace TimeTrackerLibrary.Services
@@ -35,10 +36,12 @@ namespace TimeTrackerLibrary.Services
     public sealed class SubcategoryService : ISubcategoryService
     {
         private readonly ISubcategoryData subcategoryData;
+        private readonly IConfig config;
 
-        public SubcategoryService(ISubcategoryData subcategoryData)
+        public SubcategoryService(ISubcategoryData subcategoryData, IConfig config)
         {
             this.subcategoryData = subcategoryData;
+            this.config = config;
         }
 
         public async Task<List<SubcategoryModel>> LoadSubcategories(CategoryModel category)
@@ -48,7 +51,7 @@ namespace TimeTrackerLibrary.Services
                 throw new ArgumentNullException("category", "category must not be null");
             }
 
-            var subcategories = await subcategoryData.LoadSubcategories(category);
+            var subcategories = await subcategoryData.LoadAllSubcategories(category);
             subcategories = subcategories.OrderBy(x => x.Name).ToList();
 
             return subcategories;
@@ -61,7 +64,7 @@ namespace TimeTrackerLibrary.Services
                 throw new ArgumentNullException("subcategory", "subcategory must not be null");
             }
 
-            var rows = await Config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {subcategory.Id};", new { });
+            var rows = await config.Connection.QueryRawSQL<int, dynamic>($"SELECT COUNT (Id) FROM Project WHERE SubcategoryId = {subcategory.Id};", new { });
 
             if (rows.First() != 0)
             {

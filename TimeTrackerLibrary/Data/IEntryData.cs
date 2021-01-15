@@ -36,7 +36,7 @@ namespace TimeTrackerLibrary.Data
         /// </summary>
         /// <param name="entry">The Entry to save in the database</param>
         /// <returns></returns>
-        Task CreateEntry(EntryModel entry);
+        Task<int> CreateEntry(EntryModel entry);
 
         /// <summary>
         /// Load all Entries from the database
