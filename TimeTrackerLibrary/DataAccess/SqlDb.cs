@@ -32,7 +32,6 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TimeTrackerLibrary.Interfaces;
 using TimeTrackerLibrary.Properties;
@@ -47,7 +46,11 @@ namespace TimeTrackerLibrary.DataAccess
         {
             this.config = config;
 
-            CreateDatabaseIfNotExists();
+            // Unfortuneitly the turned out to be near impossible with Dapper
+            // Please let me know if you have any suggestion on how to build out
+            // the database using Dapper and a sql script. It's a lot more complicated
+            // than you would think :(
+            //CreateDatabaseIfNotExists();
         }
 
         /// <summary>
@@ -97,70 +100,6 @@ namespace TimeTrackerLibrary.DataAccess
                 var res = await connection.ExecuteAsync(sql, parameters);
                 return res;
             }
-        }
-
-        public void CreateDatabaseIfNotExists()
-        {
-            DbConnectionStringBuilder builder = new DbConnectionStringBuilder();
-            builder.ConnectionString = config.ConnectionString();
-
-            builder.TryGetValue("Database", out object value);
-            builder.Remove("Database");
-            builder.Add("Database", "Master");
-
-            using (IDbConnection connection = new SqlConnection(builder.ConnectionString))
-            {
-                var sqlResult = connection.Query<int>($"SELECT COUNT(name) FROM master.sys.databases WHERE name = N'@Value';", new { Value = value });
-
-                if (sqlResult.ToList().FirstOrDefault() < 1)
-                {
-                    ExecuteScript(new MemoryStream(Encoding.UTF8.GetBytes(Resources.CreateMSSQLDB)), (SqlConnection)connection);
-                }
-            }
-        }
-
-        private static void ExecuteScript(MemoryStream x, SqlConnection sqlConnection)
-        {
-            //TODO PLEAS PLEASE REPLACE THIS WITH SOMETHING BETTER, but it works...
-            StringBuilder stringBuilder = new StringBuilder();
-            StreamReader createDatabaseScriptStreamReader = new StreamReader(x);
-            sqlConnection.Open();
-            while (!createDatabaseScriptStreamReader.EndOfStream)
-            {
-                string line = createDatabaseScriptStreamReader.ReadLine();
-
-                if (line == "GO")
-                {
-                    try
-                    {
-                        string command = stringBuilder.ToString();
-                        string message;
-
-                        if (command.Length > 15)
-                            message = command.Substring(0, 15);
-                        else
-                            message = command;
-
-                        message = message.Trim();
-
-                        File.WriteAllText("testxxx.log", "Executing command \"" + message + "...\"");
-
-                        SqlCommand sqlCommand = new SqlCommand(command, sqlConnection);
-                        sqlCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        File.WriteAllText("testxxx.log", $"EXCEPTION: {ex.Message}");
-                    }
-
-                    stringBuilder = new StringBuilder();
-                }
-                else
-                {
-                    stringBuilder.AppendLine(line);
-                }
-            }
-            sqlConnection.Close();
         }
     }
 }
