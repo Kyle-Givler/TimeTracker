@@ -85,7 +85,6 @@ namespace TimeTrackerLibrary.DataAccess
         {
             DbConnectionStringBuilder builder = new DbConnectionStringBuilder();
             builder.ConnectionString = config.ConnectionString();
-
             builder.TryGetValue("Data Source", out object databaseFile);
 
             if (!File.Exists(databaseFile.ToString()))
