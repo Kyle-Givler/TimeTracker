@@ -36,10 +36,6 @@ namespace TimeTrackerLibrary
         public IDataAccess Connection { get; private set; }
         public IConfiguration Configuration { get; private set; }
         public DatabaseType DBType { get; private set; }
-        public string SQLiteDBFile { get; private set; } = null;
-
-        // TODO implement a better solution like log4net
-        public string Logfile { get; } = ".\\TimeTracker.log";
 
         public Config()
         {
@@ -52,8 +48,6 @@ namespace TimeTrackerLibrary
 
             if (databaseSetting == "SQLite")
             {
-                SQLiteDBFile = Configuration.GetSection("SQLiteSettings").GetSection("DatabaseFile").Value;
-
                 DBType = DatabaseType.SQLite;
                 SqlliteDb sql = new SqlliteDb(this);
                 Connection = sql;
@@ -82,8 +76,7 @@ namespace TimeTrackerLibrary
 
             if(DBType == DatabaseType.SQLite)
             {
-                //return Configuration.GetConnectionString("SQLite");
-                return $"Data Source={SQLiteDBFile};Version=3;";
+                return Configuration.GetConnectionString("SQLite");
             }
 
             throw new InvalidOperationException("DBType is not valid");

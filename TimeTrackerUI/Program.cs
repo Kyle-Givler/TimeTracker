@@ -27,10 +27,6 @@ using System;
 using System.Windows.Forms;
 using TimeTrackerLibrary;
 using Microsoft.Extensions.DependencyInjection;
-using TimeTrackerLibrary.Interfaces;
-using System.IO;
-using TimeTrackerLibrary.DataAccess;
-using System.Threading.Tasks;
 
 namespace TimeTrackerUI
 {
@@ -42,7 +38,7 @@ namespace TimeTrackerUI
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();

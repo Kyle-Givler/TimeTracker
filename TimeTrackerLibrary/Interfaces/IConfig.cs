@@ -31,10 +31,6 @@ namespace TimeTrackerLibrary.Interfaces
     {
         public IDataAccess Connection { get; }
         public DatabaseType DBType { get; }
-        public string SQLiteDBFile { get; }
-
-        // TODO implement a better solution like log4net
-        public string Logfile { get; }
 
         /// <summary>
         /// Return the connection string

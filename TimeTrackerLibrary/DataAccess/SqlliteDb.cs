@@ -27,6 +27,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -82,7 +83,12 @@ namespace TimeTrackerLibrary.DataAccess
 
         private void CreateDatabaseIfNotExists()
         {
-            if (!File.Exists(config.SQLiteDBFile))
+            DbConnectionStringBuilder builder = new DbConnectionStringBuilder();
+            builder.ConnectionString = config.ConnectionString();
+
+            builder.TryGetValue("Data Source", out object databaseFile);
+
+            if (!File.Exists(databaseFile.ToString()))
             {
                 using (IDbConnection connection = new SQLiteConnection(config.ConnectionString()))
                 {
