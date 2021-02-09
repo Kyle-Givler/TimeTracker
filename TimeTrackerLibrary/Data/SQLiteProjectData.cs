@@ -71,9 +71,9 @@ namespace TimeTrackerLibrary.Data
         public async Task<List<ProjectModel>> LoadProjectsByCategory(CategoryModel category)
         {
             StringBuilder sql = new StringBuilder("select [Id], [Name], [CategoryId], [SubcategoryId] from Project ");
-            sql.Append("where CategoryId = @CategoryId");
+            sql.Append("where CategoryId = @CategoryId;");
 
-            var projects = await dataAccess.QueryRawSQL<ProjectModel, dynamic>(sql.ToString(), new { Id = category.Id});
+            var projects = await dataAccess.QueryRawSQL<ProjectModel, dynamic>(sql.ToString(), new { CategoryId = category.Id});
             await RehydrateObjects(projects);
 
             return projects;
