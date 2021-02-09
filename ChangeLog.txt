@@ -1,4 +1,7 @@
 Version 0.3.2 - 02/08/21
+	- Fix NPE
+
+Version 0.3.2 - 02/08/21
 	- Fix showing place holder labels if there are no projects
 	- Fix crash on Categories with no subcategories
 
