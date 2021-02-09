@@ -87,6 +87,7 @@ namespace TimeTrackerUI
 
             await LoadCategories();
             await LoadSubcategories((CategoryModel)comboBoxCategory.SelectedItem);
+            await PopulateEntryLabels();
         }
 
         private async Task LoadCategories()
