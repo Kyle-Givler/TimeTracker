@@ -1,3 +1,7 @@
+Version 0.3.2 - 02/08/21
+	- Fix showing place holder labels if there are no projects
+	- Fix crash on Categories with no subcategories
+
 Version 0.3.1 - 01/14/21
 	- Fix compilation issue
 	- Updated README
@@ -8,7 +12,7 @@ Version 0.3.0 - 01/14/21
 
 Version 0.2.1 - 01/10/21
 	- Use dependency injection
-	- Display hours on main form two two decimal places
+	- Display hours on main form to two decimal places
 
 Version 0.2.0 - 01/04/2021
 	- Allow Entries to be added by Hours Spent, Start and Stop time, or by a timer.
