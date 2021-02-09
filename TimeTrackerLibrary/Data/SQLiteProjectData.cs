@@ -44,13 +44,27 @@ namespace TimeTrackerLibrary.Data
 
         public async Task<int> AddProject(ProjectModel project)
         {
-            StringBuilder sql = new StringBuilder("insert into Project (Name, CategoryId, SubcategoryId) ");
-            sql.Append("values (@Name, @CategoryId, @SubcategoryId);");
-
-            var sqlResult = await dataAccess.ExecuteRawSQL<dynamic>(sql.ToString(), new {
-                Name = project.Name,
-                CategoryId = project.Category.Id,
-                SubcategoryId = project.Subcategory.Id});
+            if (project.Subcategory != null)
+            {
+                StringBuilder sql = new StringBuilder("insert into Project (Name, CategoryId, SubcategoryId) ");
+                sql.Append("values (@Name, @CategoryId, @SubcategoryId);");
+                var sqlResult = await dataAccess.ExecuteRawSQL<dynamic>(sql.ToString(), new
+                {
+                    Name = project.Name,
+                    CategoryId = project.Category.Id,
+                    SubcategoryId = project.Subcategory.Id
+                });
+            }
+            else
+            {
+                StringBuilder sql = new StringBuilder("insert into Project (Name, CategoryId) ");
+                sql.Append("values (@Name, @CategoryId);");
+                var sqlResult = await dataAccess.ExecuteRawSQL<dynamic>(sql.ToString(), new
+                {
+                    Name = project.Name,
+                    CategoryId = project.Category.Id,
+                });
+            }
 
             var queryResult = await dataAccess.QueryRawSQL<Int64, dynamic>("select last_insert_rowid(); ", new { });
             project.Id = (int)queryResult.FirstOrDefault();
