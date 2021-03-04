@@ -60,6 +60,12 @@ namespace TimeTrackerLibrary.Data
             return entry.Id;
         }
 
+        public async Task UpdateEntry(EntryModel entry)
+        {
+            string sql = "update Entry set HoursSpent = @HoursSpent, Notes = @Notes, Date = @Date where Id = @Id";
+            await dataAccess.ExecuteRawSQL<dynamic>(sql, entry);
+        }
+
         public async Task<List<EntryModel>> LoadAllEntries()
         {
             string sql = "select [Id], [ProjectId], [HoursSpent], [Date], [Notes] from Entry;";
