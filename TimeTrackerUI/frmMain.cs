@@ -330,5 +330,19 @@ namespace TimeTrackerUI
         {
             Show();
         }
+
+        private void listBoxEntries_DoubleClick(object sender, EventArgs e)
+        {
+            if(listBoxEntries.SelectedItem == null)
+            {
+                return;
+            }
+
+            var frm = navigationService.NavigateTo<frmEditEntry>();
+            frm.EntryToEdit = (EntryModel)listBoxEntries.SelectedItem;
+            frm.ShowDialog(this);
+
+            PopulateEntryLabels();
+        }
     }
 }
