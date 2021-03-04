@@ -30,6 +30,17 @@ namespace TimeTrackerLibrary.Data
             return dataAccess.SaveData("dbo.spEntry_Insert", p);
         }
 
+        public Task UpdateEntry(EntryModel entry)
+        {
+            DynamicParameters p = new DynamicParameters();
+
+            p.Add("HoursSpent", entry.HoursSpent);
+            p.Add("Notes", entry.Notes);
+            p.Add("Date", entry.Date);
+
+            return dataAccess.SaveData("spEntry_Update", p);
+        }
+
         public async Task<List<EntryModel>> LoadAllEntries()
         {
             var entries = await dataAccess.LoadData<EntryModel, dynamic>("dbo.spEntry_GetAll", new { });

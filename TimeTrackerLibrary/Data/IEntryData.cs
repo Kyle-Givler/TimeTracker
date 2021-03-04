@@ -76,5 +76,11 @@ namespace TimeTrackerLibrary.Data
         /// </summary>
         /// <param name="project">The project for which to delete entries</param>
         Task RemoveEntryByProject(ProjectModel project);
+
+        /// <summary>
+        /// Edit an entry
+        /// </summary>
+        /// <param name="entry">The Entry to edit</param>
+        Task UpdateEntry(EntryModel entry);
     }
 }
