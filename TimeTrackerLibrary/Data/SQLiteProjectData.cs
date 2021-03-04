@@ -121,7 +121,7 @@ namespace TimeTrackerLibrary.Data
             {
                 Name = project.Name,
                 CategoryId = project.Category.Id,
-                SubcategoryId = project.Subcategory.Id,
+                SubcategoryId = project.Subcategory?.Id,
                 Id = project.Id
             });
         }
