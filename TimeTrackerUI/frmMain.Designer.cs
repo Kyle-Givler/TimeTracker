@@ -79,6 +79,7 @@ namespace TimeTrackerUI
             this.listBoxEntries.Size = new System.Drawing.Size(218, 429);
             this.listBoxEntries.TabIndex = 0;
             this.listBoxEntries.SelectedIndexChanged += new System.EventHandler(this.listBoxEntries_SelectedIndexChanged);
+            this.listBoxEntries.DoubleClick += new System.EventHandler(this.listBoxEntries_DoubleClick);
             // 
             // lblProject
             // 
