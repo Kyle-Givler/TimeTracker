@@ -36,7 +36,7 @@ namespace TimeTrackerUI
             this.textBoxNotes = new System.Windows.Forms.TextBox();
             this.dateTimePickerDate = new System.Windows.Forms.DateTimePicker();
             this.lblNotes = new System.Windows.Forms.Label();
-            this.btnAddEntry = new System.Windows.Forms.Button();
+            this.btnUpdateEntry = new System.Windows.Forms.Button();
             this.groupBoxEntry.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +48,7 @@ namespace TimeTrackerUI
             this.groupBoxEntry.Controls.Add(this.textBoxNotes);
             this.groupBoxEntry.Controls.Add(this.dateTimePickerDate);
             this.groupBoxEntry.Controls.Add(this.lblNotes);
-            this.groupBoxEntry.Controls.Add(this.btnAddEntry);
+            this.groupBoxEntry.Controls.Add(this.btnUpdateEntry);
             this.groupBoxEntry.Location = new System.Drawing.Point(14, 12);
             this.groupBoxEntry.Name = "groupBoxEntry";
             this.groupBoxEntry.Size = new System.Drawing.Size(339, 482);
@@ -107,15 +107,16 @@ namespace TimeTrackerUI
             this.lblNotes.TabIndex = 38;
             this.lblNotes.Text = "Notes:";
             // 
-            // btnAddEntry
+            // btnUpdateEntry
             // 
-            this.btnAddEntry.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnAddEntry.Location = new System.Drawing.Point(72, 403);
-            this.btnAddEntry.Name = "btnAddEntry";
-            this.btnAddEntry.Size = new System.Drawing.Size(164, 37);
-            this.btnAddEntry.TabIndex = 37;
-            this.btnAddEntry.Text = "Update Entry";
-            this.btnAddEntry.UseVisualStyleBackColor = true;
+            this.btnUpdateEntry.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnUpdateEntry.Location = new System.Drawing.Point(72, 403);
+            this.btnUpdateEntry.Name = "btnUpdateEntry";
+            this.btnUpdateEntry.Size = new System.Drawing.Size(164, 37);
+            this.btnUpdateEntry.TabIndex = 37;
+            this.btnUpdateEntry.Text = "Update Entry";
+            this.btnUpdateEntry.UseVisualStyleBackColor = true;
+            this.btnUpdateEntry.Click += new System.EventHandler(this.btnUpdateEntry_Click);
             // 
             // frmEditEntry
             // 
@@ -141,7 +142,7 @@ namespace TimeTrackerUI
         private System.Windows.Forms.TextBox textBoxNotes;
         private System.Windows.Forms.DateTimePicker dateTimePickerDate;
         private System.Windows.Forms.Label lblNotes;
-        private System.Windows.Forms.Button btnAddEntry;
+        private System.Windows.Forms.Button btnUpdateEntry;
         private System.Windows.Forms.Label lblHoursSpent;
         private System.Windows.Forms.TextBox textBoxHoursSpent;
     }
