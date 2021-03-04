@@ -88,5 +88,6 @@
     <Build Include="dbo\Stored Procedures\spEntry_GetByProjectId.sql" />
     <Build Include="dbo\Stored Procedures\spEntry_Delete.sql" />
     <Build Include="dbo\Stored Procedures\spEntry_DeleteByProject.sql" />
+    <Build Include="dbo\Stored Procedures\spEntry_Update.sql" />
   </ItemGroup>
 </Project>

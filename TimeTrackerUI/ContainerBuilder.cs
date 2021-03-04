@@ -67,6 +67,7 @@ namespace TimeTrackerLibrary
                     .AddTransient<frmAddEntry>()
                     .AddTransient<frmEditCategory>()
                     .AddTransient<frmEditProject>()
+                    .AddTransient<frmEditEntry>()
                     .AddSingleton(_ => config)
                     .AddSingleton<IEntryService, EntryService>()
                     .AddSingleton<ICategoryService, CategoryService>()
